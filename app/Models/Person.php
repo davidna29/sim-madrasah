@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Person extends Model
 {
@@ -36,5 +37,13 @@ class Person extends Model
         return [
             'birth_date' => 'date',
         ];
+    }
+
+    /**
+     * Akun login yang terhubung dengan identitas ini.
+     */
+    public function user(): HasOne
+    {
+        return $this->hasOne(User::class);
     }
 }
