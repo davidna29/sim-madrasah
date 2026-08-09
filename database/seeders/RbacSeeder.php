@@ -259,6 +259,41 @@ class RbacSeeder extends Seeder
                     'description' => 'Memberikan atau mencabut permission dari role.',
                     'is_active' => true,
                 ],
+                [
+                    'name' => 'academic_years.view',
+                    'module' => 'academic_years',
+                    'action' => 'view',
+                    'display_name' => 'Melihat Tahun Ajaran',
+                    'description' => 'Melihat daftar tahun ajaran dan semester.',
+                ],
+                [
+                    'name' => 'academic_years.create',
+                    'module' => 'academic_years',
+                    'action' => 'create',
+                    'display_name' => 'Membuat Tahun Ajaran',
+                    'description' => 'Membuat tahun ajaran dan semester baru.',
+                ],
+                [
+                    'name' => 'academic_years.update',
+                    'module' => 'academic_years',
+                    'action' => 'update',
+                    'display_name' => 'Mengubah Tahun Ajaran',
+                    'description' => 'Mengubah data tahun ajaran dan semester.',
+                ],
+                [
+                    'name' => 'academic_years.activate',
+                    'module' => 'academic_years',
+                    'action' => 'activate',
+                    'display_name' => 'Mengaktifkan Semester',
+                    'description' => 'Menetapkan satu semester sebagai semester aktif.',
+                ],
+                [
+                    'name' => 'academic_years.lock',
+                    'module' => 'academic_years',
+                    'action' => 'lock',
+                    'display_name' => 'Mengunci Semester',
+                    'description' => 'Mengunci semester agar transaksi periode tersebut tidak diubah sembarangan.',
+                ],
             ];
 
             foreach ($permissions as $permission) {

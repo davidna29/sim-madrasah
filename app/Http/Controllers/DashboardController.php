@@ -207,6 +207,19 @@ class DashboardController extends Controller
 
         return [
             [
+                'title' => 'Identitas Madrasah',
+                'description' => 'Kelola nama madrasah, NSM, NPSN, alamat, kontak, dan zona waktu.',
+                'href' => route('admin.madrasah.edit'),
+                'label' => 'Buka Identitas',
+            ],
+            // Tahun Ajaran
+            [
+                'title' => 'Tahun Ajaran',
+                'description' => 'Kelola tahun ajaran, semester aktif, dan penguncian periode akademik.',
+                'href' => route('admin.academic-years.index'),
+                'label' => 'Buka Tahun Ajaran',
+            ],
+            [
                 'title' => 'Kelola Role',
                 'description' => 'Lihat daftar role, jumlah user, dan jumlah permission pada setiap role.',
                 'href' => route('admin.roles.index'),

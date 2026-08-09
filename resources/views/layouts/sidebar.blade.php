@@ -24,20 +24,31 @@
 
             @if (
                     auth()->user()?->can('permission', 'madrasah.view') ||
+                    auth()->user()?->can('permission', 'academic_years.view') ||
                     auth()->user()?->can('permission', 'roles.view') ||
                     auth()->user()?->can('permission', 'permissions.view')
                 )
                 <x-ui.sidebar-section title="Administrasi Sistem">
                    <!-- Identitas Madrasah -->
                     @can('permission', 'madrasah.view')
-    <x-ui.sidebar-link
-        :href="route('admin.madrasah.edit')"
-        :active="request()->routeIs('admin.madrasah.*')"
-    >
-        Identitas Madrasah
-    </x-ui.sidebar-link>
-@endcan
+                        <x-ui.sidebar-link
+                            :href="route('admin.madrasah.edit')"
+                            :active="request()->routeIs('admin.madrasah.*')"
+                        >
+                            Identitas Madrasah
+                        </x-ui.sidebar-link>
+                    @endcan
                 
+                    <!-- Tahun Ajaran -->
+                    @can('permission', 'academic_years.view')
+                        <x-ui.sidebar-link
+                            :href="route('admin.academic-years.index')"
+                            :active="request()->routeIs('admin.academic-years.*')"
+                        >
+                            Tahun Ajaran
+                        </x-ui.sidebar-link>
+                    @endcan
+
                 @can('permission', 'roles.view')
                         <x-ui.sidebar-link
                             :href="route('admin.roles.index')"

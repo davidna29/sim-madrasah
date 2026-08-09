@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AcademicYearController;
 use App\Http\Controllers\Admin\MadrasahProfileController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
@@ -58,6 +59,27 @@ Route::middleware([
     Route::put('/madrasah', [MadrasahProfileController::class, 'update'])
         ->middleware('permission:madrasah.update')
         ->name('madrasah.update');
+
+    // --- TAMBAHAN ROUTE UNTUK MANAJEMEN TAHUN AKADEMIK DAN SEMESTER ---
+    Route::get('/academic-years', [AcademicYearController::class, 'index'])
+        ->middleware('permission:academic_years.view')
+        ->name('academic-years.index');
+
+    Route::get('/academic-years/create', [AcademicYearController::class, 'create'])
+        ->middleware('permission:academic_years.create')
+        ->name('academic-years.create');
+
+    Route::post('/academic-years', [AcademicYearController::class, 'store'])
+        ->middleware('permission:academic_years.create')
+        ->name('academic-years.store');
+
+    Route::put('/semesters/{semester}/activate', [AcademicYearController::class, 'activateSemester'])
+        ->middleware('permission:academic_years.activate')
+        ->name('semesters.activate');
+
+    Route::put('/semesters/{semester}/lock', [AcademicYearController::class, 'lockSemester'])
+        ->middleware('permission:academic_years.lock')
+        ->name('semesters.lock');
 });
 
 Route::middleware([
