@@ -337,6 +337,30 @@ class RbacSeeder extends Seeder
                     'display_name' => 'Mengubah Ruangan',
                     'description' => 'Mengubah data ruangan.',
                 ],
+
+                // Tambahkan permission untuk modul class_groups
+                [
+                    'name' => 'class_groups.view',
+                    'module' => 'class_groups',
+                    'action' => 'view',
+                    'display_name' => 'Melihat Rombongan Belajar',
+                    'description' => 'Melihat data rombongan belajar.',
+                ],
+                [
+                    'name' => 'class_groups.create',
+                    'module' => 'class_groups',
+                    'action' => 'create',
+                    'display_name' => 'Membuat Rombongan Belajar',
+                    'description' => 'Menambahkan rombongan belajar.',
+                ],
+                [
+                    'name' => 'class_groups.update',
+                    'module' => 'class_groups',
+                    'action' => 'update',
+                    'display_name' => 'Mengubah Rombongan Belajar',
+                    'description' => 'Mengubah data rombongan belajar.',
+                ],
+
             ];
 
             foreach ($permissions as $permission) {

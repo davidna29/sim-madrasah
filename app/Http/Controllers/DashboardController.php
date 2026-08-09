@@ -239,6 +239,13 @@ class DashboardController extends Controller
                     : null,
                 'label' => 'Lihat Detail',
             ],
+            // Rombongan Belajar
+            [
+                'title' => 'Rombongan Belajar',
+                'description' => 'Kelola kelas aktif berdasarkan tahun ajaran, tingkat kelas, ruangan, dan wali kelas.',
+                'href' => route('admin.class-groups.index'),
+                'label' => 'Buka Rombel',
+            ],
         ];
     }
 

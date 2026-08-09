@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AcademicYearController;
+use App\Http\Controllers\Admin\ClassGroupController;
 use App\Http\Controllers\Admin\GradeLevelController;
 use App\Http\Controllers\Admin\MadrasahProfileController;
 use App\Http\Controllers\Admin\PermissionController;
@@ -122,6 +123,27 @@ Route::middleware([
     Route::put('/rooms/{room}', [RoomController::class, 'update'])
         ->middleware('permission:rooms.update')
         ->name('rooms.update');
+
+    // Tambahkan route untuk manajemen rombongan belajar (class groups)
+    Route::get('/class-groups', [ClassGroupController::class, 'index'])
+        ->middleware('permission:class_groups.view')
+        ->name('class-groups.index');
+
+    Route::get('/class-groups/create', [ClassGroupController::class, 'create'])
+        ->middleware('permission:class_groups.create')
+        ->name('class-groups.create');
+
+    Route::post('/class-groups', [ClassGroupController::class, 'store'])
+        ->middleware('permission:class_groups.create')
+        ->name('class-groups.store');
+
+    Route::get('/class-groups/{classGroup}/edit', [ClassGroupController::class, 'edit'])
+        ->middleware('permission:class_groups.update')
+        ->name('class-groups.edit');
+
+    Route::put('/class-groups/{classGroup}', [ClassGroupController::class, 'update'])
+        ->middleware('permission:class_groups.update')
+        ->name('class-groups.update');
 });
 
 Route::middleware([

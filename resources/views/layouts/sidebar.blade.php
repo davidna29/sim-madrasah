@@ -27,6 +27,7 @@
                     auth()->user()?->can('permission', 'academic_years.view') ||
                     auth()->user()?->can('permission', 'grade_levels.view') ||
                     auth()->user()?->can('permission', 'rooms.view') ||
+                    auth()->user()?->can('permission', 'class_groups.view') ||
                     auth()->user()?->can('permission', 'roles.view') ||
                     auth()->user()?->can('permission', 'permissions.view')
                 )
@@ -70,6 +71,16 @@
                         </x-ui.sidebar-link>
                     @endcan
                     
+                    <!-- Rombongan Belajar -->
+                    @can('permission', 'class_groups.view')
+                        <x-ui.sidebar-link
+                            :href="route('admin.class-groups.index')"
+                            :active="request()->routeIs('admin.class-groups.*')"
+                        >
+                            Rombongan Belajar
+                        </x-ui.sidebar-link>
+                    @endcan
+
                     <!-- Role -->
                     @can('permission', 'roles.view')
                         <x-ui.sidebar-link
