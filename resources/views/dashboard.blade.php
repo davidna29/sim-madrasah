@@ -23,7 +23,31 @@
                     />
                 @endforeach
             </div>
+@if (! empty($systemCards))
+    <div>
+        <div class="flex items-end justify-between gap-4">
+            <div>
+                <h3 class="text-lg font-semibold text-gray-900">
+                    Ringkasan Sistem
+                </h3>
 
+                <p class="mt-1 text-sm text-gray-500">
+                    Data umum sistem yang hanya ditampilkan untuk Super Admin.
+                </p>
+            </div>
+        </div>
+
+        <div class="mt-4 grid grid-cols-1 gap-6 md:grid-cols-4">
+            @foreach ($systemCards as $card)
+                <x-ui.stat-card
+                    :label="$card['label']"
+                    :value="$card['value']"
+                    :description="$card['description']"
+                />
+            @endforeach
+        </div>
+    </div>
+@endif
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-100">
                 <div class="p-6">
                     <div class="flex items-start justify-between gap-4">

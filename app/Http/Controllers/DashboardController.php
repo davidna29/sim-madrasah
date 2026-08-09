@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Permission;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -54,6 +56,7 @@ class DashboardController extends Controller
                 $roles,
                 $permissionCount
             ),
+            'systemCards' => $this->resolveSystemCards($roleNames),
             'moduleCards' => $this->resolveModuleCards($roleNames),
         ]);
     }
@@ -144,6 +147,43 @@ class DashboardController extends Controller
                 'label' => 'Permission Aktif',
                 'value' => $permissionCount,
                 'description' => 'Jumlah permission dari role aktif.',
+            ],
+        ];
+    }
+
+    /**
+     * Ringkasan sistem untuk Super Admin.
+     *
+     * @return array<int, array<string, string|int>>
+     */
+    private function resolveSystemCards(Collection $roleNames): array
+    {
+        if (! $roleNames->contains('super_admin')) {
+            return [];
+        }
+
+        return [
+            [
+                'label' => 'Total User',
+                'value' => User::query()->count(),
+                'description' => 'Jumlah akun yang terdaftar dalam sistem.',
+            ],
+            [
+                'label' => 'User Aktif',
+                'value' => User::query()
+                    ->where('status', 'active')
+                    ->count(),
+                'description' => 'Jumlah akun yang sedang aktif.',
+            ],
+            [
+                'label' => 'Total Role',
+                'value' => Role::query()->count(),
+                'description' => 'Jumlah role yang tersedia.',
+            ],
+            [
+                'label' => 'Total Permission',
+                'value' => Permission::query()->count(),
+                'description' => 'Jumlah permission yang tersedia.',
             ],
         ];
     }
