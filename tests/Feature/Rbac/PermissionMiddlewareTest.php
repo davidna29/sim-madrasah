@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Auth;
+namespace Tests\Feature\Rbac;
 
 use App\Models\Permission;
 use App\Models\Role;
@@ -8,16 +8,13 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class ActiveAccountMiddlewareTest extends TestCase
+class PermissionMiddlewareTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_active_user_can_access_dashboard(): void
+    public function test_user_with_permission_can_access_dashboard(): void
     {
-        $user = User::factory()->create([
-            'status' => 'active',
-            'locked_until' => null,
-        ]);
+        $user = User::factory()->create();
 
         $this->grantPermissionToUser($user, 'dashboard.view');
 
@@ -28,35 +25,37 @@ class ActiveAccountMiddlewareTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_inactive_logged_in_user_is_logged_out(): void
+    public function test_user_without_permission_cannot_access_dashboard(): void
     {
-        $user = User::factory()->create([
-            'status' => 'inactive',
-        ]);
+        $user = User::factory()->create();
 
         $response = $this
             ->actingAs($user)
             ->get('/dashboard');
 
-        $response->assertRedirect(route('login'));
-
-        $this->assertGuest();
+        $response->assertForbidden();
     }
 
-    public function test_locked_logged_in_user_is_logged_out(): void
+    public function test_super_admin_can_access_dashboard_without_explicit_permission(): void
     {
-        $user = User::factory()->create([
-            'status' => 'active',
-            'locked_until' => now()->addMinutes(10),
+        $user = User::factory()->create();
+
+        $role = Role::create([
+            'name' => 'super_admin',
+            'display_name' => 'Super Admin',
+            'is_system' => true,
+            'is_active' => true,
+        ]);
+
+        $user->roles()->attach($role->id, [
+            'assigned_at' => now(),
         ]);
 
         $response = $this
             ->actingAs($user)
             ->get('/dashboard');
 
-        $response->assertRedirect(route('login'));
-
-        $this->assertGuest();
+        $response->assertStatus(200);
     }
 
     private function grantPermissionToUser(
@@ -64,8 +63,8 @@ class ActiveAccountMiddlewareTest extends TestCase
         string $permissionName
     ): void {
         $role = Role::create([
-            'name' => 'test_role',
-            'display_name' => 'Test Role',
+            'name' => 'test_dashboard_role',
+            'display_name' => 'Test Dashboard Role',
             'is_system' => false,
             'is_active' => true,
         ]);

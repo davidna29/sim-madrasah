@@ -13,6 +13,7 @@ Route::get('/dashboard', function () {
     'auth',
     'verified',
     'active.account',
+    'permission:dashboard.view',
 ])->name('dashboard');
 
 Route::middleware([
