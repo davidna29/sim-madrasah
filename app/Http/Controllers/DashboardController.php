@@ -246,6 +246,14 @@ class DashboardController extends Controller
                 'href' => route('admin.class-groups.index'),
                 'label' => 'Buka Rombel',
             ],
+            // Mata Pelajaran
+            [
+                'title' => 'Mata Pelajaran',
+                'description' => 'Kelola data master mata pelajaran untuk kurikulum, jadwal, nilai, dan rapor.',
+                'href' => route('admin.subjects.index'),
+                'label' => 'Buka Mapel',
+            ],
+
         ];
     }
 

@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\MadrasahProfileController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\RoomController;
+use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -144,6 +145,26 @@ Route::middleware([
     Route::put('/class-groups/{classGroup}', [ClassGroupController::class, 'update'])
         ->middleware('permission:class_groups.update')
         ->name('class-groups.update');
+    // Tambahkan route untuk manajemen mata pelajaran (subjects)
+    Route::get('/subjects', [SubjectController::class, 'index'])
+        ->middleware('permission:subjects.view')
+        ->name('subjects.index');
+
+    Route::get('/subjects/create', [SubjectController::class, 'create'])
+        ->middleware('permission:subjects.create')
+        ->name('subjects.create');
+
+    Route::post('/subjects', [SubjectController::class, 'store'])
+        ->middleware('permission:subjects.create')
+        ->name('subjects.store');
+
+    Route::get('/subjects/{subject}/edit', [SubjectController::class, 'edit'])
+        ->middleware('permission:subjects.update')
+        ->name('subjects.edit');
+
+    Route::put('/subjects/{subject}', [SubjectController::class, 'update'])
+        ->middleware('permission:subjects.update')
+        ->name('subjects.update');
 });
 
 Route::middleware([

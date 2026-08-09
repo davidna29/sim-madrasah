@@ -360,6 +360,28 @@ class RbacSeeder extends Seeder
                     'display_name' => 'Mengubah Rombongan Belajar',
                     'description' => 'Mengubah data rombongan belajar.',
                 ],
+                // Tambahkan permission untuk modul subjects mata pelajaran
+                [
+                    'name' => 'subjects.view',
+                    'module' => 'subjects',
+                    'action' => 'view',
+                    'display_name' => 'Melihat Mata Pelajaran',
+                    'description' => 'Melihat data mata pelajaran.',
+                ],
+                [
+                    'name' => 'subjects.create',
+                    'module' => 'subjects',
+                    'action' => 'create',
+                    'display_name' => 'Membuat Mata Pelajaran',
+                    'description' => 'Menambahkan data mata pelajaran.',
+                ],
+                [
+                    'name' => 'subjects.update',
+                    'module' => 'subjects',
+                    'action' => 'update',
+                    'display_name' => 'Mengubah Mata Pelajaran',
+                    'description' => 'Mengubah data mata pelajaran.',
+                ],
 
             ];
 

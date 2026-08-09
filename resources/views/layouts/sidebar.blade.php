@@ -28,6 +28,7 @@
                     auth()->user()?->can('permission', 'grade_levels.view') ||
                     auth()->user()?->can('permission', 'rooms.view') ||
                     auth()->user()?->can('permission', 'class_groups.view') ||
+                    auth()->user()?->can('permission', 'subjects.view') ||
                     auth()->user()?->can('permission', 'roles.view') ||
                     auth()->user()?->can('permission', 'permissions.view')
                 )
@@ -78,6 +79,16 @@
                             :active="request()->routeIs('admin.class-groups.*')"
                         >
                             Rombongan Belajar
+                        </x-ui.sidebar-link>
+                    @endcan
+
+                <!-- Mata Pelajaran -->
+                    @can('permission', 'subjects.view')
+                        <x-ui.sidebar-link
+                            :href="route('admin.subjects.index')"
+                            :active="request()->routeIs('admin.subjects.*')"
+                        >
+                            Mata Pelajaran
                         </x-ui.sidebar-link>
                     @endcan
 
