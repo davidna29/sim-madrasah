@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -9,14 +10,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware([
-    'auth',
-    'verified',
-    'active.account',
-    'permission:dashboard.view',
-])->name('dashboard');
+Route::get('/dashboard', DashboardController::class)
+    ->middleware([
+        'auth',
+        'verified',
+        'active.account',
+        'permission:dashboard.view',
+    ])
+    ->name('dashboard');
 
 Route::middleware([
     'auth',
