@@ -226,6 +226,20 @@ class RbacSeeder extends Seeder
                     'display_name' => 'Mengubah Pengaturan Sistem',
                 ],
                 [
+                    'name' => 'madrasah.view',
+                    'module' => 'madrasah',
+                    'action' => 'view',
+                    'display_name' => 'Melihat Identitas Madrasah',
+                    'description' => 'Melihat profil dan identitas dasar madrasah.',
+                ],
+                [
+                    'name' => 'madrasah.update',
+                    'module' => 'madrasah',
+                    'action' => 'update',
+                    'display_name' => 'Mengubah Identitas Madrasah',
+                    'description' => 'Mengubah profil dan identitas dasar madrasah.',
+                ],
+                [
                     'name' => 'activity_logs.view',
                     'module' => 'activity_logs',
                     'action' => 'view',

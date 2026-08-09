@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\MadrasahProfileController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\DashboardController;
@@ -48,6 +49,15 @@ Route::middleware([
     Route::get('/permissions/{permission}', [PermissionController::class, 'show'])
         ->middleware('permission:permissions.view')
         ->name('permissions.show');
+
+    // --- TAMBAHAN ROUTE UNTUK MANAJEMEN PROFIL MADRASAH ---
+    Route::get('/madrasah', [MadrasahProfileController::class, 'edit'])
+        ->middleware('permission:madrasah.view')
+        ->name('madrasah.edit');
+
+    Route::put('/madrasah', [MadrasahProfileController::class, 'update'])
+        ->middleware('permission:madrasah.update')
+        ->name('madrasah.update');
 });
 
 Route::middleware([
