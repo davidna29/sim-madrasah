@@ -294,6 +294,49 @@ class RbacSeeder extends Seeder
                     'display_name' => 'Mengunci Semester',
                     'description' => 'Mengunci semester agar transaksi periode tersebut tidak diubah sembarangan.',
                 ],
+                // Tambahkan permission untuk modul grade_levels dan rooms
+                [
+                    'name' => 'grade_levels.view',
+                    'module' => 'grade_levels',
+                    'action' => 'view',
+                    'display_name' => 'Melihat Tingkat Kelas',
+                    'description' => 'Melihat data tingkat kelas.',
+                ],
+                [
+                    'name' => 'grade_levels.create',
+                    'module' => 'grade_levels',
+                    'action' => 'create',
+                    'display_name' => 'Membuat Tingkat Kelas',
+                    'description' => 'Menambahkan data tingkat kelas.',
+                ],
+                [
+                    'name' => 'grade_levels.update',
+                    'module' => 'grade_levels',
+                    'action' => 'update',
+                    'display_name' => 'Mengubah Tingkat Kelas',
+                    'description' => 'Mengubah data tingkat kelas.',
+                ],
+                [
+                    'name' => 'rooms.view',
+                    'module' => 'rooms',
+                    'action' => 'view',
+                    'display_name' => 'Melihat Ruangan',
+                    'description' => 'Melihat data ruangan.',
+                ],
+                [
+                    'name' => 'rooms.create',
+                    'module' => 'rooms',
+                    'action' => 'create',
+                    'display_name' => 'Membuat Ruangan',
+                    'description' => 'Menambahkan data ruangan.',
+                ],
+                [
+                    'name' => 'rooms.update',
+                    'module' => 'rooms',
+                    'action' => 'update',
+                    'display_name' => 'Mengubah Ruangan',
+                    'description' => 'Mengubah data ruangan.',
+                ],
             ];
 
             foreach ($permissions as $permission) {
