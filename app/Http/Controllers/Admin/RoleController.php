@@ -25,4 +25,32 @@ class RoleController extends Controller
             'roles' => $roles,
         ]);
     }
+
+    /**
+     * Menampilkan detail role dan permission yang dimiliki.
+     */
+    public function show(Role $role): View
+    {
+        $role->loadCount([
+            'users',
+            'permissions',
+        ]);
+
+        $role->load([
+            'permissions' => function ($query): void {
+                $query
+                    ->orderBy('module')
+                    ->orderBy('action')
+                    ->orderBy('name');
+            },
+        ]);
+
+        $permissionsByModule = $role->permissions
+            ->groupBy('module');
+
+        return view('admin.roles.show', [
+            'role' => $role,
+            'permissionsByModule' => $permissionsByModule,
+        ]);
+    }
 }

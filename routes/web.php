@@ -27,6 +27,10 @@ Route::middleware([
         ->middleware('permission:roles.view')
         ->name('roles.index');
 
+    Route::get('/roles/{role}', [RoleController::class, 'show'])
+        ->middleware('permission:roles.view')
+        ->name('roles.show');
+
     Route::get('/permissions', [PermissionController::class, 'index'])
         ->middleware('permission:permissions.view')
         ->name('permissions.index');
