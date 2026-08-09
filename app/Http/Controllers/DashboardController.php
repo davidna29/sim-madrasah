@@ -57,6 +57,7 @@ class DashboardController extends Controller
                 $permissionCount
             ),
             'systemCards' => $this->resolveSystemCards($roleNames),
+            'shortcutCards' => $this->resolveShortcutCards($roleNames),
             'moduleCards' => $this->resolveModuleCards($roleNames),
         ]);
     }
@@ -184,6 +185,45 @@ class DashboardController extends Controller
                 'label' => 'Total Permission',
                 'value' => Permission::query()->count(),
                 'description' => 'Jumlah permission yang tersedia.',
+            ],
+        ];
+    }
+
+    /**
+     * Shortcut cepat untuk Super Admin.
+     *
+     * @return array<int, array<string, string|null>>
+     */
+    private function resolveShortcutCards(Collection $roleNames): array
+    {
+        if (! $roleNames->contains('super_admin')) {
+            return [];
+        }
+
+        $superAdminRole = Role::query()
+            ->where('name', 'super_admin')
+            ->first();
+
+        return [
+            [
+                'title' => 'Kelola Role',
+                'description' => 'Lihat daftar role, jumlah user, dan jumlah permission pada setiap role.',
+                'href' => route('admin.roles.index'),
+                'label' => 'Buka Role',
+            ],
+            [
+                'title' => 'Kelola Permission',
+                'description' => 'Lihat seluruh permission yang digunakan untuk membatasi akses fitur.',
+                'href' => route('admin.permissions.index'),
+                'label' => 'Buka Permission',
+            ],
+            [
+                'title' => 'Detail Role Super Admin',
+                'description' => 'Periksa permission yang dimiliki oleh role Super Admin.',
+                'href' => $superAdminRole
+                    ? route('admin.roles.show', $superAdminRole)
+                    : null,
+                'label' => 'Lihat Detail',
             ],
         ];
     }

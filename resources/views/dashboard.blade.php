@@ -48,6 +48,34 @@
         </div>
     </div>
 @endif
+
+@if (! empty($shortcutCards))
+    <div>
+        <div class="flex items-end justify-between gap-4">
+            <div>
+                <h3 class="text-lg font-semibold text-gray-900">
+                    Shortcut Administrasi Sistem
+                </h3>
+
+                <p class="mt-1 text-sm text-gray-500">
+                    Akses cepat untuk mengelola fondasi hak akses SIM Madrasah.
+                </p>
+            </div>
+        </div>
+
+        <div class="mt-4 grid grid-cols-1 gap-6 md:grid-cols-3">
+            @foreach ($shortcutCards as $shortcut)
+                <x-ui.shortcut-card
+                    :title="$shortcut['title']"
+                    :description="$shortcut['description']"
+                    :href="$shortcut['href']"
+                    :label="$shortcut['label']"
+                />
+            @endforeach
+        </div>
+    </div>
+@endif
+
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-100">
                 <div class="p-6">
                     <div class="flex items-start justify-between gap-4">
