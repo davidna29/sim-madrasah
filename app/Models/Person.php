@@ -46,4 +46,10 @@ class Person extends Model
     {
         return $this->hasOne(User::class);
     }
+
+    // Relasi dengan model Employee
+    public function employee(): HasOne
+    {
+        return $this->hasOne(Employee::class);
+    }
 }

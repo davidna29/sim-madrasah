@@ -253,6 +253,13 @@ class DashboardController extends Controller
                 'href' => route('admin.subjects.index'),
                 'label' => 'Buka Mapel',
             ],
+            // Guru dan Pegawai
+            [
+                'title' => 'Guru dan Pegawai',
+                'description' => 'Kelola data guru, tenaga kependidikan, jabatan, dan status kepegawaian.',
+                'href' => route('admin.employees.index'),
+                'label' => 'Buka Pegawai',
+            ],
 
         ];
     }

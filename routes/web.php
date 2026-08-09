@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AcademicYearController;
 use App\Http\Controllers\Admin\ClassGroupController;
+use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\GradeLevelController;
 use App\Http\Controllers\Admin\MadrasahProfileController;
 use App\Http\Controllers\Admin\PermissionController;
@@ -165,6 +166,26 @@ Route::middleware([
     Route::put('/subjects/{subject}', [SubjectController::class, 'update'])
         ->middleware('permission:subjects.update')
         ->name('subjects.update');
+    // Tambahkan route untuk manajemen pegawai (employees)
+    Route::get('/employees', [EmployeeController::class, 'index'])
+        ->middleware('permission:employees.view')
+        ->name('employees.index');
+
+    Route::get('/employees/create', [EmployeeController::class, 'create'])
+        ->middleware('permission:employees.create')
+        ->name('employees.create');
+
+    Route::post('/employees', [EmployeeController::class, 'store'])
+        ->middleware('permission:employees.create')
+        ->name('employees.store');
+
+    Route::get('/employees/{employee}/edit', [EmployeeController::class, 'edit'])
+        ->middleware('permission:employees.update')
+        ->name('employees.edit');
+
+    Route::put('/employees/{employee}', [EmployeeController::class, 'update'])
+        ->middleware('permission:employees.update')
+        ->name('employees.update');
 });
 
 Route::middleware([

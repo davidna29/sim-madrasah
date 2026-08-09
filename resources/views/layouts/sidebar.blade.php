@@ -29,6 +29,7 @@
                     auth()->user()?->can('permission', 'rooms.view') ||
                     auth()->user()?->can('permission', 'class_groups.view') ||
                     auth()->user()?->can('permission', 'subjects.view') ||
+                    auth()->user()?->can('permission', 'employees.view') ||
                     auth()->user()?->can('permission', 'roles.view') ||
                     auth()->user()?->can('permission', 'permissions.view')
                 )
@@ -89,6 +90,15 @@
                             :active="request()->routeIs('admin.subjects.*')"
                         >
                             Mata Pelajaran
+                        </x-ui.sidebar-link>
+                    @endcan
+                    <!-- Guru dan Pegawai -->
+                    @can('permission', 'employees.view')
+                        <x-ui.sidebar-link
+                            :href="route('admin.employees.index')"
+                            :active="request()->routeIs('admin.employees.*')"
+                        >
+                            Guru dan Pegawai
                         </x-ui.sidebar-link>
                     @endcan
 
