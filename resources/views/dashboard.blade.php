@@ -176,6 +176,46 @@
                 </div>
             </div>
 
+@if (! empty($nextDevelopmentCards))
+    <div>
+        <div class="flex items-end justify-between gap-4">
+            <div>
+                <h3 class="text-lg font-semibold text-gray-900">
+                    Tahap Pengembangan Berikutnya
+                </h3>
+
+                <p class="mt-1 text-sm text-gray-500">
+                    Modul Data Master akan menjadi fondasi untuk akademik, keuangan, kesiswaan, dan portofolio siswa.
+                </p>
+            </div>
+        </div>
+
+        <div class="mt-4 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            @foreach ($nextDevelopmentCards as $card)
+                <div class="rounded-lg border border-gray-100 bg-white p-5 shadow-sm">
+                    <div class="flex items-start justify-between gap-4">
+                        <h4 class="font-semibold text-gray-900">
+                            {{ $card['title'] }}
+                        </h4>
+
+                        <span class="rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700">
+                            {{ $card['stage'] }}
+                        </span>
+                    </div>
+
+                    <p class="mt-2 text-sm text-gray-500">
+                        {{ $card['description'] }}
+                    </p>
+
+                    <div class="mt-4 text-xs font-medium text-gray-400">
+                        Belum aktif. Menunggu pembuatan migration, model, route, dan halaman modul.
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+@endif
+
             <div class="rounded-lg border border-dashed border-green-200 bg-green-50 p-5">
                 <h3 class="font-semibold text-green-900">
                     Catatan Pengembangan

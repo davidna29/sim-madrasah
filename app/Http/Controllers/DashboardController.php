@@ -59,6 +59,7 @@ class DashboardController extends Controller
             'systemCards' => $this->resolveSystemCards($roleNames),
             'shortcutCards' => $this->resolveShortcutCards($roleNames),
             'moduleCards' => $this->resolveModuleCards($roleNames),
+            'nextDevelopmentCards' => $this->resolveNextDevelopmentCards($roleNames),
         ]);
     }
 
@@ -224,6 +225,51 @@ class DashboardController extends Controller
                     ? route('admin.roles.show', $superAdminRole)
                     : null,
                 'label' => 'Lihat Detail',
+            ],
+        ];
+    }
+
+    /**
+     * Menampilkan rencana modul berikutnya setelah dashboard.
+     *
+     * @return array<int, array<string, string>>
+     */
+    private function resolveNextDevelopmentCards(Collection $roleNames): array
+    {
+        if (! $roleNames->contains('super_admin')) {
+            return [];
+        }
+
+        return [
+            [
+                'title' => 'Identitas Madrasah',
+                'description' => 'Menyimpan nama madrasah, NSM, NPSN, alamat, logo, kontak, dan konfigurasi identitas dasar.',
+                'stage' => 'Data Master',
+            ],
+            [
+                'title' => 'Tahun Ajaran dan Semester',
+                'description' => 'Menjadi pusat histori untuk penempatan siswa, penugasan guru, jadwal, nilai, rapor, dan absensi.',
+                'stage' => 'Data Master',
+            ],
+            [
+                'title' => 'Data Guru dan Pegawai',
+                'description' => 'Menyimpan identitas guru, tenaga kependidikan, status pegawai, dan relasi dengan akun pengguna.',
+                'stage' => 'Data Master',
+            ],
+            [
+                'title' => 'Data Siswa',
+                'description' => 'Menyimpan identitas siswa secara permanen tanpa menyimpan kelas sebagai data tunggal yang ditimpa.',
+                'stage' => 'Data Master',
+            ],
+            [
+                'title' => 'Kelas dan Ruangan',
+                'description' => 'Menjadi dasar rombongan belajar, penempatan siswa, jadwal pelajaran, dan manajemen ruang.',
+                'stage' => 'Data Master',
+            ],
+            [
+                'title' => 'Mata Pelajaran',
+                'description' => 'Menjadi dasar kurikulum, penugasan mengajar, jadwal, nilai, dan rapor.',
+                'stage' => 'Data Master',
             ],
         ];
     }
