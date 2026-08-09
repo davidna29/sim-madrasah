@@ -15,64 +15,32 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
             <div class="grid grid-cols-1 gap-6 md:grid-cols-4">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6">
-                        <div class="text-sm text-gray-500">
-                            Status Akun
-                        </div>
-
-                        <div class="mt-2 text-lg font-semibold text-gray-900">
-                            {{ ucfirst($user->status) }}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6">
-                        <div class="text-sm text-gray-500">
-                            Jenis Akun
-                        </div>
-
-                        <div class="mt-2 text-lg font-semibold text-gray-900">
-                            {{ ucfirst($user->account_type) }}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6">
-                        <div class="text-sm text-gray-500">
-                            Role Aktif
-                        </div>
-
-                        <div class="mt-2 text-lg font-semibold text-gray-900">
-                            {{ $roles->count() }}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6">
-                        <div class="text-sm text-gray-500">
-                            Permission Aktif
-                        </div>
-
-                        <div class="mt-2 text-lg font-semibold text-gray-900">
-                            {{ $permissionCount }}
-                        </div>
-                    </div>
-                </div>
+                @foreach ($summaryCards as $card)
+                    <x-ui.stat-card
+                        :label="$card['label']"
+                        :value="$card['value']"
+                        :description="$card['description']"
+                    />
+                @endforeach
             </div>
 
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-100">
                 <div class="p-6">
-                    <h3 class="text-lg font-semibold text-gray-900">
-                        Role Pengguna
-                    </h3>
+                    <div class="flex items-start justify-between gap-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900">
+                                Role Pengguna
+                            </h3>
 
-                    <p class="mt-1 text-sm text-gray-500">
-                        Role menentukan kelompok hak akses pengguna di dalam SIM Madrasah.
-                    </p>
+                            <p class="mt-1 text-sm text-gray-500">
+                                Role menentukan kelompok hak akses pengguna di dalam SIM Madrasah.
+                            </p>
+                        </div>
+
+                        <span class="rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-700">
+                            {{ $roles->count() }} role aktif
+                        </span>
+                    </div>
 
                     <div class="mt-4 flex flex-wrap gap-2">
                         @forelse ($roles as $role)
@@ -89,43 +57,41 @@
             </div>
 
             <div>
-                <h3 class="text-lg font-semibold text-gray-900">
-                    Menu Kerja Utama
-                </h3>
+                <div class="flex items-end justify-between gap-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900">
+                            Navigasi Modul
+                        </h3>
 
-                <p class="mt-1 text-sm text-gray-500">
-                    Widget berikut disesuaikan dengan role pengguna. Data asli akan ditampilkan setelah modul terkait tersedia.
-                </p>
+                        <p class="mt-1 text-sm text-gray-500">
+                            Menu kerja utama disesuaikan dengan role pengguna.
+                        </p>
+                    </div>
+                </div>
 
-                <div class="mt-4 grid grid-cols-1 gap-6 md:grid-cols-3">
-                    @foreach ($widgets as $widget)
-                        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                            <div class="p-6">
-                                <h4 class="font-semibold text-gray-900">
-                                    {{ $widget['title'] }}
-                                </h4>
-
-                                <p class="mt-2 text-sm text-gray-500">
-                                    {{ $widget['description'] }}
-                                </p>
-
-                                <div class="mt-4 text-xs font-medium text-gray-400">
-                                    Menunggu modul terkait
-                                </div>
-                            </div>
-                        </div>
+                <div class="mt-4 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+                    @foreach ($moduleCards as $module)
+                        <x-ui.module-card
+                            :title="$module['title']"
+                            :description="$module['description']"
+                            :href="$module['href']"
+                        />
                     @endforeach
                 </div>
             </div>
 
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-100">
                 <div class="p-6">
                     <h3 class="text-lg font-semibold text-gray-900">
-                        Informasi Keamanan Akun
+                        Keamanan Akun
                     </h3>
 
-                    <div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3 text-sm">
-                        <div>
+                    <p class="mt-1 text-sm text-gray-500">
+                        Informasi ini membantu memantau keamanan akun pengguna.
+                    </p>
+
+                    <div class="mt-5 grid grid-cols-1 gap-4 md:grid-cols-3 text-sm">
+                        <div class="rounded-lg border border-gray-100 bg-gray-50 p-4">
                             <div class="text-gray-500">
                                 Login Terakhir
                             </div>
@@ -135,7 +101,7 @@
                             </div>
                         </div>
 
-                        <div>
+                        <div class="rounded-lg border border-gray-100 bg-gray-50 p-4">
                             <div class="text-gray-500">
                                 IP Login Terakhir
                             </div>
@@ -145,7 +111,7 @@
                             </div>
                         </div>
 
-                        <div>
+                        <div class="rounded-lg border border-gray-100 bg-gray-50 p-4">
                             <div class="text-gray-500">
                                 Password Diubah
                             </div>
@@ -156,6 +122,16 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="rounded-lg border border-dashed border-green-200 bg-green-50 p-5">
+                <h3 class="font-semibold text-green-900">
+                    Catatan Pengembangan
+                </h3>
+
+                <p class="mt-1 text-sm text-green-800">
+                    Dashboard ini masih menggunakan data fondasi. Widget akademik, keuangan, kesiswaan, PPDB, PKKM, dan portofolio akan dihubungkan setelah modul terkait selesai dibuat.
+                </p>
             </div>
 
         </div>
