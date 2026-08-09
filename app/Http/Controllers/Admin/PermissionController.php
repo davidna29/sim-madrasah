@@ -24,4 +24,21 @@ class PermissionController extends Controller
             'permissions' => $permissions,
         ]);
     }
+
+    /**
+     * Menampilkan detail permission.
+     */
+    public function show(Permission $permission): View
+    {
+        $permission->load([
+            'roles' => function ($query): void {
+                $query
+                    ->orderBy('name');
+            },
+        ]);
+
+        return view('admin.permissions.show', [
+            'permission' => $permission,
+        ]);
+    }
 }

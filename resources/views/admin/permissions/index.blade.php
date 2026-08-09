@@ -39,6 +39,9 @@
                                     <th class="px-4 py-3 text-left font-semibold text-gray-700">
                                         Status
                                     </th>
+                                    <th class="px-4 py-3 text-left font-semibold text-gray-700">
+                                        Aksi
+                                    </th>
                                 </tr>
                             </thead>
 
@@ -84,10 +87,20 @@
                                                 </span>
                                             @endif
                                         </td>
+                                        <td class="px-4 py-3">
+
+                                            <a
+                                                href="{{ route('admin.permissions.show', $permission) }}"
+                                                class="text-sm font-medium text-green-700 hover:text-green-900"
+                                            >
+                                                Detail
+                                            </a>
+
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="px-4 py-6 text-center text-gray-500">
+                                        <td colspan="7" class="px-4 py-6 text-center text-gray-500">
                                             Belum ada data permission.
                                         </td>
                                     </tr>

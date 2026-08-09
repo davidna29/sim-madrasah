@@ -34,6 +34,9 @@ Route::middleware([
     Route::get('/permissions', [PermissionController::class, 'index'])
         ->middleware('permission:permissions.view')
         ->name('permissions.index');
+    Route::get('/permissions/{permission}', [PermissionController::class, 'show'])
+        ->middleware('permission:permissions.view')
+        ->name('permissions.show');
 });
 
 Route::middleware([
