@@ -25,6 +25,8 @@
             @if (
                     auth()->user()?->can('permission', 'madrasah.view') ||
                     auth()->user()?->can('permission', 'academic_years.view') ||
+                    auth()->user()?->can('permission', 'grade_levels.view') ||
+                    auth()->user()?->can('permission', 'rooms.view') ||
                     auth()->user()?->can('permission', 'roles.view') ||
                     auth()->user()?->can('permission', 'permissions.view')
                 )
@@ -49,7 +51,27 @@
                         </x-ui.sidebar-link>
                     @endcan
 
-                @can('permission', 'roles.view')
+                    <!-- Tingkat Kelas -->
+                    @can('permission', 'grade_levels.view')
+                        <x-ui.sidebar-link
+                            :href="route('admin.grade-levels.index')"
+                            :active="request()->routeIs('admin.grade-levels.*')"
+                        >
+                            Tingkat Kelas
+                        </x-ui.sidebar-link>
+                    @endcan
+
+                    @can('permission', 'rooms.view')
+                        <x-ui.sidebar-link
+                            :href="route('admin.rooms.index')"
+                            :active="request()->routeIs('admin.rooms.*')"
+                        >
+                            Ruangan
+                        </x-ui.sidebar-link>
+                    @endcan
+                    
+                    <!-- Role -->
+                    @can('permission', 'roles.view')
                         <x-ui.sidebar-link
                             :href="route('admin.roles.index')"
                             :active="request()->routeIs('admin.roles.*')"
@@ -57,7 +79,7 @@
                             Role
                         </x-ui.sidebar-link>
                     @endcan
-
+                    <!-- Permission -->
                     @can('permission', 'permissions.view')
                         <x-ui.sidebar-link
                             :href="route('admin.permissions.index')"

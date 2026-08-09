@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\Admin\AcademicYearController;
+use App\Http\Controllers\Admin\GradeLevelController;
 use App\Http\Controllers\Admin\MadrasahProfileController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -80,6 +82,46 @@ Route::middleware([
     Route::put('/semesters/{semester}/lock', [AcademicYearController::class, 'lockSemester'])
         ->middleware('permission:academic_years.lock')
         ->name('semesters.lock');
+    Route::get('/grade-levels', [GradeLevelController::class, 'index'])
+        ->middleware('permission:grade_levels.view')
+        ->name('grade-levels.index');
+
+    // Tambahkan route untuk create, store, edit, dan update grade levels
+    Route::get('/grade-levels/create', [GradeLevelController::class, 'create'])
+        ->middleware('permission:grade_levels.create')
+        ->name('grade-levels.create');
+
+    Route::post('/grade-levels', [GradeLevelController::class, 'store'])
+        ->middleware('permission:grade_levels.create')
+        ->name('grade-levels.store');
+
+    Route::get('/grade-levels/{gradeLevel}/edit', [GradeLevelController::class, 'edit'])
+        ->middleware('permission:grade_levels.update')
+        ->name('grade-levels.edit');
+
+    Route::put('/grade-levels/{gradeLevel}', [GradeLevelController::class, 'update'])
+        ->middleware('permission:grade_levels.update')
+        ->name('grade-levels.update');
+
+    Route::get('/rooms', [RoomController::class, 'index'])
+        ->middleware('permission:rooms.view')
+        ->name('rooms.index');
+
+    Route::get('/rooms/create', [RoomController::class, 'create'])
+        ->middleware('permission:rooms.create')
+        ->name('rooms.create');
+
+    Route::post('/rooms', [RoomController::class, 'store'])
+        ->middleware('permission:rooms.create')
+        ->name('rooms.store');
+
+    Route::get('/rooms/{room}/edit', [RoomController::class, 'edit'])
+        ->middleware('permission:rooms.update')
+        ->name('rooms.edit');
+
+    Route::put('/rooms/{room}', [RoomController::class, 'update'])
+        ->middleware('permission:rooms.update')
+        ->name('rooms.update');
 });
 
 Route::middleware([
