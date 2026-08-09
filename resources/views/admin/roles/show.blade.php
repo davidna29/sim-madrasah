@@ -11,12 +11,26 @@
                 </p>
             </div>
 
-            <a
-                href="{{ route('admin.roles.index') }}"
-                class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
-            >
-                Kembali
-            </a>
+            <div class="flex items-center space-x-2">
+                @can(
+                    'permission',
+                    'roles.permission.assign'
+                )
+                    <a
+                        href="{{ route('admin.roles.permissions', $role) }}"
+                        class="rounded-md bg-green-700 text-white px-4 py-2 text-sm"
+                    >
+                        Atur Permission
+                    </a>
+                @endcan
+
+                <a
+                    href="{{ route('admin.roles.index') }}"
+                    class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
+                >
+                    Kembali
+                </a>
+            </div>
         </div>
     </x-slot>
 

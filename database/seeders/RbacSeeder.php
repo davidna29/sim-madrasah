@@ -237,6 +237,14 @@ class RbacSeeder extends Seeder
                     'action' => 'view',
                     'display_name' => 'Melihat Audit Log',
                 ],
+                [
+                    'name' => 'roles.permission.assign',
+                    'module' => 'roles',
+                    'action' => 'permission_assign',
+                    'display_name' => 'Mengatur Permission Role',
+                    'description' => 'Memberikan atau mencabut permission dari role.',
+                    'is_active' => true,
+                ],
             ];
 
             foreach ($permissions as $permission) {

@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
@@ -52,5 +55,64 @@ class RoleController extends Controller
             'role' => $role,
             'permissionsByModule' => $permissionsByModule,
         ]);
+    }
+
+    /**
+     * Halaman pengaturan permission role.
+     */
+    public function permissions(Role $role): View
+    {
+        $permissions = Permission::query()
+            ->orderBy('module')
+            ->orderBy('action')
+            ->get()
+            ->groupBy('module');
+
+        $rolePermissionIds = $role
+            ->permissions()
+            ->pluck('permissions.id')
+            ->toArray();
+
+        return view('admin.roles.permissions', [
+            'role' => $role,
+            'permissions' => $permissions,
+            'rolePermissionIds' => $rolePermissionIds,
+        ]);
+    }
+
+    /**
+     * Menyimpan permission role.
+     */
+    public function updatePermissions(
+        Request $request,
+        Role $role
+    ): RedirectResponse {
+
+        $validated = $request->validate([
+            'permissions' => [
+                'nullable',
+                'array',
+            ],
+
+            'permissions.*' => [
+                'exists:permissions,id',
+            ],
+        ]);
+
+        $role
+            ->permissions()
+            ->sync(
+                $validated['permissions'] ?? []
+            );
+
+        return redirect()
+            ->route(
+                'admin.roles.show',
+                $role
+            )
+            ->with(
+                'success',
+                'Permission role berhasil diperbarui.'
+            );
     }
 }

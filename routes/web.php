@@ -31,9 +31,19 @@ Route::middleware([
         ->middleware('permission:roles.view')
         ->name('roles.show');
 
+    // --- TAMBAHAN ROUTE UNTUK ATUR PERMISSION ROLE ---
+    Route::get('/roles/{role}/permissions', [RoleController::class, 'permissions'])
+        ->middleware('permission:roles.permission.assign')
+        ->name('roles.permissions');
+
+    Route::put('/roles/{role}/permissions', [RoleController::class, 'updatePermissions'])
+        ->middleware('permission:roles.permission.assign')
+        ->name('roles.permissions.update');
+
     Route::get('/permissions', [PermissionController::class, 'index'])
         ->middleware('permission:permissions.view')
         ->name('permissions.index');
+
     Route::get('/permissions/{permission}', [PermissionController::class, 'show'])
         ->middleware('permission:permissions.view')
         ->name('permissions.show');
