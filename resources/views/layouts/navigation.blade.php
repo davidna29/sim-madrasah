@@ -15,25 +15,7 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-<!-- tambahan -->
-                @can('permission', 'roles.view')
-                    <x-nav-link
-                        :href="route('admin.roles.index')"
-                        :active="request()->routeIs('admin.roles.*')"
-                    >
-                        {{ __('Role') }}
-                    </x-nav-link>
-                @endcan
 
-                @can('permission', 'permissions.view')
-                    <x-nav-link
-                        :href="route('admin.permissions.index')"
-                        :active="request()->routeIs('admin.permissions.*')"
-                    >
-                        {{ __('Permission') }}
-                    </x-nav-link>
-                @endcan
-<!-- sampai sini -->
                 </div>
             </div>
 
