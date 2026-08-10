@@ -18,7 +18,7 @@ class StudentController extends Controller
     {
         $students = Student::query()
             ->with([
-                'person',
+                'person.user',
                 'admissionAcademicYear',
             ])
             ->orderByDesc('is_active')

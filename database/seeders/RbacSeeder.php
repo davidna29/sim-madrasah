@@ -451,6 +451,14 @@ class RbacSeeder extends Seeder
                     'display_name' => 'Membuat Riwayat Kelas Siswa',
                     'description' => 'Menambahkan riwayat penempatan kelas siswa.',
                 ],
+                // Tambahkan permission untuk membuat akun login dari data siswa
+                [
+                    'name' => 'students.account.create',
+                    'module' => 'students',
+                    'action' => 'account_create',
+                    'display_name' => 'Membuat Akun Siswa',
+                    'description' => 'Membuat akun login aplikasi dari data siswa.',
+                ],
 
             ];
 

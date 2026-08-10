@@ -40,6 +40,7 @@
                                 <th class="px-4 py-3 text-left font-semibold text-gray-700">NISN</th>
                                 <th class="px-4 py-3 text-left font-semibold text-gray-700">Tahun Masuk</th>
                                 <th class="px-4 py-3 text-left font-semibold text-gray-700">Kontak</th>
+                                <th class="px-4 py-3 text-left font-semibold text-gray-700">Akun</th>
                                 <th class="px-4 py-3 text-left font-semibold text-gray-700">Status</th>
                                 <th class="px-4 py-3 text-left font-semibold text-gray-700">Aksi</th>
                             </tr>
@@ -75,6 +76,32 @@
                                         <div class="text-xs text-gray-500">
                                             {{ $student->person?->phone ?? '-' }}
                                         </div>
+                                    </td>
+
+                                    <!-- Update View Data Siswa -->
+                                    <td class="px-4 py-3">
+                                        @if ($student->person?->user)
+                                            <div class="font-mono text-xs text-gray-900">
+                                                {{ $student->person->user->username }}
+                                            </div>
+
+                                            <div class="mt-1 text-xs text-gray-500">
+                                                {{ $student->person->user->status }}
+                                            </div>
+                                        @else
+                                            @can('permission', 'students.account.create')
+                                                <a
+                                                    href="{{ route('admin.students.accounts.create', $student) }}"
+                                                    class="text-sm font-medium text-green-700 hover:text-green-900"
+                                                >
+                                                    Buat Akun
+                                                </a>
+                                            @else
+                                                <span class="text-xs text-gray-500">
+                                                    Belum ada akun
+                                                </span>
+                                            @endcan
+                                        @endif
                                     </td>
 
                                     <td class="px-4 py-3">
@@ -130,7 +157,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="px-4 py-6 text-center text-gray-500">
+                                    <td colspan="8" class="px-4 py-6 text-center text-gray-500">
                                         Belum ada data siswa.
                                     </td>
                                 </tr>
