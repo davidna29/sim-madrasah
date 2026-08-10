@@ -436,6 +436,22 @@ class RbacSeeder extends Seeder
                     'description' => 'Mengubah data master siswa.',
                 ],
 
+                // Tambahkan permission untuk modul student_class_histories riwayat kelas siswa
+                [
+                    'name' => 'student_class_histories.view',
+                    'module' => 'student_class_histories',
+                    'action' => 'view',
+                    'display_name' => 'Melihat Riwayat Kelas Siswa',
+                    'description' => 'Melihat riwayat penempatan kelas siswa.',
+                ],
+                [
+                    'name' => 'student_class_histories.create',
+                    'module' => 'student_class_histories',
+                    'action' => 'create',
+                    'display_name' => 'Membuat Riwayat Kelas Siswa',
+                    'description' => 'Menambahkan riwayat penempatan kelas siswa.',
+                ],
+
             ];
 
             foreach ($permissions as $permission) {

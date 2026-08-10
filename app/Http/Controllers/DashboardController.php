@@ -268,6 +268,14 @@ class DashboardController extends Controller
                 'label' => 'Buka Siswa',
             ],
 
+            // Riwayat Kelas Siswa
+            [
+                'title' => 'Riwayat Kelas Siswa',
+                'description' => 'Kelola histori penempatan siswa per tahun ajaran, semester, dan rombongan belajar.',
+                'href' => route('admin.students.index'),
+                'label' => 'Buka Siswa',
+            ],
+
         ];
     }
 

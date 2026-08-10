@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\MadrasahProfileController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\RoomController;
+use App\Http\Controllers\Admin\StudentClassHistoryController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\DashboardController;
@@ -219,6 +220,19 @@ Route::middleware([
     Route::put('/students/{student}', [StudentController::class, 'update'])
         ->middleware('permission:students.update')
         ->name('students.update');
+
+    // Tambahkan route untuk manajemen riwayat kelas siswa (student class histories)
+    Route::get('/students/{student}/class-histories', [StudentClassHistoryController::class, 'index'])
+        ->middleware('permission:student_class_histories.view')
+        ->name('students.class-histories.index');
+
+    Route::get('/students/{student}/class-histories/create', [StudentClassHistoryController::class, 'create'])
+        ->middleware('permission:student_class_histories.create')
+        ->name('students.class-histories.create');
+
+    Route::post('/students/{student}/class-histories', [StudentClassHistoryController::class, 'store'])
+        ->middleware('permission:student_class_histories.create')
+        ->name('students.class-histories.store');
 });
 
 Route::middleware([

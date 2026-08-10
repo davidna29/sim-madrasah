@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ClassGroup extends Model
 {
@@ -52,5 +53,11 @@ class ClassGroup extends Model
             User::class,
             'homeroom_teacher_user_id'
         );
+    }
+
+    // Relasi dengan model StudentClassHistory
+    public function studentClassHistories(): HasMany
+    {
+        return $this->hasMany(StudentClassHistory::class);
     }
 }

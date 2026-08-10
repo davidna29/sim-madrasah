@@ -95,7 +95,7 @@
                                         </div>
                                     </td>
 
-                                    <td class="px-4 py-3">
+                                    <!-- <td class="px-4 py-3">
                                         @can('permission', 'students.update')
                                             <a
                                                 href="{{ route('admin.students.edit', $student) }}"
@@ -104,6 +104,28 @@
                                                 Edit
                                             </a>
                                         @endcan
+                                    </td> -->
+                                    <!-- Update View Daftar Siswa -->
+                                    <td class="px-4 py-3">
+                                        <div class="flex flex-wrap gap-3">
+                                            @can('permission', 'students.update')
+                                                <a
+                                                    href="{{ route('admin.students.edit', $student) }}"
+                                                    class="text-sm font-medium text-green-700 hover:text-green-900"
+                                                >
+                                                    Edit
+                                                </a>
+                                            @endcan
+
+                                            @can('permission', 'student_class_histories.view')
+                                                <a
+                                                    href="{{ route('admin.students.class-histories.index', $student) }}"
+                                                    class="text-sm font-medium text-blue-700 hover:text-blue-900"
+                                                >
+                                                    Riwayat Kelas
+                                                </a>
+                                            @endcan
+                                        </div>
                                     </td>
                                 </tr>
                             @empty
