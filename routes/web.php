@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AcademicYearController;
 use App\Http\Controllers\Admin\ClassGroupController;
+use App\Http\Controllers\Admin\EmployeeAccountController;
 use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\GradeLevelController;
 use App\Http\Controllers\Admin\MadrasahProfileController;
@@ -166,6 +167,7 @@ Route::middleware([
     Route::put('/subjects/{subject}', [SubjectController::class, 'update'])
         ->middleware('permission:subjects.update')
         ->name('subjects.update');
+
     // Tambahkan route untuk manajemen pegawai (employees)
     Route::get('/employees', [EmployeeController::class, 'index'])
         ->middleware('permission:employees.view')
@@ -186,6 +188,15 @@ Route::middleware([
     Route::put('/employees/{employee}', [EmployeeController::class, 'update'])
         ->middleware('permission:employees.update')
         ->name('employees.update');
+
+    // Tambahkan route untuk manajemen akun pegawai (employee accounts)
+    Route::get('/employees/{employee}/account/create', [EmployeeAccountController::class, 'create'])
+        ->middleware('permission:employees.account.create')
+        ->name('employees.accounts.create');
+
+    Route::post('/employees/{employee}/account', [EmployeeAccountController::class, 'store'])
+        ->middleware('permission:employees.account.create')
+        ->name('employees.accounts.store');
 });
 
 Route::middleware([

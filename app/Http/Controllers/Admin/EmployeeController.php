@@ -16,7 +16,7 @@ class EmployeeController extends Controller
     public function index(): View
     {
         $employees = Employee::query()
-            ->with('person')
+            ->with('person.user')
             ->orderByDesc('is_active')
             ->orderBy('employee_type')
             ->orderBy('position')

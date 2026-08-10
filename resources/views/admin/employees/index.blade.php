@@ -40,6 +40,7 @@
                                 <th class="px-4 py-3 text-left font-semibold text-gray-700">Jenis</th>
                                 <th class="px-4 py-3 text-left font-semibold text-gray-700">Jabatan</th>
                                 <th class="px-4 py-3 text-left font-semibold text-gray-700">Kontak</th>
+                                <th class="px-4 py-3 text-left font-semibold text-gray-700">Akun</th>
                                 <th class="px-4 py-3 text-left font-semibold text-gray-700">Status</th>
                                 <th class="px-4 py-3 text-left font-semibold text-gray-700">Aksi</th>
                             </tr>
@@ -83,6 +84,33 @@
                                         </div>
                                     </td>
 
+                                    <!-- Update View Index Pegawai -->
+                                    <td class="px-4 py-3">
+                                        @if ($employee->person?->user)
+                                            <div class="font-mono text-xs text-gray-900">
+                                                {{ $employee->person->user->username }}
+                                            </div>
+
+                                            <div class="mt-1 text-xs text-gray-500">
+                                                {{ $employee->person->user->status }}
+                                            </div>
+                                        @else
+                                            @can('permission', 'employees.account.create')
+                                                <a
+                                                    href="{{ route('admin.employees.accounts.create', $employee) }}"
+                                                    class="text-sm font-medium text-green-700 hover:text-green-900"
+                                                >
+                                                    Buat Akun
+                                                </a>
+                                            @else
+                                                <span class="text-xs text-gray-500">
+                                                    Belum ada akun
+                                                </span>
+                                            @endcan
+                                        @endif
+                                    </td>
+
+                                    <!-- Status -->
                                     <td class="px-4 py-3">
                                         @if ($employee->is_active)
                                             <span class="rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700">
@@ -108,7 +136,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="px-4 py-6 text-center text-gray-500">
+                                    <td colspan="8" class="px-4 py-6 text-center text-gray-500">
                                         Belum ada data guru atau pegawai.
                                     </td>
                                 </tr>
