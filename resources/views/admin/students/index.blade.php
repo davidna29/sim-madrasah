@@ -162,7 +162,15 @@
                                                     Wali
                                                 </a>
                                             @endcan
-
+                                            <!-- Tambahan Link Portofolio -->
+                                            @can('permission', 'student_portfolios.view')
+                                                <a
+                                                    href="{{ route('admin.students.portfolio.show', $student) }}"
+                                                    class="text-sm font-medium text-indigo-700 hover:text-indigo-900"
+                                                >
+                                                    Portofolio
+                                                </a>
+                                            @endcan
                                         </div>
                                     </td>
                                 </tr>

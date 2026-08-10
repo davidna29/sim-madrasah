@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\StudentClassHistoryController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\StudentGuardianAccountController;
 use App\Http\Controllers\Admin\StudentGuardianController;
+use App\Http\Controllers\Admin\StudentPortfolioController;
 use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
@@ -275,6 +276,11 @@ Route::middleware([
     Route::post('/students/{student}/guardians/{guardian}/account', [StudentGuardianAccountController::class, 'store'])
         ->middleware('permission:student_guardians.account.create')
         ->name('students.guardians.accounts.store');
+
+    // Tambahkan route untuk manajemen portofolio siswa (student portfolios)
+    Route::get('/students/{student}/portfolio', [StudentPortfolioController::class, 'show'])
+        ->middleware('permission:student_portfolios.view')
+        ->name('students.portfolio.show');
 
 });
 

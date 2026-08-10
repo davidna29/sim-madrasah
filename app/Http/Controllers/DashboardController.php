@@ -283,6 +283,13 @@ class DashboardController extends Controller
                 'href' => route('admin.students.index'),
                 'label' => 'Buka Siswa',
             ],
+            // Portofolio Digital Siswa
+            [
+                'title' => 'Portofolio Digital Siswa',
+                'description' => 'Lihat ringkasan identitas, kelas aktif, riwayat kelas, dan wali siswa.',
+                'href' => route('admin.students.index'),
+                'label' => 'Buka Portofolio',
+            ],
 
         ];
     }

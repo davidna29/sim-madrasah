@@ -490,6 +490,14 @@ class RbacSeeder extends Seeder
                     'display_name' => 'Membuat Akun Orang Tua/Wali',
                     'description' => 'Membuat akun login aplikasi dari data orang tua atau wali siswa.',
                 ],
+                // Tambahkan permission untuk modul student_portfolios portofolio digital siswa
+                [
+                    'name' => 'student_portfolios.view',
+                    'module' => 'student_portfolios',
+                    'action' => 'view',
+                    'display_name' => 'Melihat Portofolio Digital Siswa',
+                    'description' => 'Melihat ringkasan portofolio digital siswa.',
+                ],
 
             ];
 
