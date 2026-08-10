@@ -260,6 +260,13 @@ class DashboardController extends Controller
                 'href' => route('admin.employees.index'),
                 'label' => 'Buka Pegawai',
             ],
+            // Siswa
+            [
+                'title' => 'Data Siswa',
+                'description' => 'Kelola data master siswa, NIS, NISN, status siswa, dan tahun masuk.',
+                'href' => route('admin.students.index'),
+                'label' => 'Buka Siswa',
+            ],
 
         ];
     }

@@ -1,0 +1,231 @@
+<?php
+
+namespace Tests\Feature\Admin;
+
+use App\Models\AcademicYear;
+use App\Models\Permission;
+use App\Models\Person;
+use App\Models\Role;
+use App\Models\Student;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+class StudentTest extends TestCase
+{
+    use RefreshDatabase;
+
+    public function test_user_can_view_student_page(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'students.view');
+
+        $academicYear = $this->createAcademicYear();
+
+        $person = Person::create([
+            'full_name' => 'Ahmad Siswa',
+            'email' => 'ahmad@test.local',
+        ]);
+
+        Student::create([
+            'person_id' => $person->id,
+            'admission_academic_year_id' => $academicYear->id,
+            'student_number' => 'SIS-001',
+            'nisn' => '1000000001',
+            'registration_number' => 'REG-001',
+            'admission_date' => '2026-07-01',
+            'status' => 'active',
+            'is_active' => true,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->get('/admin/students');
+
+        $response
+            ->assertStatus(200)
+            ->assertSee('Data Siswa')
+            ->assertSee('Ahmad Siswa')
+            ->assertSee('SIS-001');
+    }
+
+    public function test_user_can_create_student(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'students.create');
+
+        $academicYear = $this->createAcademicYear();
+
+        $response = $this
+            ->actingAs($user)
+            ->post('/admin/students', [
+                'full_name' => 'Siti Siswa',
+                'national_id_number' => '1234567890123456',
+                'birth_place' => 'Lombok Timur',
+                'birth_date' => '2012-01-01',
+                'gender' => 'female',
+                'religion' => 'Islam',
+                'email' => 'siti@test.local',
+                'phone' => '08123456789',
+                'address' => 'Alamat siswa',
+                'admission_academic_year_id' => $academicYear->id,
+                'student_number' => 'SIS-002',
+                'nisn' => '1000000002',
+                'registration_number' => 'REG-002',
+                'admission_date' => '2026-07-01',
+                'graduation_date' => null,
+                'status' => 'active',
+                'previous_school' => 'SD Test',
+                'notes' => 'Data awal.',
+                'is_active' => '1',
+            ]);
+
+        $response->assertRedirect(route('admin.students.index'));
+
+        $this->assertDatabaseHas('people', [
+            'full_name' => 'Siti Siswa',
+            'email' => 'siti@test.local',
+        ]);
+
+        $this->assertDatabaseHas('students', [
+            'student_number' => 'SIS-002',
+            'nisn' => '1000000002',
+            'registration_number' => 'REG-002',
+            'status' => 'active',
+            'is_active' => true,
+        ]);
+    }
+
+    public function test_user_can_update_student(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'students.update');
+
+        $academicYear = $this->createAcademicYear();
+
+        $person = Person::create([
+            'full_name' => 'Siswa Lama',
+            'email' => 'lama@test.local',
+        ]);
+
+        $student = Student::create([
+            'person_id' => $person->id,
+            'admission_academic_year_id' => $academicYear->id,
+            'student_number' => 'SIS-003',
+            'nisn' => '1000000003',
+            'registration_number' => 'REG-003',
+            'admission_date' => '2026-07-01',
+            'status' => 'active',
+            'is_active' => true,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->put(route('admin.students.update', $student), [
+                'full_name' => 'Siswa Revisi',
+                'national_id_number' => null,
+                'birth_place' => null,
+                'birth_date' => null,
+                'gender' => 'male',
+                'religion' => 'Islam',
+                'email' => 'revisi@test.local',
+                'phone' => '0811111111',
+                'address' => 'Alamat revisi',
+                'admission_academic_year_id' => $academicYear->id,
+                'student_number' => 'SIS-003',
+                'nisn' => '1000000003',
+                'registration_number' => 'REG-003',
+                'admission_date' => '2026-07-01',
+                'graduation_date' => null,
+                'status' => 'active',
+                'previous_school' => 'SD Revisi',
+                'notes' => 'Revisi.',
+                'is_active' => '1',
+            ]);
+
+        $response->assertRedirect(route('admin.students.index'));
+
+        $this->assertDatabaseHas('people', [
+            'id' => $person->id,
+            'full_name' => 'Siswa Revisi',
+            'email' => 'revisi@test.local',
+        ]);
+
+        $this->assertDatabaseHas('students', [
+            'id' => $student->id,
+            'previous_school' => 'SD Revisi',
+        ]);
+    }
+
+    private function createAcademicYear(): AcademicYear
+    {
+        return AcademicYear::create([
+            'code' => '2026-2027',
+            'name' => '2026/2027',
+            'start_date' => '2026-07-01',
+            'end_date' => '2027-06-30',
+            'status' => 'active',
+            'is_active' => true,
+            'is_locked' => false,
+        ]);
+    }
+
+    private function grantPermissionToUser(
+        User $user,
+        string $permissionName
+    ): void {
+        $role = Role::firstOrCreate(
+            [
+                'name' => 'test_student_role_'.str_replace('.', '_', $permissionName),
+            ],
+            [
+                'display_name' => 'Test Student Role',
+                'is_system' => false,
+                'is_active' => true,
+            ]
+        );
+
+        $dashboardPermission = Permission::firstOrCreate(
+            [
+                'name' => 'dashboard.view',
+            ],
+            [
+                'module' => 'dashboard',
+                'action' => 'view',
+                'display_name' => 'Melihat Dashboard',
+                'is_active' => true,
+            ]
+        );
+
+        $role->permissions()->syncWithoutDetaching([
+            $dashboardPermission->id,
+        ]);
+
+        [$module, $action] = explode('.', $permissionName);
+
+        $permission = Permission::firstOrCreate(
+            [
+                'name' => $permissionName,
+            ],
+            [
+                'module' => $module,
+                'action' => $action,
+                'display_name' => $permissionName,
+                'is_active' => true,
+            ]
+        );
+
+        $role->permissions()->syncWithoutDetaching([
+            $permission->id,
+        ]);
+
+        $user->roles()->syncWithoutDetaching([
+            $role->id => [
+                'assigned_at' => now(),
+            ],
+        ]);
+    }
+}

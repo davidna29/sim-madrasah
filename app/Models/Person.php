@@ -52,4 +52,10 @@ class Person extends Model
     {
         return $this->hasOne(Employee::class);
     }
+
+    // Relasi dengan model Student
+    public function student(): HasOne
+    {
+        return $this->hasOne(Student::class);
+    }
 }

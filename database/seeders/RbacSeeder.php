@@ -382,6 +382,59 @@ class RbacSeeder extends Seeder
                     'display_name' => 'Mengubah Mata Pelajaran',
                     'description' => 'Mengubah data mata pelajaran.',
                 ],
+                // Tambahkan permission untuk modul employees guru dan pegawai
+                [
+                    'name' => 'employees.view',
+                    'module' => 'employees',
+                    'action' => 'view',
+                    'display_name' => 'Melihat Guru dan Pegawai',
+                    'description' => 'Melihat data guru dan tenaga kependidikan.',
+                ],
+                [
+                    'name' => 'employees.create',
+                    'module' => 'employees',
+                    'action' => 'create',
+                    'display_name' => 'Membuat Guru dan Pegawai',
+                    'description' => 'Menambahkan data guru dan tenaga kependidikan.',
+                ],
+                [
+                    'name' => 'employees.update',
+                    'module' => 'employees',
+                    'action' => 'update',
+                    'display_name' => 'Mengubah Guru dan Pegawai',
+                    'description' => 'Mengubah data guru dan tenaga kependidikan.',
+                ],
+                // Tambahkan permission untuk membuat akun login dari data guru atau pegawai
+                [
+                    'name' => 'employees.account.create',
+                    'module' => 'employees',
+                    'action' => 'account_create',
+                    'display_name' => 'Membuat Akun Pegawai',
+                    'description' => 'Membuat akun login aplikasi dari data guru atau pegawai.',
+                ],
+
+                // Tambahkan permission untuk modul students siswa
+                [
+                    'name' => 'students.view',
+                    'module' => 'students',
+                    'action' => 'view',
+                    'display_name' => 'Melihat Data Siswa',
+                    'description' => 'Melihat data master siswa.',
+                ],
+                [
+                    'name' => 'students.create',
+                    'module' => 'students',
+                    'action' => 'create',
+                    'display_name' => 'Membuat Data Siswa',
+                    'description' => 'Menambahkan data master siswa.',
+                ],
+                [
+                    'name' => 'students.update',
+                    'module' => 'students',
+                    'action' => 'update',
+                    'display_name' => 'Mengubah Data Siswa',
+                    'description' => 'Mengubah data master siswa.',
+                ],
 
             ];
 

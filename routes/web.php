@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\MadrasahProfileController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\RoomController;
+use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
@@ -197,6 +198,27 @@ Route::middleware([
     Route::post('/employees/{employee}/account', [EmployeeAccountController::class, 'store'])
         ->middleware('permission:employees.account.create')
         ->name('employees.accounts.store');
+
+    // Tambahkan route untuk manajemen siswa (students)
+    Route::get('/students', [StudentController::class, 'index'])
+        ->middleware('permission:students.view')
+        ->name('students.index');
+
+    Route::get('/students/create', [StudentController::class, 'create'])
+        ->middleware('permission:students.create')
+        ->name('students.create');
+
+    Route::post('/students', [StudentController::class, 'store'])
+        ->middleware('permission:students.create')
+        ->name('students.store');
+
+    Route::get('/students/{student}/edit', [StudentController::class, 'edit'])
+        ->middleware('permission:students.update')
+        ->name('students.edit');
+
+    Route::put('/students/{student}', [StudentController::class, 'update'])
+        ->middleware('permission:students.update')
+        ->name('students.update');
 });
 
 Route::middleware([
