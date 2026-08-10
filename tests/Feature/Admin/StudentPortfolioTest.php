@@ -42,6 +42,26 @@ class StudentPortfolioTest extends TestCase
             ->assertSee('Modul Portofolio Berikutnya');
     }
 
+    // Test QR Code Portofolio
+    public function test_student_portfolio_shows_qr_code(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'student_portfolios.view');
+
+        [$student] = $this->createPortfolioData();
+
+        $response = $this
+            ->actingAs($user)
+            ->get(route('admin.students.portfolio.show', $student));
+
+        $response
+            ->assertStatus(200)
+            ->assertSee('QR Code Portofolio')
+            ->assertSee(route('admin.students.portfolio.show', $student))
+            ->assertSee('<svg', false);
+    }
+
     public function test_user_without_permission_cannot_view_student_portfolio(): void
     {
         $user = User::factory()->create();

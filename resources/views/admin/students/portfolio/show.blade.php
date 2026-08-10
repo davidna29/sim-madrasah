@@ -125,7 +125,6 @@
 
                             <div>
                                 <div class="text-gray-500">Kelas Saat Ini</div>
-
                                 @if ($student->currentClassHistory)
                                     <div class="mt-1 font-medium text-gray-900">
                                         {{ $student->currentClassHistory->classGroup?->name ?? '-' }}
@@ -140,6 +139,22 @@
                                     </div>
                                 @endif
                             </div>
+
+                            <!-- QR Code Portofolio -->
+                            <div class="border-t border-gray-100 pt-4">
+                                <div class="text-gray-500">
+                                    QR Code Portofolio
+                                </div>
+
+                                <div class="mt-3 inline-block rounded-lg border border-gray-100 bg-white p-3">
+                                    {!! $qrCodeSvg !!}
+                                </div>
+
+                                <div class="mt-3 break-all text-xs text-gray-500">
+                                    {{ $portfolioUrl }}
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Student;
 use Illuminate\Contracts\View\View;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class StudentPortfolioController extends Controller
 {
@@ -40,10 +41,19 @@ class StudentPortfolioController extends Controller
             ->orderBy('relationship')
             ->get();
 
+        $portfolioUrl = route('admin.students.portfolio.show', $student);
+
+        $qrCodeSvg = QrCode::format('svg')
+            ->size(180)
+            ->margin(1)
+            ->generate($portfolioUrl);
+
         return view('admin.students.portfolio.show', [
             'student' => $student,
             'classHistories' => $classHistories,
             'guardians' => $guardians,
+            'portfolioUrl' => $portfolioUrl,
+            'qrCodeSvg' => $qrCodeSvg,
         ]);
     }
 }
