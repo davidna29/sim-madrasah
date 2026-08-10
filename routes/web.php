@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\StudentAccountController;
 use App\Http\Controllers\Admin\StudentClassHistoryController;
 use App\Http\Controllers\Admin\StudentController;
+use App\Http\Controllers\Admin\StudentGuardianAccountController;
 use App\Http\Controllers\Admin\StudentGuardianController;
 use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\DashboardController;
@@ -265,6 +266,16 @@ Route::middleware([
     Route::put('/students/{student}/guardians/{guardian}', [StudentGuardianController::class, 'update'])
         ->middleware('permission:student_guardians.update')
         ->name('students.guardians.update');
+
+    // Tambahkan route untuk manajemen akun wali siswa (student guardian accounts)
+    Route::get('/students/{student}/guardians/{guardian}/account/create', [StudentGuardianAccountController::class, 'create'])
+        ->middleware('permission:student_guardians.account.create')
+        ->name('students.guardians.accounts.create');
+
+    Route::post('/students/{student}/guardians/{guardian}/account', [StudentGuardianAccountController::class, 'store'])
+        ->middleware('permission:student_guardians.account.create')
+        ->name('students.guardians.accounts.store');
+
 });
 
 Route::middleware([

@@ -69,6 +69,7 @@
                                 <th class="px-4 py-3 text-left font-semibold text-gray-700">Nama</th>
                                 <th class="px-4 py-3 text-left font-semibold text-gray-700">Hubungan</th>
                                 <th class="px-4 py-3 text-left font-semibold text-gray-700">Kontak</th>
+                                <th class="px-4 py-3 text-left font-semibold text-gray-700">Akun</th>
                                 <th class="px-4 py-3 text-left font-semibold text-gray-700">Pekerjaan</th>
                                 <th class="px-4 py-3 text-left font-semibold text-gray-700">Peran</th>
                                 <th class="px-4 py-3 text-left font-semibold text-gray-700">Status</th>
@@ -99,7 +100,31 @@
                                             {{ $guardian->person?->phone ?? '-' }}
                                         </div>
                                     </td>
+                                    <!-- Update View Orang Tua/Wali -->
+                                    <td class="px-4 py-3">
+                                        @if ($guardian->person?->user)
+                                            <div class="font-mono text-xs text-gray-900">
+                                                {{ $guardian->person->user->username }}
+                                            </div>
 
+                                            <div class="mt-1 text-xs text-gray-500">
+                                                {{ $guardian->person->user->status }}
+                                            </div>
+                                        @else
+                                            @can('permission', 'student_guardians.account.create')
+                                                <a
+                                                    href="{{ route('admin.students.guardians.accounts.create', [$student, $guardian]) }}"
+                                                    class="text-sm font-medium text-green-700 hover:text-green-900"
+                                                >
+                                                    Buat Akun
+                                                </a>
+                                            @else
+                                                <span class="text-xs text-gray-500">
+                                                    Belum ada akun
+                                                </span>
+                                            @endcan
+                                        @endif
+                                    </td>
                                     <td class="px-4 py-3">
                                         {{ $guardian->occupation ?? '-' }}
                                     </td>
@@ -151,7 +176,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="px-4 py-6 text-center text-gray-500">
+                                    <td colspan="8" class="px-4 py-6 text-center text-gray-500">
                                         Belum ada data orang tua atau wali.
                                     </td>
                                 </tr>

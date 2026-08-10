@@ -482,6 +482,14 @@ class RbacSeeder extends Seeder
                     'display_name' => 'Mengubah Orang Tua/Wali Siswa',
                     'description' => 'Mengubah data orang tua atau wali siswa.',
                 ],
+                // tambahkan permission untuk membuat akun login dari data orang tua/wali siswa
+                [
+                    'name' => 'student_guardians.account.create',
+                    'module' => 'student_guardians',
+                    'action' => 'account_create',
+                    'display_name' => 'Membuat Akun Orang Tua/Wali',
+                    'description' => 'Membuat akun login aplikasi dari data orang tua atau wali siswa.',
+                ],
 
             ];
 

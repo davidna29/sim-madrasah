@@ -19,7 +19,7 @@ class StudentGuardianController extends Controller
         $student->load('person');
 
         $guardians = $student->guardians()
-            ->with('person')
+            ->with('person.user')
             ->orderByDesc('is_primary_contact')
             ->orderBy('relationship')
             ->paginate(15);
