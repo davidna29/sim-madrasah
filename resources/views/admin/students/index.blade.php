@@ -152,6 +152,17 @@
                                                     Riwayat Kelas
                                                 </a>
                                             @endcan
+
+                                            <!-- Wali -->
+                                            @can('permission', 'student_guardians.view')
+                                                <a
+                                                    href="{{ route('admin.students.guardians.index', $student) }}"
+                                                    class="text-sm font-medium text-purple-700 hover:text-purple-900"
+                                                >
+                                                    Wali
+                                                </a>
+                                            @endcan
+
                                         </div>
                                     </td>
                                 </tr>

@@ -276,6 +276,14 @@ class DashboardController extends Controller
                 'label' => 'Buka Siswa',
             ],
 
+            // Orang Tua/Wali Siswa
+            [
+                'title' => 'Orang Tua/Wali Siswa',
+                'description' => 'Kelola data orang tua, wali, kontak darurat, dan penanggung jawab keuangan siswa.',
+                'href' => route('admin.students.index'),
+                'label' => 'Buka Siswa',
+            ],
+
         ];
     }
 

@@ -460,6 +460,29 @@ class RbacSeeder extends Seeder
                     'description' => 'Membuat akun login aplikasi dari data siswa.',
                 ],
 
+                // tambahkan permission untuk modul student_guardians orang tua/wali siswa
+                [
+                    'name' => 'student_guardians.view',
+                    'module' => 'student_guardians',
+                    'action' => 'view',
+                    'display_name' => 'Melihat Orang Tua/Wali Siswa',
+                    'description' => 'Melihat data orang tua atau wali siswa.',
+                ],
+                [
+                    'name' => 'student_guardians.create',
+                    'module' => 'student_guardians',
+                    'action' => 'create',
+                    'display_name' => 'Membuat Orang Tua/Wali Siswa',
+                    'description' => 'Menambahkan data orang tua atau wali siswa.',
+                ],
+                [
+                    'name' => 'student_guardians.update',
+                    'module' => 'student_guardians',
+                    'action' => 'update',
+                    'display_name' => 'Mengubah Orang Tua/Wali Siswa',
+                    'description' => 'Mengubah data orang tua atau wali siswa.',
+                ],
+
             ];
 
             foreach ($permissions as $permission) {

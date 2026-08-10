@@ -58,4 +58,10 @@ class Person extends Model
     {
         return $this->hasOne(Student::class);
     }
+
+    // Relasi dengan model Guardian
+    public function studentGuardianLinks(): HasMany
+    {
+        return $this->hasMany(StudentGuardian::class);
+    }
 }

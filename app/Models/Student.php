@@ -59,4 +59,16 @@ class Student extends Model
         return $this->hasOne(StudentClassHistory::class)
             ->where('is_current', true);
     }
+
+    // Relasi dengan model StudentGuardian
+    public function guardians(): HasMany
+    {
+        return $this->hasMany(StudentGuardian::class);
+    }
+
+    public function primaryGuardian(): HasOne
+    {
+        return $this->hasOne(StudentGuardian::class)
+            ->where('is_primary_contact', true);
+    }
 }
