@@ -277,10 +277,15 @@ Route::middleware([
         ->middleware('permission:student_guardians.account.create')
         ->name('students.guardians.accounts.store');
 
-    // Tambahkan route untuk manajemen portofolio siswa (student portfolios)
+    // Tambahkan route untuk manajemen ringkasn portofolio siswa (student portfolios)
     Route::get('/students/{student}/portfolio', [StudentPortfolioController::class, 'show'])
         ->middleware('permission:student_portfolios.view')
         ->name('students.portfolio.show');
+
+    // Tambahkan route untuk mencetak kartu portofolio siswa dalam format PDF
+    Route::get('/students/{student}/portfolio/card', [StudentPortfolioController::class, 'card'])
+        ->middleware('permission:student_portfolios.print')
+        ->name('students.portfolio.card');
 
 });
 

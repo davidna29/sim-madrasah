@@ -75,6 +75,46 @@ class StudentPortfolioTest extends TestCase
         $response->assertForbidden();
     }
 
+    // Test user can print student portfolio card PDF
+    public function test_user_can_print_student_portfolio_card_pdf(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'student_portfolios.print');
+
+        [$student] = $this->createPortfolioData();
+
+        $response = $this
+            ->actingAs($user)
+            ->get(route('admin.students.portfolio.card', $student));
+
+        $response->assertStatus(200);
+
+        $this->assertStringContainsString(
+            'application/pdf',
+            (string) $response->headers->get('content-type')
+        );
+
+        $this->assertStringStartsWith(
+            '%PDF',
+            $response->getContent()
+        );
+    }
+
+    // Test user without permission cannot print student portfolio card PDF
+    public function test_user_without_permission_cannot_print_student_portfolio_card_pdf(): void
+    {
+        $user = User::factory()->create();
+
+        [$student] = $this->createPortfolioData();
+
+        $response = $this
+            ->actingAs($user)
+            ->get(route('admin.students.portfolio.card', $student));
+
+        $response->assertForbidden();
+    }
+
     /**
      * @return array{0: Student}
      */

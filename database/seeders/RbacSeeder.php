@@ -498,6 +498,14 @@ class RbacSeeder extends Seeder
                     'display_name' => 'Melihat Portofolio Digital Siswa',
                     'description' => 'Melihat ringkasan portofolio digital siswa.',
                 ],
+                // Tambahkan permission untuk mencetak kartu portofolio digital siswa
+                [
+                    'name' => 'student_portfolios.print',
+                    'module' => 'student_portfolios',
+                    'action' => 'print',
+                    'display_name' => 'Mencetak Kartu Portofolio Siswa',
+                    'description' => 'Mencetak kartu portofolio digital siswa dalam format PDF.',
+                ],
 
             ];
 

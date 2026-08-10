@@ -11,12 +11,25 @@
                 </p>
             </div>
 
-            <a
-                href="{{ route('admin.students.index') }}"
-                class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-            >
-                Kembali
-            </a>
+            <!-- Tombol Cetak di Halaman Portofolio -->
+            <div class="flex flex-wrap gap-2">
+                @can('permission', 'student_portfolios.print')
+                    <a
+                        href="{{ route('admin.students.portfolio.card', $student) }}"
+                        target="_blank"
+                        class="rounded-md bg-green-700 px-4 py-2 text-sm font-medium text-white hover:bg-green-800"
+                    >
+                        Cetak Kartu
+                    </a>
+                @endcan
+
+                <a
+                    href="{{ route('admin.students.index') }}"
+                    class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                >
+                    Kembali
+                </a>
+            </div>
         </div>
     </x-slot>
 
