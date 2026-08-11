@@ -112,6 +112,17 @@
                                                     Cetak Siswa
                                                 </a>
                                             @endcan
+
+                                            <!-- Tombol Export Excel -->
+                                            @can('permission', 'class_groups.export_students')
+                                                <a
+                                                    href="{{ route('admin.class-groups.students.excel', $classGroup) }}"
+                                                    class="text-sm font-medium text-emerald-700 hover:text-emerald-900"
+                                                >
+                                                    Export Excel
+                                                </a>
+                                            @endcan
+
                                         </div>
                                     </td>
                                 </tr>

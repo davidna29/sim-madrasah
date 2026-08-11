@@ -515,6 +515,15 @@ class RbacSeeder extends Seeder
                     'description' => 'Mencetak daftar siswa berdasarkan rombongan belajar.',
                 ],
 
+                // Tambahkan permission untuk mengekspor daftar siswa per kelas ke Excel
+                [
+                    'name' => 'class_groups.export_students',
+                    'module' => 'class_groups',
+                    'action' => 'export_students',
+                    'display_name' => 'Export Data Siswa Per Kelas',
+                    'description' => 'Mengekspor daftar siswa berdasarkan rombongan belajar ke Excel.',
+                ],
+
             ];
 
             foreach ($permissions as $permission) {

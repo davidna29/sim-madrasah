@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AcademicYearController;
 use App\Http\Controllers\Admin\ClassGroupController;
+use App\Http\Controllers\Admin\ClassGroupStudentExportController;
 use App\Http\Controllers\Admin\ClassGroupStudentPrintController;
 use App\Http\Controllers\Admin\EmployeeAccountController;
 use App\Http\Controllers\Admin\EmployeeController;
@@ -158,6 +159,11 @@ Route::middleware([
     Route::get('/class-groups/{classGroup}/students/pdf', ClassGroupStudentPrintController::class)
         ->middleware('permission:class_groups.print_students')
         ->name('class-groups.students.pdf');
+
+    // Tambahkan route untuk mengekspor daftar siswa dalam format Excel
+    Route::get('/class-groups/{classGroup}/students/excel', ClassGroupStudentExportController::class)
+        ->middleware('permission:class_groups.export_students')
+        ->name('class-groups.students.excel');
 
     // Tambahkan route untuk manajemen mata pelajaran (subjects)
     Route::get('/subjects', [SubjectController::class, 'index'])
