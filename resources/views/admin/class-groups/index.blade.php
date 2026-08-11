@@ -30,8 +30,53 @@
                 </div>
             @endif
 
-            <div class="bg-white shadow-sm sm:rounded-lg border border-gray-100">
-                <div class="p-6 overflow-x-auto">
+        <!-- Update View Index Rombongan Belajar - form filter -->
+        <div class="bg-white shadow-sm sm:rounded-lg border border-gray-100">
+            <div class="p-6">
+                <form
+                    method="GET"
+                    action="{{ route('admin.class-groups.index') }}"
+                    class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-4"
+                >
+                    <div class="md:col-span-2">
+                        <x-input-label for="academic_year_id" value="Filter Tahun Ajaran" />
+
+                        <select
+                            id="academic_year_id"
+                            name="academic_year_id"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+                        >
+                            <option value="">Semua Tahun Ajaran</option>
+
+                            @foreach ($academicYears as $academicYear)
+                                <option
+                                    value="{{ $academicYear->id }}"
+                                    @selected((string) $selectedAcademicYearId === (string) $academicYear->id)
+                                >
+                                    {{ $academicYear->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="flex items-end gap-2">
+                        <button
+                            type="submit"
+                            class="rounded-md bg-green-700 px-4 py-2 text-sm font-medium text-white hover:bg-green-800"
+                        >
+                            Terapkan
+                        </button>
+
+                        <a
+                            href="{{ route('admin.class-groups.index') }}"
+                            class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                        >
+                            Reset
+                        </a>
+                    </div>
+                </form>
+
+                <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200 text-sm">
                         <thead class="bg-gray-50">
                             <tr>

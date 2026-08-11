@@ -15,8 +15,15 @@ use Illuminate\Validation\Rule;
 
 class ClassGroupController extends Controller
 {
-    public function index(): View
+    // Update Controller Rombongan Belajar
+    public function index(Request $request): View
     {
+        $selectedAcademicYearId = $request->integer('academic_year_id') ?: null;
+
+        $academicYears = AcademicYear::query()
+            ->orderByDesc('start_date')
+            ->get();
+
         $classGroups = ClassGroup::query()
             ->with([
                 'academicYear',
@@ -24,12 +31,22 @@ class ClassGroupController extends Controller
                 'room',
                 'homeroomTeacher',
             ])
+            ->when(
+                $selectedAcademicYearId,
+                fn ($query) => $query->where(
+                    'academic_year_id',
+                    $selectedAcademicYearId
+                )
+            )
             ->orderByDesc('academic_year_id')
             ->orderBy('name')
-            ->paginate(15);
+            ->paginate(15)
+            ->withQueryString();
 
         return view('admin.class-groups.index', [
             'classGroups' => $classGroups,
+            'academicYears' => $academicYears,
+            'selectedAcademicYearId' => $selectedAcademicYearId,
         ]);
     }
 

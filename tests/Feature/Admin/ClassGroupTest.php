@@ -220,4 +220,81 @@ class ClassGroupTest extends TestCase
             ],
         ]);
     }
+
+    // Test Filter Rombongan Belajar
+    public function test_user_can_filter_class_groups_by_academic_year(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'class_groups.view');
+
+        $academicYear2026 = AcademicYear::create([
+            'code' => '2026-2027',
+            'name' => '2026/2027',
+            'start_date' => '2026-07-01',
+            'end_date' => '2027-06-30',
+            'status' => 'active',
+            'is_active' => true,
+            'is_locked' => false,
+        ]);
+
+        $academicYear2027 = AcademicYear::create([
+            'code' => '2027-2028',
+            'name' => '2027/2028',
+            'start_date' => '2027-07-01',
+            'end_date' => '2028-06-30',
+            'status' => 'active',
+            'is_active' => true,
+            'is_locked' => false,
+        ]);
+
+        $gradeLevel = GradeLevel::create([
+            'code' => 'VII',
+            'name' => 'Kelas VII',
+            'level_number' => 7,
+            'is_active' => true,
+        ]);
+
+        $room = Room::create([
+            'code' => 'R-VII-A',
+            'name' => 'Ruang VII A',
+            'room_type' => 'classroom',
+            'capacity' => 32,
+            'is_active' => true,
+        ]);
+
+        ClassGroup::create([
+            'academic_year_id' => $academicYear2026->id,
+            'grade_level_id' => $gradeLevel->id,
+            'room_id' => $room->id,
+            'code' => 'VII-A-2026',
+            'name' => 'Kelas VII A 2026',
+            'parallel_name' => 'A',
+            'capacity' => 32,
+            'status' => 'active',
+            'is_active' => true,
+        ]);
+
+        ClassGroup::create([
+            'academic_year_id' => $academicYear2027->id,
+            'grade_level_id' => $gradeLevel->id,
+            'room_id' => $room->id,
+            'code' => 'VII-A-2027',
+            'name' => 'Kelas VII A 2027',
+            'parallel_name' => 'A',
+            'capacity' => 32,
+            'status' => 'active',
+            'is_active' => true,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->get('/admin/class-groups?academic_year_id='.$academicYear2026->id);
+
+        $response
+            ->assertStatus(200)
+            ->assertSee('Kelas VII A 2026')
+            ->assertDontSee('Kelas VII A 2027')
+            ->assertSee('2026/2027');
+    }
 }
