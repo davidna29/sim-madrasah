@@ -506,6 +506,14 @@ class RbacSeeder extends Seeder
                     'display_name' => 'Mencetak Kartu Portofolio Siswa',
                     'description' => 'Mencetak kartu portofolio digital siswa dalam format PDF.',
                 ],
+                // Tambahkan permission untuk mencetak daftar siswa per kelas
+                [
+                    'name' => 'class_groups.print_students',
+                    'module' => 'class_groups',
+                    'action' => 'print_students',
+                    'display_name' => 'Mencetak Data Siswa Per Kelas',
+                    'description' => 'Mencetak daftar siswa berdasarkan rombongan belajar.',
+                ],
 
             ];
 

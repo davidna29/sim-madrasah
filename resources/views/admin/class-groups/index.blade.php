@@ -91,15 +91,28 @@
                                         @endif
                                     </td>
 
+                                    <!-- Tombol Cetak di Halaman Rombongan Belajar -->
                                     <td class="px-4 py-3">
-                                        @can('permission', 'class_groups.update')
-                                            <a
-                                                href="{{ route('admin.class-groups.edit', $classGroup) }}"
-                                                class="text-sm font-medium text-green-700 hover:text-green-900"
-                                            >
-                                                Edit
-                                            </a>
-                                        @endcan
+                                        <div class="flex flex-wrap gap-3">
+                                            @can('permission', 'class_groups.update')
+                                                <a
+                                                    href="{{ route('admin.class-groups.edit', $classGroup) }}"
+                                                    class="text-sm font-medium text-green-700 hover:text-green-900"
+                                                >
+                                                    Edit
+                                                </a>
+                                            @endcan
+
+                                            @can('permission', 'class_groups.print_students')
+                                                <a
+                                                    href="{{ route('admin.class-groups.students.pdf', $classGroup) }}"
+                                                    target="_blank"
+                                                    class="text-sm font-medium text-blue-700 hover:text-blue-900"
+                                                >
+                                                    Cetak Siswa
+                                                </a>
+                                            @endcan
+                                        </div>
                                     </td>
                                 </tr>
                             @empty
