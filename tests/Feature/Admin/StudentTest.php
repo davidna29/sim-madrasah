@@ -3,10 +3,15 @@
 namespace Tests\Feature\Admin;
 
 use App\Models\AcademicYear;
+use App\Models\ClassGroup;
+use App\Models\GradeLevel;
 use App\Models\Permission;
 use App\Models\Person;
 use App\Models\Role;
+use App\Models\Room;
+use App\Models\Semester;
 use App\Models\Student;
+use App\Models\StudentClassHistory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -227,5 +232,144 @@ class StudentTest extends TestCase
                 'assigned_at' => now(),
             ],
         ]);
+    }
+
+    // Test Filter Siswa Berdasarkan Rombongan Belajar
+    public function test_user_can_filter_students_by_current_class_group(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'students.view');
+
+        $academicYear = AcademicYear::create([
+            'code' => '2026-2027',
+            'name' => '2026/2027',
+            'start_date' => '2026-07-01',
+            'end_date' => '2027-06-30',
+            'status' => 'active',
+            'is_active' => true,
+            'is_locked' => false,
+        ]);
+
+        $semester = Semester::create([
+            'academic_year_id' => $academicYear->id,
+            'code' => '2026-2027-ganjil',
+            'name' => 'Semester Ganjil 2026/2027',
+            'semester_type' => 'ganjil',
+            'start_date' => '2026-07-01',
+            'end_date' => '2026-12-31',
+            'status' => 'active',
+            'is_active' => true,
+            'is_locked' => false,
+        ]);
+
+        $gradeLevel = GradeLevel::create([
+            'code' => 'VII',
+            'name' => 'Kelas VII',
+            'level_number' => 7,
+            'is_active' => true,
+        ]);
+
+        $roomA = Room::create([
+            'code' => 'R-VII-A',
+            'name' => 'Ruang VII A',
+            'room_type' => 'classroom',
+            'capacity' => 32,
+            'is_active' => true,
+        ]);
+
+        $roomB = Room::create([
+            'code' => 'R-VII-B',
+            'name' => 'Ruang VII B',
+            'room_type' => 'classroom',
+            'capacity' => 32,
+            'is_active' => true,
+        ]);
+
+        $classGroupA = ClassGroup::create([
+            'academic_year_id' => $academicYear->id,
+            'grade_level_id' => $gradeLevel->id,
+            'room_id' => $roomA->id,
+            'code' => 'VII-A',
+            'name' => 'Kelas VII A',
+            'parallel_name' => 'A',
+            'capacity' => 32,
+            'status' => 'active',
+            'is_active' => true,
+        ]);
+
+        $classGroupB = ClassGroup::create([
+            'academic_year_id' => $academicYear->id,
+            'grade_level_id' => $gradeLevel->id,
+            'room_id' => $roomB->id,
+            'code' => 'VII-B',
+            'name' => 'Kelas VII B',
+            'parallel_name' => 'B',
+            'capacity' => 32,
+            'status' => 'active',
+            'is_active' => true,
+        ]);
+
+        $personA = Person::create([
+            'full_name' => 'Ahmad Siswa',
+            'email' => 'ahmad@test.local',
+        ]);
+
+        $studentA = Student::create([
+            'person_id' => $personA->id,
+            'admission_academic_year_id' => $academicYear->id,
+            'student_number' => 'SIS-001',
+            'nisn' => '1000000001',
+            'registration_number' => 'REG-001',
+            'admission_date' => '2026-07-01',
+            'status' => 'active',
+            'is_active' => true,
+        ]);
+
+        $personB = Person::create([
+            'full_name' => 'Siti Siswa',
+            'email' => 'siti@test.local',
+        ]);
+
+        $studentB = Student::create([
+            'person_id' => $personB->id,
+            'admission_academic_year_id' => $academicYear->id,
+            'student_number' => 'SIS-002',
+            'nisn' => '1000000002',
+            'registration_number' => 'REG-002',
+            'admission_date' => '2026-07-01',
+            'status' => 'active',
+            'is_active' => true,
+        ]);
+
+        StudentClassHistory::create([
+            'student_id' => $studentA->id,
+            'academic_year_id' => $academicYear->id,
+            'semester_id' => $semester->id,
+            'class_group_id' => $classGroupA->id,
+            'status' => 'active',
+            'start_date' => '2026-07-01',
+            'is_current' => true,
+        ]);
+
+        StudentClassHistory::create([
+            'student_id' => $studentB->id,
+            'academic_year_id' => $academicYear->id,
+            'semester_id' => $semester->id,
+            'class_group_id' => $classGroupB->id,
+            'status' => 'active',
+            'start_date' => '2026-07-01',
+            'is_current' => true,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->get('/admin/students?class_group_id='.$classGroupA->id);
+
+        $response
+            ->assertStatus(200)
+            ->assertSee('Ahmad Siswa')
+            ->assertSee('Kelas VII A')
+            ->assertDontSee('Siti Siswa');
     }
 }

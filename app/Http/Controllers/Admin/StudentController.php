@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\AcademicYear;
+use App\Models\ClassGroup;
 use App\Models\Person;
 use App\Models\Student;
 use Illuminate\Contracts\View\View;
@@ -14,19 +15,48 @@ use Illuminate\Validation\Rule;
 
 class StudentController extends Controller
 {
-    public function index(): View
+    // Update Controller Siswa
+    public function index(Request $request): View
     {
+        $selectedClassGroupId = $request->integer('class_group_id') ?: null;
+
+        $classGroups = ClassGroup::query()
+            ->with([
+                'academicYear',
+                'gradeLevel',
+            ])
+            ->where('is_active', true)
+            ->orderByDesc('academic_year_id')
+            ->orderBy('name')
+            ->get();
+
         $students = Student::query()
             ->with([
                 'person.user',
                 'admissionAcademicYear',
+                'currentClassHistory.academicYear',
+                'currentClassHistory.semester',
+                'currentClassHistory.classGroup.gradeLevel',
+                'currentClassHistory.classGroup.room',
             ])
+            ->when(
+                $selectedClassGroupId,
+                fn ($query) => $query->whereHas(
+                    'classHistories',
+                    fn ($historyQuery) => $historyQuery
+                        ->where('class_group_id', $selectedClassGroupId)
+                        ->where('is_current', true)
+                )
+            )
             ->orderByDesc('is_active')
             ->orderBy('student_number')
-            ->paginate(15);
+            ->paginate(15)
+            ->withQueryString();
 
         return view('admin.students.index', [
             'students' => $students,
+            'classGroups' => $classGroups,
+            'selectedClassGroupId' => $selectedClassGroupId,
         ]);
     }
 
