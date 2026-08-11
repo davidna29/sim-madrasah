@@ -36,8 +36,21 @@
                     <form
                         method="GET"
                         action="{{ route('admin.students.index') }}"
-                        class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-4"
+                        class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-6"
                     >
+                        <div class="md:col-span-2">
+                            <x-input-label for="q" value="Cari Siswa" />
+
+                            <x-text-input
+                                id="q"
+                                name="q"
+                                type="text"
+                                class="mt-1 block w-full"
+                                :value="$search"
+                                placeholder="Nama, NIS, NISN, atau nomor registrasi"
+                            />
+                        </div>
+
                         <div class="md:col-span-2">
                             <x-input-label for="class_group_id" value="Filter Rombongan Belajar" />
 
@@ -63,7 +76,7 @@
                             </select>
                         </div>
 
-                        <div class="flex items-end gap-2">
+                        <div class="flex items-end gap-2 md:col-span-2">
                             <button
                                 type="submit"
                                 class="rounded-md bg-green-700 px-4 py-2 text-sm font-medium text-white hover:bg-green-800"

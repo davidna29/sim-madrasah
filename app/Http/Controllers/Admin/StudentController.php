@@ -19,6 +19,7 @@ class StudentController extends Controller
     public function index(Request $request): View
     {
         $selectedClassGroupId = $request->integer('class_group_id') ?: null;
+        $search = trim((string) $request->query('q', ''));
 
         $classGroups = ClassGroup::query()
             ->with([
@@ -40,6 +41,23 @@ class StudentController extends Controller
                 'currentClassHistory.classGroup.room',
             ])
             ->when(
+                $search !== '',
+                fn ($query) => $query->where(function ($searchQuery) use ($search): void {
+                    $searchQuery
+                        ->where('student_number', 'like', '%'.$search.'%')
+                        ->orWhere('nisn', 'like', '%'.$search.'%')
+                        ->orWhere('registration_number', 'like', '%'.$search.'%')
+                        ->orWhereHas(
+                            'person',
+                            fn ($personQuery) => $personQuery->where(
+                                'full_name',
+                                'like',
+                                '%'.$search.'%'
+                            )
+                        );
+                })
+            )
+            ->when(
                 $selectedClassGroupId,
                 fn ($query) => $query->whereHas(
                     'classHistories',
@@ -57,6 +75,7 @@ class StudentController extends Controller
             'students' => $students,
             'classGroups' => $classGroups,
             'selectedClassGroupId' => $selectedClassGroupId,
+            'search' => $search,
         ]);
     }
 

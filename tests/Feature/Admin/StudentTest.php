@@ -372,4 +372,73 @@ class StudentTest extends TestCase
             ->assertSee('Kelas VII A')
             ->assertDontSee('Siti Siswa');
     }
+
+    // Test Pencarian Siswa Berdasarkan Nama, NIS, dan NISN
+    public function test_user_can_search_students_by_name_nis_and_nisn(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'students.view');
+
+        $academicYear = $this->createAcademicYear();
+
+        $personA = Person::create([
+            'full_name' => 'Ahmad Siswa',
+            'email' => 'ahmad.search@test.local',
+        ]);
+
+        Student::create([
+            'person_id' => $personA->id,
+            'admission_academic_year_id' => $academicYear->id,
+            'student_number' => 'SIS-001',
+            'nisn' => '1000000001',
+            'registration_number' => 'REG-001',
+            'admission_date' => '2026-07-01',
+            'status' => 'active',
+            'is_active' => true,
+        ]);
+
+        $personB = Person::create([
+            'full_name' => 'Siti Siswa',
+            'email' => 'siti.search@test.local',
+        ]);
+
+        Student::create([
+            'person_id' => $personB->id,
+            'admission_academic_year_id' => $academicYear->id,
+            'student_number' => 'SIS-002',
+            'nisn' => '1000000002',
+            'registration_number' => 'REG-002',
+            'admission_date' => '2026-07-01',
+            'status' => 'active',
+            'is_active' => true,
+        ]);
+
+        $responseByName = $this
+            ->actingAs($user)
+            ->get('/admin/students?q=Ahmad');
+
+        $responseByName
+            ->assertStatus(200)
+            ->assertSee('Ahmad Siswa')
+            ->assertDontSee('Siti Siswa');
+
+        $responseByNis = $this
+            ->actingAs($user)
+            ->get('/admin/students?q=SIS-002');
+
+        $responseByNis
+            ->assertStatus(200)
+            ->assertSee('Siti Siswa')
+            ->assertDontSee('Ahmad Siswa');
+
+        $responseByNisn = $this
+            ->actingAs($user)
+            ->get('/admin/students?q=1000000001');
+
+        $responseByNisn
+            ->assertStatus(200)
+            ->assertSee('Ahmad Siswa')
+            ->assertDontSee('Siti Siswa');
+    }
 }
