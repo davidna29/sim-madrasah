@@ -615,10 +615,28 @@ class StudentTest extends TestCase
             (string) $response->headers->get('content-type')
         );
 
+        // Check if the response has the correct headers for CSV download
+        $this->assertStringContainsString(
+            'attachment',
+            (string) $response->headers->get('content-disposition')
+        );
+
+        $this->assertStringContainsString(
+            'data-siswa-',
+            (string) $response->headers->get('content-disposition')
+        );
+
+        $this->assertStringContainsString(
+            '.csv',
+            (string) $response->headers->get('content-disposition')
+        );
+
         $content = $response->streamedContent();
 
         $this->assertStringContainsString('Siti Export Lulus', $content);
         $this->assertStringContainsString('EXP-LULUS', $content);
+        $this->assertStringContainsString('Lulus', $content);
+        $this->assertStringNotContainsString('graduated', $content);
         $this->assertStringNotContainsString('Ahmad Export Aktif', $content);
     }
 }

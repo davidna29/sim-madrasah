@@ -3,6 +3,15 @@
 Format mengikuti gaya sederhana: tanggal, tahap/commit, perubahan.
 
 ---
+## 2026-08-13
+
+### `refactor: polish student csv export`
+
+- Merapikan export CSV data siswa.
+- Mengubah status siswa pada CSV agar memakai label Indonesia.
+- Merapikan tombol filter dan export pada halaman Data Siswa.
+- Memperbaiki struktur tombol Tambah Siswa.
+- Memperkuat test export CSV siswa.
 
 ## 2026-08-12
 

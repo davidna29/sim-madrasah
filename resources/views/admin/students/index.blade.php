@@ -14,8 +14,8 @@
             @can('permission', 'students.create')
                 <a
                     href="{{ route('admin.students.create') }}"
-                    class="rounded-md bg-green-700 px-4 py-2 text-sm font-medium text-white hover:bg-green-800"
-                >
+                    class="whitespace-nowrap rounded-md bg-green-700 px-4 py-2 text-sm font-medium text-white hover:bg-green-800"
+                    >
                     Tambah Siswa
                 </a>
             @endcan
@@ -120,7 +120,7 @@
                             </select>
                         </div>
 
-                        <div class="flex items-end gap-2 md:col-span-2">
+                       <div class="flex flex-wrap items-end gap-2 md:col-span-2">
                             <button
                                 type="submit"
                                 class="rounded-md bg-green-700 px-4 py-2 text-sm font-medium text-white hover:bg-green-800"
@@ -130,14 +130,14 @@
 
                             <a
                                 href="{{ route('admin.students.index') }}"
-                                class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                                class="whitespace-nowrap rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
                             >
                                 Reset
                             </a>
                             <!-- tombol export -->
                             <a
                                 href="{{ route('admin.students.export', request()->query()) }}"
-                                class="rounded-md border border-green-700 bg-white px-4 py-2 text-sm font-medium text-green-700 hover:bg-green-50"
+                                class="whitespace-nowrap rounded-md border border-green-700 bg-white px-4 py-2 text-sm font-medium text-green-700 hover:bg-green-50"
                             >
                                 Export CSV
                             </a>

@@ -140,3 +140,30 @@ Konsekuensi:
 
 - Format tampilan tidak sefleksibel Excel.
 - Jika nanti dibutuhkan format `.xlsx`, perlu tahap lanjutan dan kemungkinan package tambahan.
+
+---
+
+## Label Status pada Export Data Siswa
+
+Keputusan:
+
+- Status siswa pada export CSV ditampilkan sebagai label Indonesia.
+
+Contoh:
+
+- `active` menjadi `Aktif`.
+- `inactive` menjadi `Nonaktif`.
+- `transferred` menjadi `Pindah`.
+- `graduated` menjadi `Lulus`.
+- `alumni` menjadi `Alumni`.
+
+Alasan:
+
+- File CSV ditujukan untuk admin madrasah.
+- Label Indonesia lebih mudah dibaca daripada nilai teknis database.
+- Nilai teknis tetap disimpan di database, sedangkan label hanya dipakai pada tampilan export.
+
+Konsekuensi:
+
+- Test export harus memastikan CSV memakai label, bukan nilai mentah.
+- Jika status baru ditambahkan nanti, daftar label harus ikut diperbarui.

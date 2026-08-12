@@ -141,7 +141,8 @@ class StudentController extends Controller
             $selectedClassGroupId,
             $selectedStatus,
             $selectedAdmissionAcademicYearId,
-            $search
+            $search,
+            $studentStatuses
         ): void {
             $handle = fopen('php://output', 'w');
 
@@ -177,7 +178,7 @@ class StudentController extends Controller
                 ])
                 ->orderByDesc('is_active')
                 ->orderBy('student_number')
-                ->chunk(100, function ($students) use ($handle): void {
+                ->chunk(100, function ($students) use ($handle, $studentStatuses): void {
                     foreach ($students as $student) {
                         $currentClassHistory = $student->currentClassHistory;
 
@@ -189,7 +190,7 @@ class StudentController extends Controller
                             $student->admissionAcademicYear?->name,
                             $currentClassHistory?->classGroup?->name,
                             $currentClassHistory?->semester?->name,
-                            $student->status,
+                            $studentStatuses[$student->status] ?? $student->status,
                             $student->is_active ? 'Ya' : 'Tidak',
                         ]);
                     }

@@ -10,23 +10,23 @@ saya mengembangkannya sekarang di macbook air m2 dengan laravel herd
 
 ## Tahap Terakhir Selesai
 
-### Tahap 12.23 — Export Data Siswa Berdasarkan Filter Aktif
+### Tahap 12.24 — Review dan Perapian Export Data Siswa
 
 Status: selesai.
 
 Perubahan utama:
 
-- Menambahkan route `admin.students.export`.
-- Menambahkan method `export()` pada `StudentController`.
-- Export memakai format CSV.
-- Export mengikuti filter aktif: `q`, `class_group_id`, `status`, dan `admission_academic_year_id`.
-- Query filter siswa dipindahkan ke helper `filteredStudentsQuery()` agar dipakai bersama oleh halaman index dan export.
-- Export memakai `streamDownload()` dan `chunk(100)` agar lebih ringan.
-- Tombol `Export CSV` ditambahkan pada halaman Data Siswa.
+- Merapikan hasil export CSV data siswa.
+- Status siswa pada CSV sekarang memakai label Indonesia.
+- Contoh: `graduated` ditampilkan sebagai `Lulus`.
+- Nama file export tetap memakai pola `data-siswa-YYYYMMDD-HHMMSS.csv`.
+- Tombol filter pada halaman Data Siswa dirapikan dengan `flex-wrap`.
+- Tombol Terapkan, Reset, dan Export CSV memakai `whitespace-nowrap`.
+- Memperbaiki struktur tombol Tambah Siswa yang penutup tag-nya tertinggal.
+- Test export diperkuat untuk mengecek attachment, nama file CSV, dan label status.
 
 File berubah:
 
-- `routes/web.php`
 - `app/Http/Controllers/Admin/StudentController.php`
 - `resources/views/admin/students/index.blade.php`
 - `tests/Feature/Admin/StudentTest.php`
@@ -40,11 +40,12 @@ Catatan:
 
 - Tidak ada perubahan database.
 - Tidak ada permission baru.
-- Export memakai permission yang sama dengan melihat data siswa, yaitu `students.view`.
+- Export tetap memakai permission `students.view`.
+- Format export tetap CSV.
 
 Tahap berikutnya:
 
-- Tahap 12.24 — Review dan Perapian Export Data Siswa.
+- Tahap 12.25 — Review Akhir Modul Data Siswa.
 
 ---
 

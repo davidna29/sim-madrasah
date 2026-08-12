@@ -6,25 +6,15 @@ Dokumen ini berisi urutan kerja kecil yang direkomendasikan setelah fitur pencar
 
 ## Prioritas Terdekat
 
-### Tahap 12.24 — Review dan Perapian Export Data Siswa
+### Tahap 12.25 — Review Akhir Modul Data Siswa
 
 Tujuan:
 
-- Mengecek ulang isi kolom CSV.
-- Memastikan label status mudah dibaca.
-- Memastikan nama file export konsisten.
-- Memastikan tombol export tetap nyaman pada tampilan desktop dan mobile.
-- Menentukan apakah tahap berikutnya perlu export Excel atau cukup CSV.
-
-File kemungkinan berubah:
-
-- `app/Http/Controllers/Admin/StudentController.php`
-- `resources/views/admin/students/index.blade.php`
-- `tests/Feature/Admin/StudentTest.php`
-- `docs/AI-HANDOFF.md`
-- `docs/PROGRESS.md`
-- `docs/NEXT-STEPS.md`
-- `docs/CHANGELOG.md`
+- Mengecek ulang seluruh fitur Data Siswa.
+- Memastikan index, create, edit, detail, filter, pencarian, dan export berjalan baik.
+- Memastikan dokumentasi modul siswa sudah konsisten.
+- Memastikan tidak ada perubahan database atau permission yang belum terdokumentasi.
+- Menentukan tahap berikutnya setelah modul Data Siswa stabil.
 
 Validasi:
 
@@ -34,6 +24,7 @@ php artisan optimize:clear
 ./vendor/bin/pint --test
 php artisan test
 npm run build
+git status
 ```
 
 ---
