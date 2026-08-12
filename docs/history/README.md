@@ -1,15 +1,28 @@
 # Folder History
 
-Folder ini dipakai jika nanti file `SIM-MADRASAH-AI-HISTORY.md` ingin dipecah menjadi arsip per tanggal/tahap.
+Folder ini berisi arsip percakapan AI project SIM Madrasah yang sudah dipecah dari file besar `SIM-MADRASAH-AI-HISTORY.md`.
 
-Contoh struktur:
+## Prinsip Penggunaan
+
+- Jangan jadikan folder ini sebagai dokumen kerja utama.
+- Dokumen kerja utama untuk AI baru adalah `docs/AI-HANDOFF.md`.
+- Folder ini hanya dipakai jika AI perlu mencari konteks historis dari tahap lama.
+
+## Urutan Baca untuk AI Baru
+
+1. `README.md`
+2. `docs/AI-HANDOFF.md`
+3. `docs/PROGRESS.md`
+4. `docs/NEXT-STEPS.md`
+5. `docs/ARCHITECTURE.md`
+6. `docs/DATABASE.md`
+7. `docs/RBAC.md`
+8. `docs/history/INDEX.md` jika butuh arsip lama
+
+## Daftar Arsip
+
+Lihat daftar lengkap di:
 
 ```txt
-docs/history/2026-08-08-tahap-1-10.md
-docs/history/2026-08-09-dashboard-rbac.md
-docs/history/2026-08-10-data-master.md
-docs/history/2026-08-11-data-siswa.md
-docs/history/2026-08-12-filter-search-siswa.md
+docs/history/INDEX.md
 ```
-
-File history tidak wajib dibaca AI setiap sesi. Baca `docs/AI-HANDOFF.md` terlebih dahulu.
