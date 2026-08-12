@@ -6,6 +6,13 @@ Format mengikuti gaya sederhana: tanggal, tahap/commit, perubahan.
 
 ## 2026-08-12
 
+### `feat: add student search`
+
+- Menambahkan pencarian siswa pada halaman Data Siswa.
+- Pencarian mendukung nama, NIS, dan NISN.
+- Pencarian dapat digabung dengan filter rombongan belajar.
+- Menambahkan test pencarian siswa.
+
 ### `docs: add AI handoff documentation`
 
 - Menambahkan dokumentasi handoff AI.

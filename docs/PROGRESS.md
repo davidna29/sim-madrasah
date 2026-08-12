@@ -22,7 +22,7 @@ Terakhir diperbarui: 12 Agustus 2026.
 | Mata pelajaran | Selesai awal | CRUD |
 | Pegawai | Selesai awal | CRUD |
 | Akun pegawai | Selesai awal | Create akun dari data pegawai |
-| Siswa | Selesai awal | CRUD, pencarian, filter rombel |
+| Siswa | Selesai tahap 12.20 | CRUD, filter rombel, pencarian nama/NIS/NISN |
 | Riwayat kelas siswa | Selesai awal | Tambah histori kelas siswa |
 | Akun siswa | Selesai awal | Create akun dari data siswa |
 | Wali siswa | Selesai awal | CRUD wali per siswa |

@@ -10,7 +10,7 @@ Dokumen ini berisi urutan kerja kecil yang direkomendasikan setelah fitur pencar
 
 Tujuan:
 
-- Menambahkan dropdown status pada halaman `Data Siswa`.
+- Menambahkan dropdown status pada halaman Data Siswa.
 - Status yang difilter: `active`, `inactive`, `transferred`, `graduated`, `alumni`.
 - Filter harus bisa digabung dengan pencarian `q` dan filter `class_group_id`.
 

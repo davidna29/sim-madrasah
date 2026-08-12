@@ -4,6 +4,8 @@ Terakhir diperbarui: 12 Agustus 2026, 12:29 WIB.
 
 Dokumen ini adalah pegangan utama untuk AI/developer berikutnya. Jangan membaca seluruh `SIM-MADRASAH-AI-HISTORY.md` kecuali ada konteks yang benar-benar hilang.
 
+saya mengembangkannya sekarang di macbook air m2 dengan laravel herd 
+
 ---
 
 ## 1. Status Terakhir Project
@@ -27,6 +29,41 @@ Kesimpulan kerja terakhir:
 - Test pencarian siswa sudah ada di `tests/Feature/Admin/StudentTest.php`.
 - README lama masih bawaan Laravel dan perlu diganti dengan README project.
 - `SIM-MADRASAH-AI-HISTORY.md` belum tracked di Git menurut hasil `git status` saat dicek.
+
+## Tahap Terakhir Selesai
+
+### Tahap 12.20 — Pencarian Data Siswa Berdasarkan Nama, NIS, dan NISN
+
+Status: selesai.
+
+Perubahan utama:
+
+- Menambahkan parameter pencarian `q` pada halaman Data Siswa.
+- Pencarian mendukung nama siswa melalui relasi `person.full_name`.
+- Pencarian mendukung NIS melalui `students.student_number`.
+- Pencarian mendukung NISN melalui `students.nisn`.
+- Pencarian tetap bisa digabung dengan filter rombongan belajar `class_group_id`.
+- Query daftar siswa tetap memakai `withQueryString()` agar filter tidak hilang saat pagination.
+
+File berubah:
+
+- `app/Http/Controllers/Admin/StudentController.php`
+- `resources/views/admin/students/index.blade.php`
+- `tests/Feature/Admin/StudentTest.php`
+- `docs/AI-HANDOFF.md`
+- `docs/PROGRESS.md`
+- `docs/NEXT-STEPS.md`
+- `docs/CHANGELOG.md`
+
+Catatan:
+
+- Tidak ada perubahan database.
+- Tidak ada perubahan permission.
+- Tidak ada keputusan teknis besar.
+
+Tahap berikutnya:
+
+- Tahap 12.21 — Filter Siswa Berdasarkan Status.
 
 ---
 
