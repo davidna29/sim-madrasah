@@ -18,7 +18,16 @@ class StudentController extends Controller
     // Update Controller Siswa
     public function index(Request $request): View
     {
+        // Ambil data status siswa dari method studentStatuses()
+        $studentStatuses = $this->studentStatuses();
+
         $selectedClassGroupId = $request->integer('class_group_id') ?: null;
+
+        $selectedStatus = (string) $request->query('status', '');
+        $selectedStatus = array_key_exists($selectedStatus, $studentStatuses)
+            ? $selectedStatus
+            : null;
+
         $search = trim((string) $request->query('q', ''));
 
         $classGroups = ClassGroup::query()
@@ -66,6 +75,11 @@ class StudentController extends Controller
                         ->where('is_current', true)
                 )
             )
+            // Filter berdasarkan status siswa jika ada status yang dipilih
+            ->when(
+                $selectedStatus !== null,
+                fn ($query) => $query->where('status', $selectedStatus)
+            )
             ->orderByDesc('is_active')
             ->orderBy('student_number')
             ->paginate(15)
@@ -75,7 +89,9 @@ class StudentController extends Controller
             'students' => $students,
             'classGroups' => $classGroups,
             'selectedClassGroupId' => $selectedClassGroupId,
+            'selectedStatus' => $selectedStatus,
             'search' => $search,
+            'studentStatuses' => $studentStatuses,
         ]);
     }
 
@@ -166,6 +182,22 @@ class StudentController extends Controller
         return redirect()
             ->route('admin.students.index')
             ->with('success', 'Data siswa berhasil diperbarui.');
+    }
+
+    /**
+     * Pilihan status siswa untuk filter dan form.
+     *
+     * @return array<string, string>
+     */
+    private function studentStatuses(): array
+    {
+        return [
+            'active' => 'Aktif',
+            'inactive' => 'Nonaktif',
+            'transferred' => 'Pindah',
+            'graduated' => 'Lulus',
+            'alumni' => 'Alumni',
+        ];
     }
 
     /**

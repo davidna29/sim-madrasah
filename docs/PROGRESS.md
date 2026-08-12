@@ -33,6 +33,7 @@ Terakhir diperbarui: 12 Agustus 2026.
 | Cetak siswa per kelas | Selesai awal | PDF |
 | Export siswa per kelas | Selesai awal | Excel |
 | Dokumentasi handoff AI | Baru dibuat | Paket docs ini |
+| Siswa | Selesai tahap 12.21 | CRUD, filter rombel, pencarian nama/NIS/NISN, filter status |
 
 ---
 
@@ -67,7 +68,7 @@ addfd94 feat: add madrasah identity module
 
 ## Fitur Terakhir yang Sudah Tampak di Kode
 
-### Pencarian Data Siswa
+### Filter Siswa Berdasarkan Status
 
 Lokasi utama:
 
@@ -75,18 +76,20 @@ Lokasi utama:
 - `resources/views/admin/students/index.blade.php`
 - `tests/Feature/Admin/StudentTest.php`
 
-Kemampuan pencarian:
+Kemampuan filter:
 
-- nama siswa melalui relasi `person.full_name`,
-- NIS melalui `student_number`,
-- NISN melalui `nisn`,
-- nomor registrasi melalui `registration_number`.
+- status aktif,
+- status nonaktif,
+- status pindah,
+- status lulus,
+- status alumni.
 
 Parameter query:
 
 ```txt
-/admin/students?q=kata_kunci
+/admin/students?status=graduated
 ```
+Filter status dapat digabung dengan parameter q dan class_group_id.
 
 ---
 

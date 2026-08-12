@@ -30,13 +30,13 @@
                 </div>
             @endif
 
-            <!-- Filter rombel -->
+            <!-- Filter siswa -->
             <div class="bg-white shadow-sm sm:rounded-lg border border-gray-100">
                 <div class="p-6">
                     <form
                         method="GET"
                         action="{{ route('admin.students.index') }}"
-                        class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-6"
+                        class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-8"
                     >
                         <div class="md:col-span-2">
                             <x-input-label for="q" value="Cari Siswa" />
@@ -76,6 +76,28 @@
                             </select>
                         </div>
 
+                        <!-- Filter Status -->
+                        <div class="md:col-span-2">
+                            <x-input-label for="status" value="Filter Status" />
+
+                            <select
+                                id="status"
+                                name="status"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+                            >
+                                <option value="">Semua Status</option>
+
+                                @foreach ($studentStatuses as $statusValue => $statusLabel)
+                                    <option
+                                        value="{{ $statusValue }}"
+                                        @selected($selectedStatus === $statusValue)
+                                    >
+                                        {{ $statusLabel }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        
                         <div class="flex items-end gap-2 md:col-span-2">
                             <button
                                 type="submit"

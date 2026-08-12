@@ -8,41 +8,19 @@ saya mengembangkannya sekarang di macbook air m2 dengan laravel herd
 
 ---
 
-## 1. Status Terakhir Project
-
-Project SIM Madrasah berbasis Laravel sudah memiliki fondasi admin, RBAC, data master, modul siswa, wali siswa, portofolio siswa, cetak PDF, export Excel, filter, dan pencarian siswa.
-
-Status kode yang terbaca dari Git:
-
-```txt
-fd723a4 docs: tambah panduan kontribusi untuk tim
-cfb94ab feat: add student search
-e5de86a feat: add class group filter for students
-570e511 feat: add academic year filter for class groups
-ff4a033 feat: add class group student excel export
-```
-
-Kesimpulan kerja terakhir:
-
-- Tahap filter siswa berdasarkan rombel aktif sudah ada.
-- Tahap pencarian siswa berdasarkan nama, NIS, NISN, dan nomor registrasi sudah ada di `StudentController@index`.
-- Test pencarian siswa sudah ada di `tests/Feature/Admin/StudentTest.php`.
-- README lama masih bawaan Laravel dan perlu diganti dengan README project.
-- `SIM-MADRASAH-AI-HISTORY.md` belum tracked di Git menurut hasil `git status` saat dicek.
-
 ## Tahap Terakhir Selesai
 
-### Tahap 12.20 — Pencarian Data Siswa Berdasarkan Nama, NIS, dan NISN
+### Tahap 12.21 — Filter Siswa Berdasarkan Status
 
 Status: selesai.
 
 Perubahan utama:
 
-- Menambahkan parameter pencarian `q` pada halaman Data Siswa.
-- Pencarian mendukung nama siswa melalui relasi `person.full_name`.
-- Pencarian mendukung NIS melalui `students.student_number`.
-- Pencarian mendukung NISN melalui `students.nisn`.
-- Pencarian tetap bisa digabung dengan filter rombongan belajar `class_group_id`.
+- Menambahkan filter status pada halaman Data Siswa.
+- Status yang didukung: `active`, `inactive`, `transferred`, `graduated`, dan `alumni`.
+- Filter status memakai parameter query `status`.
+- Filter status dapat digabung dengan pencarian `q`.
+- Filter status dapat digabung dengan filter rombongan belajar `class_group_id`.
 - Query daftar siswa tetap memakai `withQueryString()` agar filter tidak hilang saat pagination.
 
 File berubah:
@@ -63,7 +41,7 @@ Catatan:
 
 Tahap berikutnya:
 
-- Tahap 12.21 — Filter Siswa Berdasarkan Status.
+- Tahap 12.22 — Filter Siswa Berdasarkan Tahun Ajaran Masuk.
 
 ---
 

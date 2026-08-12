@@ -6,25 +6,25 @@ Dokumen ini berisi urutan kerja kecil yang direkomendasikan setelah fitur pencar
 
 ## Prioritas Terdekat
 
-### Tahap 12.21 — Filter Siswa Berdasarkan Status
+## Prioritas Terdekat
+
+### Tahap 12.22 — Filter Siswa Berdasarkan Tahun Ajaran Masuk
 
 Tujuan:
 
-- Menambahkan dropdown status pada halaman Data Siswa.
-- Status yang difilter: `active`, `inactive`, `transferred`, `graduated`, `alumni`.
-- Filter harus bisa digabung dengan pencarian `q` dan filter `class_group_id`.
+- Menambahkan dropdown tahun ajaran masuk pada halaman Data Siswa.
+- Filter memakai `students.admission_academic_year_id`.
+- Filter harus bisa digabung dengan pencarian `q`, filter `class_group_id`, dan filter `status`.
 
 File kemungkinan berubah:
 
-```txt
-app/Http/Controllers/Admin/StudentController.php
-resources/views/admin/students/index.blade.php
-tests/Feature/Admin/StudentTest.php
-docs/AI-HANDOFF.md
-docs/PROGRESS.md
-docs/NEXT-STEPS.md
-docs/CHANGELOG.md
-```
+- `app/Http/Controllers/Admin/StudentController.php`
+- `resources/views/admin/students/index.blade.php`
+- `tests/Feature/Admin/StudentTest.php`
+- `docs/AI-HANDOFF.md`
+- `docs/PROGRESS.md`
+- `docs/NEXT-STEPS.md`
+- `docs/CHANGELOG.md`
 
 Validasi:
 

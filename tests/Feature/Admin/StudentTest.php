@@ -441,4 +441,55 @@ class StudentTest extends TestCase
             ->assertSee('Ahmad Siswa')
             ->assertDontSee('Siti Siswa');
     }
+
+    // Test Filter Siswa Berdasarkan Status Siswa (Aktif, Lulus, Keluar, Dikeluarkan)
+    public function test_user_can_filter_students_by_status(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'students.view');
+
+        $academicYear = $this->createAcademicYear();
+
+        $activePerson = Person::create([
+            'full_name' => 'Ahmad Aktif',
+            'email' => 'ahmad.active@test.local',
+        ]);
+
+        Student::create([
+            'person_id' => $activePerson->id,
+            'admission_academic_year_id' => $academicYear->id,
+            'student_number' => 'SIS-AKTIF',
+            'nisn' => '2000000001',
+            'registration_number' => 'REG-AKTIF',
+            'admission_date' => '2026-07-01',
+            'status' => 'active',
+            'is_active' => true,
+        ]);
+
+        $graduatedPerson = Person::create([
+            'full_name' => 'Siti Lulus',
+            'email' => 'siti.graduated@test.local',
+        ]);
+
+        Student::create([
+            'person_id' => $graduatedPerson->id,
+            'admission_academic_year_id' => $academicYear->id,
+            'student_number' => 'SIS-LULUS',
+            'nisn' => '2000000002',
+            'registration_number' => 'REG-LULUS',
+            'admission_date' => '2026-07-01',
+            'status' => 'graduated',
+            'is_active' => false,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->get('/admin/students?status=graduated');
+
+        $response
+            ->assertStatus(200)
+            ->assertSee('Siti Lulus')
+            ->assertDontSee('Ahmad Aktif');
+    }
 }
