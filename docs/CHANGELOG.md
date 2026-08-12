@@ -1,0 +1,107 @@
+# Changelog — SIM Madrasah
+
+Format mengikuti gaya sederhana: tanggal, tahap/commit, perubahan.
+
+---
+
+## 2026-08-12
+
+### `docs: add AI handoff documentation`
+
+- Menambahkan dokumentasi handoff AI.
+- Menambahkan README project pengganti README Laravel bawaan.
+- Menambahkan instruksi kerja AI.
+- Menambahkan dokumentasi database, RBAC, modul, testing, deployment, dan next steps.
+
+### `docs: tambah panduan kontribusi untuk tim`
+
+- Menambahkan panduan kontribusi.
+- Mengatur branch, commit, PR, dan rilis.
+
+### `feat: add student search`
+
+- Menambahkan pencarian siswa pada halaman Data Siswa.
+- Pencarian mendukung nama, NIS, NISN, dan nomor registrasi.
+- Menambahkan test pencarian siswa.
+
+### `feat: add class group filter for students`
+
+- Menambahkan filter siswa berdasarkan rombongan belajar aktif.
+- Menampilkan kolom kelas saat ini di daftar siswa.
+- Menambahkan test filter siswa berdasarkan rombel.
+
+---
+
+## Sebelumnya
+
+### `feat: add academic year filter for class groups`
+
+- Menambahkan filter rombel berdasarkan tahun ajaran.
+
+### `feat: add class group student excel export`
+
+- Menambahkan export daftar siswa per kelas ke Excel.
+
+### `feat: add class group student print pdf`
+
+- Menambahkan cetak daftar siswa per kelas ke PDF.
+
+### `feat: add student portfolio card pdf`
+
+- Menambahkan cetak kartu portofolio siswa.
+
+### `feat: add student portfolio qr code`
+
+- Menambahkan QR Code untuk portofolio siswa.
+
+### `feat: add student portfolio summary`
+
+- Menambahkan halaman ringkasan portofolio digital siswa.
+
+### `feat: add student guardian account creation`
+
+- Menambahkan pembuatan akun wali siswa.
+
+### `feat: add student guardian module`
+
+- Menambahkan modul orang tua/wali siswa.
+
+### `feat: add student account creation`
+
+- Menambahkan pembuatan akun siswa.
+
+### `feat: add student class history module`
+
+- Menambahkan modul riwayat kelas siswa.
+
+### `feat: add student module`
+
+- Menambahkan modul data siswa.
+
+### `feat: add employee account creation`
+
+- Menambahkan pembuatan akun pegawai.
+
+### `feat: add employee module`
+
+- Menambahkan modul guru dan pegawai.
+
+### `feat: add subject module`
+
+- Menambahkan modul mata pelajaran.
+
+### `feat: add class group module`
+
+- Menambahkan modul rombongan belajar.
+
+### `feat: add grade level and room CRUD pages`
+
+- Menambahkan halaman CRUD tingkat kelas dan ruangan.
+
+### `feat: add academic year and semester module`
+
+- Menambahkan modul tahun ajaran dan semester.
+
+### `feat: add madrasah identity module`
+
+- Menambahkan modul identitas madrasah.

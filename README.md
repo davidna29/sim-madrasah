@@ -1,59 +1,125 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# SIM Madrasah
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+SIM Madrasah adalah aplikasi Sistem Informasi Manajemen Madrasah berbasis Laravel untuk membantu pengelolaan data inti madrasah: identitas madrasah, tahun ajaran, semester, kelas, ruangan, mata pelajaran, pegawai, siswa, wali siswa, akun pengguna, hak akses, dan portofolio digital siswa.
 
-## About Laravel
+> Status dokumentasi: dibuat sebagai paket handoff AI pada 12 Agustus 2026.  
+> Status kode yang terbaca dari repository: `fd723a4 docs: tambah panduan kontribusi untuk tim`, dengan fitur terakhir `cfb94ab feat: add student search`.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Teknologi Utama
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Laravel 12
+- PHP `^8.2`
+- Laravel Breeze
+- Blade Template
+- Tailwind CSS
+- Vite
+- SQLite untuk pengembangan lokal
+- MySQL/MariaDB untuk produksi/shared hosting
+- DomPDF untuk cetak PDF
+- Laravel Excel untuk ekspor Excel
+- Simple QRCode untuk QR portofolio siswa
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Modul yang Sudah Ada
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+| Area | Status |
+|---|---|
+| Authentication | Ada |
+| Middleware akun aktif | Ada |
+| RBAC role dan permission | Ada |
+| Dashboard role-based | Ada |
+| Identitas madrasah | Ada |
+| Tahun ajaran dan semester | Ada |
+| Tingkat kelas | Ada |
+| Ruangan | Ada |
+| Rombongan belajar | Ada |
+| Mata pelajaran | Ada |
+| Guru dan pegawai | Ada |
+| Akun pegawai | Ada |
+| Data siswa | Ada |
+| Riwayat kelas siswa | Ada |
+| Akun siswa | Ada |
+| Orang tua/wali siswa | Ada |
+| Akun orang tua/wali | Ada |
+| Portofolio digital siswa | Ada |
+| QR Code portofolio | Ada |
+| Cetak kartu portofolio PDF | Ada |
+| Cetak data siswa per kelas PDF | Ada |
+| Export data siswa per kelas Excel | Ada |
+| Filter rombel berdasarkan tahun ajaran | Ada |
+| Filter siswa berdasarkan rombel aktif | Ada |
+| Pencarian siswa berdasarkan nama, NIS, NISN, nomor registrasi | Ada |
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Cara Menjalankan Project Lokal
 
-### Premium Partners
+```bash
+cp .env.example .env
+composer install
+php artisan key:generate
+php artisan migrate --seed
+npm install
+npm run build
+php artisan serve
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Untuk mode pengembangan frontend:
 
-## Contributing
+```bash
+npm run dev
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## Pemeriksaan Wajib Setelah Mengubah Kode
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+php artisan optimize:clear
+./vendor/bin/pint
+./vendor/bin/pint --test
+php artisan test
+npm run build
+git status
+```
 
-## Security Vulnerabilities
+Catatan: kalau muncul error `Call to undefined function Illuminate\Support\mb_split()`, aktifkan ekstensi PHP `mbstring` di environment lokal/hosting.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## Dokumen Penting
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+AI atau developer baru sebaiknya membaca dokumen berikut sebelum melanjutkan:
+
+1. [`AI-INSTRUCTIONS.md`](AI-INSTRUCTIONS.md)
+2. [`docs/AI-HANDOFF.md`](docs/AI-HANDOFF.md)
+3. [`docs/PROJECT-BRIEF.md`](docs/PROJECT-BRIEF.md)
+4. [`docs/PROGRESS.md`](docs/PROGRESS.md)
+5. [`docs/NEXT-STEPS.md`](docs/NEXT-STEPS.md)
+6. [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
+7. [`docs/DATABASE.md`](docs/DATABASE.md)
+8. [`docs/RBAC.md`](docs/RBAC.md)
+9. [`docs/AI-WORKFLOW.md`](docs/AI-WORKFLOW.md)
+
+`SIM-MADRASAH-AI-HISTORY.md` hanya dipakai sebagai arsip percakapan mentah, bukan sebagai sumber kerja utama.
+
+---
+
+## Aturan Keamanan Repository
+
+Jangan commit file/folder berikut:
+
+```txt
+.env
+vendor/
+node_modules/
+.DS_Store
+.phpunit.result.cache
+public/build/
+storage/logs/
+```
+
+Gunakan `.env.example` sebagai contoh konfigurasi, bukan `.env` asli.
