@@ -4,6 +4,24 @@ Dokumen ini mencatat keputusan teknis penting agar AI/developer berikutnya tidak
 
 ---
 
+## Template Keputusan Baru
+
+```md
+## ADR-XXX — Judul keputusan
+
+Status: diusulkan/diterima/ditolak.
+
+Alasan:
+
+- ...
+
+Konsekuensi:
+
+- ...
+```
+
+---
+
 ## ADR-001 — Menggunakan Laravel 12
 
 Status: diterima.
@@ -102,24 +120,6 @@ Dihindari sebagai dependency wajib:
 - queue worker permanen,
 - PostgreSQL-only,
 - microservice.
-
----
-
-## Template Keputusan Baru
-
-```md
-## ADR-XXX — Judul keputusan
-
-Status: diusulkan/diterima/ditolak.
-
-Alasan:
-
-- ...
-
-Konsekuensi:
-
-- ...
-```
 
 ---
 
