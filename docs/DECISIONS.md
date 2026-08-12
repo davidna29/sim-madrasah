@@ -120,3 +120,23 @@ Konsekuensi:
 
 - ...
 ```
+
+---
+
+## Export Data Siswa Tahap Awal Menggunakan CSV
+
+Keputusan:
+
+- Export data siswa tahap awal memakai format CSV.
+
+Alasan:
+
+- CSV tidak membutuhkan package tambahan.
+- CSV ringan untuk data tabular.
+- CSV mudah diuji melalui feature test.
+- CSV tetap bisa dibuka di aplikasi spreadsheet umum.
+
+Konsekuensi:
+
+- Format tampilan tidak sefleksibel Excel.
+- Jika nanti dibutuhkan format `.xlsx`, perlu tahap lanjutan dan kemungkinan package tambahan.

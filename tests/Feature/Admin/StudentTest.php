@@ -562,4 +562,63 @@ class StudentTest extends TestCase
             ->assertSee('2026/2027 Filter')
             ->assertDontSee('Siti Tahun Lama');
     }
+
+    // Test Export Siswa Berdasarkan Filter yang Aktif
+    public function test_user_can_export_students_using_active_filters(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'students.view');
+
+        $academicYear = $this->createAcademicYear();
+
+        $activePerson = Person::create([
+            'full_name' => 'Ahmad Export Aktif',
+            'email' => 'ahmad.export.active@test.local',
+        ]);
+
+        Student::create([
+            'person_id' => $activePerson->id,
+            'admission_academic_year_id' => $academicYear->id,
+            'student_number' => 'EXP-AKTIF',
+            'nisn' => '4000000001',
+            'registration_number' => 'REG-EXP-AKTIF',
+            'admission_date' => '2026-07-01',
+            'status' => 'active',
+            'is_active' => true,
+        ]);
+
+        $graduatedPerson = Person::create([
+            'full_name' => 'Siti Export Lulus',
+            'email' => 'siti.export.graduated@test.local',
+        ]);
+
+        Student::create([
+            'person_id' => $graduatedPerson->id,
+            'admission_academic_year_id' => $academicYear->id,
+            'student_number' => 'EXP-LULUS',
+            'nisn' => '4000000002',
+            'registration_number' => 'REG-EXP-LULUS',
+            'admission_date' => '2026-07-01',
+            'status' => 'graduated',
+            'is_active' => false,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->get('/admin/students/export?status=graduated');
+
+        $response->assertStatus(200);
+
+        $this->assertStringContainsString(
+            'text/csv',
+            (string) $response->headers->get('content-type')
+        );
+
+        $content = $response->streamedContent();
+
+        $this->assertStringContainsString('Siti Export Lulus', $content);
+        $this->assertStringContainsString('EXP-LULUS', $content);
+        $this->assertStringNotContainsString('Ahmad Export Aktif', $content);
+    }
 }

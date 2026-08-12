@@ -6,6 +6,14 @@ Format mengikuti gaya sederhana: tanggal, tahap/commit, perubahan.
 
 ## 2026-08-12
 
+### `feat: export filtered students to csv`
+
+- Menambahkan export CSV pada halaman Data Siswa.
+- Export mengikuti filter aktif: pencarian, rombel, status, dan tahun masuk.
+- Menambahkan route `admin.students.export`.
+- Memindahkan query filter siswa ke helper `filteredStudentsQuery()`.
+- Menambahkan test export siswa berdasarkan filter aktif.
+
 ### `feat: add student admission year filter`
 
 - Menambahkan filter tahun ajaran masuk pada halaman Data Siswa.

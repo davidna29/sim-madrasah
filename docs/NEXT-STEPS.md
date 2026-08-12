@@ -6,20 +6,19 @@ Dokumen ini berisi urutan kerja kecil yang direkomendasikan setelah fitur pencar
 
 ## Prioritas Terdekat
 
-## Prioritas Terdekat
-
-### Tahap 12.23 — Export Data Siswa Berdasarkan Filter Aktif
+### Tahap 12.24 — Review dan Perapian Export Data Siswa
 
 Tujuan:
 
-- Menambahkan tombol export pada halaman Data Siswa.
-- Export mengikuti filter aktif: `q`, `class_group_id`, `status`, dan `admission_academic_year_id`.
-- Format export ditentukan pada tahap pengerjaan, tetapi prioritas awal adalah CSV sederhana agar ringan dan mudah diuji.
+- Mengecek ulang isi kolom CSV.
+- Memastikan label status mudah dibaca.
+- Memastikan nama file export konsisten.
+- Memastikan tombol export tetap nyaman pada tampilan desktop dan mobile.
+- Menentukan apakah tahap berikutnya perlu export Excel atau cukup CSV.
 
 File kemungkinan berubah:
 
 - `app/Http/Controllers/Admin/StudentController.php`
-- `routes/web.php`
 - `resources/views/admin/students/index.blade.php`
 - `tests/Feature/Admin/StudentTest.php`
 - `docs/AI-HANDOFF.md`

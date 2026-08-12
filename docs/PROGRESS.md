@@ -22,7 +22,7 @@ Terakhir diperbarui: 12 Agustus 2026.
 | Mata pelajaran | Selesai awal | CRUD |
 | Pegawai | Selesai awal | CRUD |
 | Akun pegawai | Selesai awal | Create akun dari data pegawai |
-| Siswa | Selesai tahap 12.22 | CRUD, filter rombel, pencarian nama/NIS/NISN, filter status, filter tahun masuk |
+| Siswa | Selesai tahap 12.23 | CRUD, filter rombel, pencarian nama/NIS/NISN, filter status, filter tahun masuk, export CSV berdasarkan filter aktif |
 | Riwayat kelas siswa | Selesai awal | Tambah histori kelas siswa |
 | Akun siswa | Selesai awal | Create akun dari data siswa |
 | Wali siswa | Selesai awal | CRUD wali per siswa |
@@ -67,24 +67,28 @@ addfd94 feat: add madrasah identity module
 
 ## Fitur Terakhir yang Sudah Tampak di Kode
 
-### Filter Siswa Berdasarkan Tahun Ajaran Masuk
+### Export Data Siswa Berdasarkan Filter Aktif
 
 Lokasi utama:
 
+- `routes/web.php`
 - `app/Http/Controllers/Admin/StudentController.php`
 - `resources/views/admin/students/index.blade.php`
 - `tests/Feature/Admin/StudentTest.php`
 
-Kemampuan filter:
+Kemampuan export:
 
-- siswa dapat difilter berdasarkan `admission_academic_year_id`;
-- daftar tahun masuk diambil dari tabel `academic_years`;
-- filter tahun masuk dapat digabung dengan `q`, `class_group_id`, dan `status`.
+- export memakai format CSV;
+- export mengikuti filter `q`;
+- export mengikuti filter `class_group_id`;
+- export mengikuti filter `status`;
+- export mengikuti filter `admission_academic_year_id`.
 
-Contoh parameter:
+Route:
 
 ```txt
-/admin/students?admission_academic_year_id=1
+/admin/students/export
+```
 
 ---
 

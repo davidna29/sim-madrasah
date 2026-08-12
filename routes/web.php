@@ -216,6 +216,11 @@ Route::middleware([
         ->middleware('permission:employees.account.create')
         ->name('employees.accounts.store');
 
+    // Tambahkan route untuk export siswa
+    Route::get('/students/export', [StudentController::class, 'export'])
+        ->middleware('permission:students.view') // sesuaikan middleware jika ada
+        ->name('students.export');
+
     // Tambahkan route untuk manajemen siswa (students)
     Route::get('/students', [StudentController::class, 'index'])
         ->middleware('permission:students.view')

@@ -8,10 +8,12 @@ use App\Models\ClassGroup;
 use App\Models\Person;
 use App\Models\Student;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class StudentController extends Controller
 {
@@ -48,7 +50,12 @@ class StudentController extends Controller
             ->orderByDesc('id')
             ->get();
 
-        $students = Student::query()
+        $students = $this->filteredStudentsQuery(
+            selectedClassGroupId: $selectedClassGroupId,
+            selectedStatus: $selectedStatus,
+            selectedAdmissionAcademicYearId: $selectedAdmissionAcademicYearId,
+            search: $search,
+        )
             ->with([
                 'person.user',
                 'admissionAcademicYear',
@@ -110,6 +117,87 @@ class StudentController extends Controller
             'studentStatuses' => $studentStatuses,
             'admissionAcademicYears' => $admissionAcademicYears,
             'selectedAdmissionAcademicYearId' => $selectedAdmissionAcademicYearId,
+        ]);
+    }
+
+    // Tambahkan method export untuk mengekspor data siswa ke CSV
+    public function export(Request $request): StreamedResponse
+    {
+        $studentStatuses = $this->studentStatuses();
+
+        $selectedClassGroupId = $request->integer('class_group_id') ?: null;
+        $selectedAdmissionAcademicYearId = $request->integer('admission_academic_year_id') ?: null;
+
+        $selectedStatus = (string) $request->query('status', '');
+        $selectedStatus = array_key_exists($selectedStatus, $studentStatuses)
+            ? $selectedStatus
+            : null;
+
+        $search = trim((string) $request->query('q', ''));
+
+        $fileName = 'data-siswa-'.now()->format('Ymd-His').'.csv';
+
+        return response()->streamDownload(function () use (
+            $selectedClassGroupId,
+            $selectedStatus,
+            $selectedAdmissionAcademicYearId,
+            $search
+        ): void {
+            $handle = fopen('php://output', 'w');
+
+            if ($handle === false) {
+                return;
+            }
+
+            fwrite($handle, "\xEF\xBB\xBF");
+
+            fputcsv($handle, [
+                'NIS',
+                'NISN',
+                'Nomor Registrasi',
+                'Nama',
+                'Tahun Masuk',
+                'Kelas Saat Ini',
+                'Semester',
+                'Status',
+                'Aktif',
+            ]);
+
+            $this->filteredStudentsQuery(
+                selectedClassGroupId: $selectedClassGroupId,
+                selectedStatus: $selectedStatus,
+                selectedAdmissionAcademicYearId: $selectedAdmissionAcademicYearId,
+                search: $search,
+            )
+                ->with([
+                    'person',
+                    'admissionAcademicYear',
+                    'currentClassHistory.semester',
+                    'currentClassHistory.classGroup',
+                ])
+                ->orderByDesc('is_active')
+                ->orderBy('student_number')
+                ->chunk(100, function ($students) use ($handle): void {
+                    foreach ($students as $student) {
+                        $currentClassHistory = $student->currentClassHistory;
+
+                        fputcsv($handle, [
+                            $student->student_number,
+                            $student->nisn,
+                            $student->registration_number,
+                            $student->person?->full_name,
+                            $student->admissionAcademicYear?->name,
+                            $currentClassHistory?->classGroup?->name,
+                            $currentClassHistory?->semester?->name,
+                            $student->status,
+                            $student->is_active ? 'Ya' : 'Tidak',
+                        ]);
+                    }
+                });
+
+            fclose($handle);
+        }, $fileName, [
+            'Content-Type' => 'text/csv; charset=UTF-8',
         ]);
     }
 
@@ -200,6 +288,57 @@ class StudentController extends Controller
         return redirect()
             ->route('admin.students.index')
             ->with('success', 'Data siswa berhasil diperbarui.');
+    }
+
+    /**
+     * Query dasar daftar siswa yang sudah mengikuti filter aktif.
+     *
+     * @return Builder<Student>
+     */
+    private function filteredStudentsQuery(
+        ?int $selectedClassGroupId,
+        ?string $selectedStatus,
+        ?int $selectedAdmissionAcademicYearId,
+        string $search,
+    ): Builder {
+        return Student::query()
+            ->when(
+                $search !== '',
+                fn ($query) => $query->where(function ($searchQuery) use ($search): void {
+                    $searchQuery
+                        ->where('student_number', 'like', '%'.$search.'%')
+                        ->orWhere('nisn', 'like', '%'.$search.'%')
+                        ->orWhere('registration_number', 'like', '%'.$search.'%')
+                        ->orWhereHas(
+                            'person',
+                            fn ($personQuery) => $personQuery->where(
+                                'full_name',
+                                'like',
+                                '%'.$search.'%'
+                            )
+                        );
+                })
+            )
+            ->when(
+                $selectedClassGroupId,
+                fn ($query) => $query->whereHas(
+                    'classHistories',
+                    fn ($historyQuery) => $historyQuery
+                        ->where('class_group_id', $selectedClassGroupId)
+                        ->where('is_current', true)
+                )
+            )
+            ->when(
+                $selectedStatus !== null,
+                fn ($query) => $query->where('status', $selectedStatus)
+            )
+            ->when(
+                $selectedAdmissionAcademicYearId,
+                fn ($query) => $query->where(
+                    'admission_academic_year_id',
+                    $selectedAdmissionAcademicYearId
+                )
+            );
     }
 
     /**

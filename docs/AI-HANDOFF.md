@@ -10,23 +10,23 @@ saya mengembangkannya sekarang di macbook air m2 dengan laravel herd
 
 ## Tahap Terakhir Selesai
 
-### Tahap 12.22 — Filter Siswa Berdasarkan Tahun Ajaran Masuk
+### Tahap 12.23 — Export Data Siswa Berdasarkan Filter Aktif
 
 Status: selesai.
 
 Perubahan utama:
 
-- Menambahkan filter tahun ajaran masuk pada halaman Data Siswa.
-- Filter memakai parameter query `admission_academic_year_id`.
-- Filter membaca kolom `students.admission_academic_year_id`.
-- Dropdown tahun masuk mengambil data dari tabel `academic_years`.
-- Filter tahun masuk dapat digabung dengan pencarian `q`.
-- Filter tahun masuk dapat digabung dengan filter rombongan belajar `class_group_id`.
-- Filter tahun masuk dapat digabung dengan filter status `status`.
-- Query daftar siswa tetap memakai `withQueryString()` agar filter tidak hilang saat pagination.
+- Menambahkan route `admin.students.export`.
+- Menambahkan method `export()` pada `StudentController`.
+- Export memakai format CSV.
+- Export mengikuti filter aktif: `q`, `class_group_id`, `status`, dan `admission_academic_year_id`.
+- Query filter siswa dipindahkan ke helper `filteredStudentsQuery()` agar dipakai bersama oleh halaman index dan export.
+- Export memakai `streamDownload()` dan `chunk(100)` agar lebih ringan.
+- Tombol `Export CSV` ditambahkan pada halaman Data Siswa.
 
 File berubah:
 
+- `routes/web.php`
 - `app/Http/Controllers/Admin/StudentController.php`
 - `resources/views/admin/students/index.blade.php`
 - `tests/Feature/Admin/StudentTest.php`
@@ -34,16 +34,17 @@ File berubah:
 - `docs/PROGRESS.md`
 - `docs/NEXT-STEPS.md`
 - `docs/CHANGELOG.md`
+- `docs/DECISIONS.md`
 
 Catatan:
 
 - Tidak ada perubahan database.
-- Tidak ada perubahan permission.
-- Tidak ada keputusan teknis besar.
+- Tidak ada permission baru.
+- Export memakai permission yang sama dengan melihat data siswa, yaitu `students.view`.
 
 Tahap berikutnya:
 
-- Tahap 12.23 — Export Data Siswa Berdasarkan Filter Aktif.
+- Tahap 12.24 — Review dan Perapian Export Data Siswa.
 
 ---
 
