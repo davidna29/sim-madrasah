@@ -98,6 +98,28 @@
                             </select>
                         </div>
                         
+                        <!-- Filter Tahun Masuk -->
+                        <div class="md:col-span-2">
+                            <x-input-label for="admission_academic_year_id" value="Tahun Masuk" />
+
+                            <select
+                                id="admission_academic_year_id"
+                                name="admission_academic_year_id"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+                            >
+                                <option value="">Semua Tahun Masuk</option>
+
+                                @foreach ($admissionAcademicYears as $academicYear)
+                                    <option
+                                        value="{{ $academicYear->id }}"
+                                        @selected((string) $selectedAdmissionAcademicYearId === (string) $academicYear->id)
+                                    >
+                                        {{ $academicYear->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         <div class="flex items-end gap-2 md:col-span-2">
                             <button
                                 type="submit"

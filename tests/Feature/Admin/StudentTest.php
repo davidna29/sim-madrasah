@@ -492,4 +492,74 @@ class StudentTest extends TestCase
             ->assertSee('Siti Lulus')
             ->assertDontSee('Ahmad Aktif');
     }
+
+    // Test Filter Siswa Berdasarkan Tahun Ajaran Masuk
+    public function test_user_can_filter_students_by_admission_academic_year(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'students.view');
+
+        $academicYear2026 = AcademicYear::create([
+            'code' => '2026-2027-filter',
+            'name' => '2026/2027 Filter',
+            'start_date' => '2026-07-01',
+            'end_date' => '2027-06-30',
+            'status' => 'active',
+            'is_active' => true,
+            'is_locked' => false,
+        ]);
+
+        $academicYear2025 = AcademicYear::create([
+            'code' => '2025-2026-filter',
+            'name' => '2025/2026 Filter',
+            'start_date' => '2025-07-01',
+            'end_date' => '2026-06-30',
+            'status' => 'inactive',
+            'is_active' => false,
+            'is_locked' => false,
+        ]);
+
+        $personA = Person::create([
+            'full_name' => 'Ahmad Tahun Baru',
+            'email' => 'ahmad.year@test.local',
+        ]);
+
+        Student::create([
+            'person_id' => $personA->id,
+            'admission_academic_year_id' => $academicYear2026->id,
+            'student_number' => 'SIS-TAHUN-2026',
+            'nisn' => '3000000001',
+            'registration_number' => 'REG-TAHUN-2026',
+            'admission_date' => '2026-07-01',
+            'status' => 'active',
+            'is_active' => true,
+        ]);
+
+        $personB = Person::create([
+            'full_name' => 'Siti Tahun Lama',
+            'email' => 'siti.year@test.local',
+        ]);
+
+        Student::create([
+            'person_id' => $personB->id,
+            'admission_academic_year_id' => $academicYear2025->id,
+            'student_number' => 'SIS-TAHUN-2025',
+            'nisn' => '3000000002',
+            'registration_number' => 'REG-TAHUN-2025',
+            'admission_date' => '2025-07-01',
+            'status' => 'active',
+            'is_active' => true,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->get('/admin/students?admission_academic_year_id='.$academicYear2026->id);
+
+        $response
+            ->assertStatus(200)
+            ->assertSee('Ahmad Tahun Baru')
+            ->assertSee('2026/2027 Filter')
+            ->assertDontSee('Siti Tahun Lama');
+    }
 }

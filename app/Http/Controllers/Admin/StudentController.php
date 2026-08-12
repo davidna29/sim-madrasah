@@ -23,6 +23,8 @@ class StudentController extends Controller
 
         $selectedClassGroupId = $request->integer('class_group_id') ?: null;
 
+        $selectedAdmissionAcademicYearId = $request->integer('admission_academic_year_id') ?: null;
+
         $selectedStatus = (string) $request->query('status', '');
         $selectedStatus = array_key_exists($selectedStatus, $studentStatuses)
             ? $selectedStatus
@@ -38,6 +40,12 @@ class StudentController extends Controller
             ->where('is_active', true)
             ->orderByDesc('academic_year_id')
             ->orderBy('name')
+            ->get();
+
+        // Ambil data tahun ajaran untuk filter berdasarkan tahun ajaran masuk siswa
+        $admissionAcademicYears = AcademicYear::query()
+            ->orderByDesc('start_date')
+            ->orderByDesc('id')
             ->get();
 
         $students = Student::query()
@@ -80,6 +88,14 @@ class StudentController extends Controller
                 $selectedStatus !== null,
                 fn ($query) => $query->where('status', $selectedStatus)
             )
+            // Filter berdasarkan tahun ajaran masuk siswa jika ada tahun ajaran yang dipilih
+            ->when(
+                $selectedAdmissionAcademicYearId,
+                fn ($query) => $query->where(
+                    'admission_academic_year_id',
+                    $selectedAdmissionAcademicYearId
+                )
+            )
             ->orderByDesc('is_active')
             ->orderBy('student_number')
             ->paginate(15)
@@ -92,6 +108,8 @@ class StudentController extends Controller
             'selectedStatus' => $selectedStatus,
             'search' => $search,
             'studentStatuses' => $studentStatuses,
+            'admissionAcademicYears' => $admissionAcademicYears,
+            'selectedAdmissionAcademicYearId' => $selectedAdmissionAcademicYearId,
         ]);
     }
 

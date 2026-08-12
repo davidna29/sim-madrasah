@@ -8,17 +8,18 @@ Dokumen ini berisi urutan kerja kecil yang direkomendasikan setelah fitur pencar
 
 ## Prioritas Terdekat
 
-### Tahap 12.22 — Filter Siswa Berdasarkan Tahun Ajaran Masuk
+### Tahap 12.23 — Export Data Siswa Berdasarkan Filter Aktif
 
 Tujuan:
 
-- Menambahkan dropdown tahun ajaran masuk pada halaman Data Siswa.
-- Filter memakai `students.admission_academic_year_id`.
-- Filter harus bisa digabung dengan pencarian `q`, filter `class_group_id`, dan filter `status`.
+- Menambahkan tombol export pada halaman Data Siswa.
+- Export mengikuti filter aktif: `q`, `class_group_id`, `status`, dan `admission_academic_year_id`.
+- Format export ditentukan pada tahap pengerjaan, tetapi prioritas awal adalah CSV sederhana agar ringan dan mudah diuji.
 
 File kemungkinan berubah:
 
 - `app/Http/Controllers/Admin/StudentController.php`
+- `routes/web.php`
 - `resources/views/admin/students/index.blade.php`
 - `tests/Feature/Admin/StudentTest.php`
 - `docs/AI-HANDOFF.md`

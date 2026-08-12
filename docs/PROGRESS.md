@@ -22,7 +22,7 @@ Terakhir diperbarui: 12 Agustus 2026.
 | Mata pelajaran | Selesai awal | CRUD |
 | Pegawai | Selesai awal | CRUD |
 | Akun pegawai | Selesai awal | Create akun dari data pegawai |
-| Siswa | Selesai tahap 12.20 | CRUD, filter rombel, pencarian nama/NIS/NISN |
+| Siswa | Selesai tahap 12.22 | CRUD, filter rombel, pencarian nama/NIS/NISN, filter status, filter tahun masuk |
 | Riwayat kelas siswa | Selesai awal | Tambah histori kelas siswa |
 | Akun siswa | Selesai awal | Create akun dari data siswa |
 | Wali siswa | Selesai awal | CRUD wali per siswa |
@@ -33,7 +33,6 @@ Terakhir diperbarui: 12 Agustus 2026.
 | Cetak siswa per kelas | Selesai awal | PDF |
 | Export siswa per kelas | Selesai awal | Excel |
 | Dokumentasi handoff AI | Baru dibuat | Paket docs ini |
-| Siswa | Selesai tahap 12.21 | CRUD, filter rombel, pencarian nama/NIS/NISN, filter status |
 
 ---
 
@@ -68,7 +67,7 @@ addfd94 feat: add madrasah identity module
 
 ## Fitur Terakhir yang Sudah Tampak di Kode
 
-### Filter Siswa Berdasarkan Status
+### Filter Siswa Berdasarkan Tahun Ajaran Masuk
 
 Lokasi utama:
 
@@ -78,25 +77,19 @@ Lokasi utama:
 
 Kemampuan filter:
 
-- status aktif,
-- status nonaktif,
-- status pindah,
-- status lulus,
-- status alumni.
+- siswa dapat difilter berdasarkan `admission_academic_year_id`;
+- daftar tahun masuk diambil dari tabel `academic_years`;
+- filter tahun masuk dapat digabung dengan `q`, `class_group_id`, dan `status`.
 
-Parameter query:
+Contoh parameter:
 
 ```txt
-/admin/students?status=graduated
-```
-Filter status dapat digabung dengan parameter q dan class_group_id.
+/admin/students?admission_academic_year_id=1
 
 ---
 
 ## Catatan yang Perlu Dirapikan
 
-1. `README.md` lama masih template Laravel dan perlu diganti.
-2. `SIM-MADRASAH-AI-HISTORY.md` sangat besar dan sebaiknya hanya menjadi arsip.
-3. File `.env` tidak boleh ikut dibagikan ke AI/GitHub.
-4. Folder `vendor/` dan `node_modules/` tidak perlu masuk zip handoff.
-5. `php artisan test` di environment AI gagal karena ekstensi PHP `mbstring` tidak aktif.
+1. `SIM-MADRASAH-AI-HISTORY.md` sangat besar dan sebaiknya hanya menjadi arsip.
+2. Folder `vendor/` dan `node_modules/` tidak perlu masuk zip handoff.
+3. `php artisan test` di environment AI gagal karena ekstensi PHP `mbstring` tidak aktif.

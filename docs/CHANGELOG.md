@@ -6,6 +6,21 @@ Format mengikuti gaya sederhana: tanggal, tahap/commit, perubahan.
 
 ## 2026-08-12
 
+### `feat: add student admission year filter`
+
+- Menambahkan filter tahun ajaran masuk pada halaman Data Siswa.
+- Filter memakai `students.admission_academic_year_id`.
+- Dropdown tahun masuk mengambil data dari tabel `academic_years`.
+- Filter tahun masuk dapat digabung dengan pencarian, filter rombel aktif, dan filter status.
+- Menambahkan test filter siswa berdasarkan tahun ajaran masuk.
+
+### `feat: add student status filter`
+
+- Menambahkan filter status pada halaman Data Siswa.
+- Filter status mendukung `active`, `inactive`, `transferred`, `graduated`, dan `alumni`.
+- Filter status dapat digabung dengan pencarian dan filter rombel aktif.
+- Menambahkan test filter siswa berdasarkan status.
+
 ### `feat: add student search`
 
 - Menambahkan pencarian siswa pada halaman Data Siswa.

@@ -10,17 +10,19 @@ saya mengembangkannya sekarang di macbook air m2 dengan laravel herd
 
 ## Tahap Terakhir Selesai
 
-### Tahap 12.21 — Filter Siswa Berdasarkan Status
+### Tahap 12.22 — Filter Siswa Berdasarkan Tahun Ajaran Masuk
 
 Status: selesai.
 
 Perubahan utama:
 
-- Menambahkan filter status pada halaman Data Siswa.
-- Status yang didukung: `active`, `inactive`, `transferred`, `graduated`, dan `alumni`.
-- Filter status memakai parameter query `status`.
-- Filter status dapat digabung dengan pencarian `q`.
-- Filter status dapat digabung dengan filter rombongan belajar `class_group_id`.
+- Menambahkan filter tahun ajaran masuk pada halaman Data Siswa.
+- Filter memakai parameter query `admission_academic_year_id`.
+- Filter membaca kolom `students.admission_academic_year_id`.
+- Dropdown tahun masuk mengambil data dari tabel `academic_years`.
+- Filter tahun masuk dapat digabung dengan pencarian `q`.
+- Filter tahun masuk dapat digabung dengan filter rombongan belajar `class_group_id`.
+- Filter tahun masuk dapat digabung dengan filter status `status`.
 - Query daftar siswa tetap memakai `withQueryString()` agar filter tidak hilang saat pagination.
 
 File berubah:
@@ -41,7 +43,7 @@ Catatan:
 
 Tahap berikutnya:
 
-- Tahap 12.22 — Filter Siswa Berdasarkan Tahun Ajaran Masuk.
+- Tahap 12.23 — Export Data Siswa Berdasarkan Filter Aktif.
 
 ---
 
