@@ -10,42 +10,40 @@ saya mengembangkannya sekarang di macbook air m2 dengan laravel herd
 
 ## Tahap Terakhir Selesai
 
-### Tahap 12.24 — Review dan Perapian Export Data Siswa
+### Tahap 12.25 — Review Akhir Modul Data Siswa
 
 Status: selesai.
 
-Perubahan utama:
+Ringkasan review:
 
-- Merapikan hasil export CSV data siswa.
-- Status siswa pada CSV sekarang memakai label Indonesia.
-- Contoh: `graduated` ditampilkan sebagai `Lulus`.
-- Nama file export tetap memakai pola `data-siswa-YYYYMMDD-HHMMSS.csv`.
-- Tombol filter pada halaman Data Siswa dirapikan dengan `flex-wrap`.
-- Tombol Terapkan, Reset, dan Export CSV memakai `whitespace-nowrap`.
-- Memperbaiki struktur tombol Tambah Siswa yang penutup tag-nya tertinggal.
-- Test export diperkuat untuk mengecek attachment, nama file CSV, dan label status.
+- Halaman Data Siswa sudah dicek secara manual.
+- Pencarian siswa sudah mendukung nama, NIS, NISN, dan nomor registrasi.
+- Filter rombongan belajar sudah memakai kelas aktif dari `student_class_histories`.
+- Filter status sudah mendukung `active`, `inactive`, `transferred`, `graduated`, dan `alumni`.
+- Filter tahun masuk sudah memakai `students.admission_academic_year_id`.
+- Export CSV sudah mengikuti filter aktif.
+- Export CSV sudah memakai label status Indonesia.
+- Tombol dan layout filter sudah dirapikan.
+- Test otomatis berjalan dengan hasil aman.
+- Build frontend berhasil.
 
-File berubah:
+File yang dicek:
 
+- `routes/web.php`
 - `app/Http/Controllers/Admin/StudentController.php`
 - `resources/views/admin/students/index.blade.php`
 - `tests/Feature/Admin/StudentTest.php`
-- `docs/AI-HANDOFF.md`
-- `docs/PROGRESS.md`
-- `docs/NEXT-STEPS.md`
-- `docs/CHANGELOG.md`
-- `docs/DECISIONS.md`
 
 Catatan:
 
 - Tidak ada perubahan database.
 - Tidak ada permission baru.
-- Export tetap memakai permission `students.view`.
-- Format export tetap CSV.
+- Tidak ada keputusan teknis besar baru.
+- Modul Data Siswa dinyatakan stabil untuk tahap saat ini.
 
 Tahap berikutnya:
 
-- Tahap 12.25 — Review Akhir Modul Data Siswa.
+- Tahap 12.26 — Penentuan Modul Lanjutan Setelah Data Siswa.
 
 ---
 

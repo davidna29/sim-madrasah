@@ -22,7 +22,7 @@ Terakhir diperbarui: 12 Agustus 2026.
 | Mata pelajaran | Selesai awal | CRUD |
 | Pegawai | Selesai awal | CRUD |
 | Akun pegawai | Selesai awal | Create akun dari data pegawai |
-| Siswa | Selesai tahap 12.24 | CRUD, filter rombel, pencarian nama/NIS/NISN, filter status, filter tahun masuk, export CSV berdasarkan filter aktif, perapian export |
+| Siswa | Stabil tahap 12.25 | CRUD, filter rombel, pencarian, filter status, filter tahun masuk, export CSV, review akhir |
 | Riwayat kelas siswa | Selesai awal | Tambah histori kelas siswa |
 | Akun siswa | Selesai awal | Create akun dari data siswa |
 | Wali siswa | Selesai awal | CRUD wali per siswa |
@@ -67,28 +67,31 @@ addfd94 feat: add madrasah identity module
 
 ## Fitur Terakhir yang Sudah Tampak di Kode
 
-### Export Data Siswa Berdasarkan Filter Aktif
+### Review Akhir Modul Data Siswa
 
-Lokasi utama:
+Status: stabil untuk tahap saat ini.
 
-- `routes/web.php`
-- `app/Http/Controllers/Admin/StudentController.php`
-- `resources/views/admin/students/index.blade.php`
-- `tests/Feature/Admin/StudentTest.php`
+Fitur yang sudah dicek:
 
-Kemampuan export:
+- daftar siswa;
+- tambah siswa;
+- edit siswa;
+- detail siswa;
+- pencarian siswa;
+- filter rombongan belajar;
+- filter status;
+- filter tahun masuk;
+- export CSV berdasarkan filter aktif;
+- link riwayat kelas;
+- link wali siswa;
+- link portofolio siswa.
 
-- export memakai format CSV;
-- export mengikuti filter `q`;
-- export mengikuti filter `class_group_id`;
-- export mengikuti filter `status`;
-- export mengikuti filter `admission_academic_year_id`.
+Validasi:
 
-Route:
+- `php artisan test` berhasil;
+- `npm run build` berhasil;
+- `git status` bersih setelah commit.
 
-```txt
-/admin/students/export
-```
 
 ---
 

@@ -6,26 +6,19 @@ Dokumen ini berisi urutan kerja kecil yang direkomendasikan setelah fitur pencar
 
 ## Prioritas Terdekat
 
-### Tahap 12.25 — Review Akhir Modul Data Siswa
+### Tahap 12.26 — Penentuan Modul Lanjutan Setelah Data Siswa
 
 Tujuan:
 
-- Mengecek ulang seluruh fitur Data Siswa.
-- Memastikan index, create, edit, detail, filter, pencarian, dan export berjalan baik.
-- Memastikan dokumentasi modul siswa sudah konsisten.
-- Memastikan tidak ada perubahan database atau permission yang belum terdokumentasi.
-- Menentukan tahap berikutnya setelah modul Data Siswa stabil.
+- Membaca ulang `docs/AI-HANDOFF.md`, `docs/PROGRESS.md`, dan `docs/NEXT-STEPS.md`.
+- Menentukan modul berikutnya yang paling aman dikerjakan.
+- Tidak langsung membuat fitur baru sebelum arah modul berikutnya jelas.
+- Memastikan tidak ada pekerjaan Data Siswa yang masih tertinggal.
 
-Validasi:
+Catatan:
 
-```bash
-php artisan optimize:clear
-./vendor/bin/pint
-./vendor/bin/pint --test
-php artisan test
-npm run build
-git status
-```
+- Modul Data Siswa sudah stabil pada Tahap 12.25.
+- Tahap berikutnya harus mengikuti prioritas terakhir yang tercatat di dokumentasi.
 
 ---
 

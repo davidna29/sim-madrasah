@@ -5,6 +5,13 @@ Format mengikuti gaya sederhana: tanggal, tahap/commit, perubahan.
 ---
 ## 2026-08-13
 
+### `chore: review student module`
+
+- Melakukan review akhir modul Data Siswa.
+- Mengecek fitur daftar, pencarian, filter, dan export CSV.
+- Memastikan test otomatis dan build frontend berhasil.
+- Memperbarui dokumentasi status modul Data Siswa.
+
 ### `refactor: polish student csv export`
 
 - Merapikan export CSV data siswa.
