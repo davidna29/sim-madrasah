@@ -119,6 +119,10 @@ class StudentClassHistoryController extends Controller
         Request $request,
         Student $student
     ): array {
+        $messages = [
+            'semester_id.unique' => 'Siswa sudah memiliki histori kelas pada semester ini.',
+        ];
+
         $validated = $request->validate([
             'academic_year_id' => [
                 'required',
@@ -160,7 +164,7 @@ class StudentClassHistoryController extends Controller
                 'nullable',
                 'string',
             ],
-        ]);
+        ], $messages);
 
         $semester = Semester::query()
             ->findOrFail($validated['semester_id']);

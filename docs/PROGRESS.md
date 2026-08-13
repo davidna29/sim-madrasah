@@ -23,7 +23,7 @@ Terakhir diperbarui: 13 Agustus 2026.
 | Pegawai | Selesai awal | CRUD |
 | Akun pegawai | Selesai awal | Create akun dari data pegawai |
 | Siswa | Stabil tahap 12.25 | CRUD, filter rombel, pencarian, filter status, filter tahun masuk, export CSV, review akhir |
-| Riwayat kelas siswa | Selesai awal | Tambah histori kelas siswa |
+| Riwayat kelas siswa | Selesai tahap 12.27 | Tambah histori kelas siswa, guard satu histori per siswa per semester |
 | Akun siswa | Selesai awal | Create akun dari data siswa |
 | Wali siswa | Selesai awal | CRUD wali per siswa |
 | Akun wali siswa | Selesai awal | Create akun wali |

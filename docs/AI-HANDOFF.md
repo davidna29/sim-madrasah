@@ -10,31 +10,24 @@ saya mengembangkannya sekarang di macbook air m2 dengan laravel herd
 
 ## Tahap Terakhir Selesai
 
-### Tahap 12.26 — Sinkronisasi Next Steps Setelah Data Siswa Stabil
+### Tahap 12.27 — Guard Histori Kelas per Semester
 
 Status: selesai.
 
 Ringkasan:
 
-- Membaca ulang `docs/AI-HANDOFF.md`, `docs/PROGRESS.md`, dan `docs/NEXT-STEPS.md`.
-- Menemukan bahwa modul Data Siswa sudah stabil pada Tahap 12.25.
-- Menemukan bahwa masih ada pekerjaan lanjutan terkait histori kelas siswa.
-- Menentukan urutan tahap berikutnya:
-  1. Tahap 12.27 — Guard Histori Kelas Aktif.
-  2. Tahap 12.28 — Bulk Assignment Siswa ke Rombel.
-  3. Tahap 12.29 — Awal Modul Jadwal Pelajaran.
-- Tidak ada perubahan kode aplikasi pada tahap ini.
+- Menambahkan guard validasi agar satu siswa hanya memiliki satu histori kelas pada semester yang sama.
+- Guard memakai kombinasi `student_id` dan `semester_id`.
+- Aturan ini mengikuti unique constraint database pada `student_class_histories.student_id` dan `student_class_histories.semester_id`.
+- Jika siswa sudah memiliki histori kelas pada semester yang sama, input baru ditolak.
+- Histori lama tidak dihapus.
+- Test histori kelas diperkuat agar error validasi muncul sebelum database constraint gagal.
 
 Catatan:
 
 - Tidak ada perubahan database.
 - Tidak ada permission baru.
-- Tidak ada fitur baru.
-- Tahap ini hanya menyinkronkan arah kerja dokumentasi.
-
-Tahap berikutnya:
-
-- Tahap 12.27 — Guard Histori Kelas Aktif.
+- Constraint database sudah ada dan dijadikan acuan.
 
 ---
 

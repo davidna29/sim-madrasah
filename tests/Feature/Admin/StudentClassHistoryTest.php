@@ -113,7 +113,74 @@ class StudentClassHistoryTest extends TestCase
                 'is_current' => '1',
             ]);
 
+        // Pastikan validasi gagal karena siswa sudah memiliki histori kelas aktif pada semester ini
+        $response->assertSessionHasErrors([
+            'semester_id' => 'Siswa sudah memiliki histori kelas pada semester ini.',
+        ]);
+
+        $this->assertDatabaseCount('student_class_histories', 1);
+
+        $this->assertDatabaseHas('student_class_histories', [
+            'student_id' => $student->id,
+            'semester_id' => $semester->id,
+            'class_group_id' => $classGroup->id,
+            'is_current' => true,
+        ]);
+    }
+
+    // Menguji bahwa siswa TIDAK BISA menambahkan histori kelas non-aktif di semester yang sama
+    public function test_user_cannot_add_non_current_class_history_in_same_semester(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'student_class_histories.create');
+
+        [$student, $academicYear, $semester, $classGroup] = $this->createStudentClassData();
+
+        StudentClassHistory::create([
+            'student_id' => $student->id,
+            'academic_year_id' => $academicYear->id,
+            'semester_id' => $semester->id,
+            'class_group_id' => $classGroup->id,
+            'status' => 'active',
+            'start_date' => '2026-07-01',
+            'is_current' => true,
+        ]);
+
+        $secondClassGroup = ClassGroup::create([
+            'academic_year_id' => $academicYear->id,
+            'grade_level_id' => $classGroup->grade_level_id,
+            'room_id' => $classGroup->room_id,
+            'code' => 'VII-B',
+            'name' => 'Kelas VII B',
+            'parallel_name' => 'B',
+            'capacity' => 32,
+            'status' => 'active',
+            'is_active' => true,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->post(route('admin.students.class-histories.store', $student), [
+                'academic_year_id' => $academicYear->id,
+                'semester_id' => $semester->id,
+                'class_group_id' => $secondClassGroup->id,
+                'status' => 'active',
+                'start_date' => '2026-08-01',
+                'is_current' => '0',
+                'notes' => 'Catatan riwayat nonaktif.',
+            ]);
+
         $response->assertSessionHasErrors('semester_id');
+
+        $this->assertDatabaseCount('student_class_histories', 1);
+
+        $this->assertDatabaseHas('student_class_histories', [
+            'student_id' => $student->id,
+            'semester_id' => $semester->id,
+            'class_group_id' => $classGroup->id,
+            'is_current' => true,
+        ]);
     }
 
     /**

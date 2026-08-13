@@ -5,6 +5,12 @@ Format mengikuti gaya sederhana: tanggal, tahap/commit, perubahan.
 ---
 ## 2026-08-13
 
+### `feat: guard student class history per semester`
+
+- Menambahkan guard agar siswa tidak memiliki lebih dari satu histori kelas pada semester yang sama.
+- Mengikuti unique constraint database pada `student_id` dan `semester_id`.
+- Memperkuat test histori kelas agar validasi terjadi sebelum database error.
+
 ### `docs: sync next steps after student module review`
 
 - Menyinkronkan arah kerja setelah modul Data Siswa stabil.

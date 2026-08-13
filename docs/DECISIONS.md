@@ -167,3 +167,23 @@ Konsekuensi:
 
 - Test export harus memastikan CSV memakai label, bukan nilai mentah.
 - Jika status baru ditambahkan nanti, daftar label harus ikut diperbarui.
+
+---
+## Guard Histori Kelas Mengikuti Constraint Database
+
+Keputusan:
+
+- Satu siswa hanya boleh memiliki satu histori kelas pada semester yang sama.
+- Aturan memakai kombinasi `student_id` dan `semester_id`.
+- Aturan ini mengikuti unique constraint yang sudah ada pada database.
+
+Alasan:
+
+- Database sudah menolak duplikasi `student_id` dan `semester_id`.
+- Aplikasi harus memberi error validasi yang ramah sebelum database melempar error SQL.
+- Bulk assignment siswa ke rombel harus mengikuti aturan ini.
+
+Konsekuensi:
+
+- Histori aktif maupun nonaktif tidak boleh dobel pada semester yang sama.
+- Jika nanti ingin mengizinkan lebih dari satu histori dalam semester yang sama, perlu migration untuk mengubah constraint database.

@@ -39,8 +39,8 @@ Tujuan:
 - Memilih banyak siswa.
 - Menempatkan siswa ke rombel tertentu pada tahun ajaran dan semester tertentu.
 - Membuat record `student_class_histories`.
-- Menonaktifkan histori aktif lama jika diperlukan.
-- Mengikuti guard histori kelas aktif yang sudah dibuat pada Tahap 12.27.
+- Mengikuti guard histori kelas dari Tahap 12.27.
+- Menolak assignment jika siswa sudah memiliki histori kelas pada semester yang sama.
 
 Perhatian:
 
