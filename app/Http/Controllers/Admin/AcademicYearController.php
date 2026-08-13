@@ -9,11 +9,17 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class AcademicYearController extends Controller
 {
     public function index(): View
     {
+        $activeSemester = Semester::query()
+            ->with('academicYear')
+            ->where('is_active', true)
+            ->first();
+
         $academicYears = AcademicYear::query()
             ->with('semesters')
             ->orderByDesc('start_date')
@@ -21,6 +27,7 @@ class AcademicYearController extends Controller
 
         return view('admin.academic-years.index', [
             'academicYears' => $academicYears,
+            'activeSemester' => $activeSemester,
         ]);
     }
 
@@ -76,15 +83,32 @@ class AcademicYearController extends Controller
 
     public function activateSemester(Semester $semester): RedirectResponse
     {
+        if ($semester->is_locked) {
+            throw ValidationException::withMessages([
+                'semester_id' => 'Semester terkunci tidak bisa diaktifkan kembali.',
+            ]);
+        }
+
         DB::transaction(function () use ($semester): void {
             AcademicYear::query()->update([
                 'is_active' => false,
             ]);
 
+            AcademicYear::query()
+                ->where('is_locked', false)
+                ->update([
+                    'status' => 'draft',
+                ]);
+
             Semester::query()->update([
                 'is_active' => false,
-                'status' => 'draft',
             ]);
+
+            Semester::query()
+                ->where('is_locked', false)
+                ->update([
+                    'status' => 'draft',
+                ]);
 
             $semester->academicYear->update([
                 'is_active' => true,
@@ -99,7 +123,7 @@ class AcademicYearController extends Controller
 
         return redirect()
             ->route('admin.academic-years.index')
-            ->with('success', 'Semester aktif berhasil diperbarui.');
+            ->with('success', 'Semester aktif sistem berhasil diperbarui.');
     }
 
     public function lockSemester(Request $request, Semester $semester): RedirectResponse

@@ -30,6 +30,55 @@
                 </div>
             @endif
 
+            <!-- Semester Aktif Sistem -->
+            <div class="bg-white shadow-sm sm:rounded-lg border border-gray-100">
+                <div class="p-6">
+                    <h3 class="text-base font-semibold text-gray-900">
+                        Semester Aktif Sistem
+                    </h3>
+
+                    @if ($activeSemester)
+                        <div class="mt-3 grid grid-cols-1 gap-4 md:grid-cols-3">
+                            <div>
+                                <div class="text-sm text-gray-500">
+                                    Tahun Ajaran
+                                </div>
+
+                                <div class="font-medium text-gray-900">
+                                    {{ $activeSemester->academicYear?->name ?? '-' }}
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="text-sm text-gray-500">
+                                    Semester
+                                </div>
+
+                                <div class="font-medium text-gray-900">
+                                    {{ $activeSemester->name }}
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="text-sm text-gray-500">
+                                    Periode
+                                </div>
+
+                                <div class="font-medium text-gray-900">
+                                    {{ $activeSemester->start_date->format('d M Y') }}
+                                    sampai
+                                    {{ $activeSemester->end_date->format('d M Y') }}
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                        <p class="mt-3 text-sm text-gray-500">
+                            Belum ada semester aktif sistem. Aktifkan salah satu semester untuk menjadi acuan proses akademik.
+                        </p>
+                    @endif
+                </div>
+            </div>
+
             @forelse ($academicYears as $academicYear)
                 <div class="bg-white shadow-sm sm:rounded-lg border border-gray-100">
                     <div class="p-6">
@@ -136,7 +185,7 @@
                                                                     type="submit"
                                                                     class="text-sm font-medium text-green-700 hover:text-green-900"
                                                                 >
-                                                                    Aktifkan
+                                                                    Jadikan Semester Aktif
                                                                 </button>
                                                             </form>
                                                         @endunless

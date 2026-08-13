@@ -10,37 +10,42 @@ saya mengembangkannya sekarang di macbook air m2 dengan laravel herd
 
 ## Tahap Terakhir Selesai
 
-### Tahap 12.29 — Review Bulk Assignment dan Validasi Konteks Akademik
+### Tahap 12.30 — Penentuan Semester Aktif Sistem
 
 Status: selesai.
 
 Ringkasan:
 
-- Melakukan review fitur Bulk Assignment Siswa ke Rombel.
-- Route bulk assignment sudah dicek.
-- Tombol Bulk Rombel sudah dicek pada halaman Data Siswa.
-- Halaman Bulk Assignment sudah dicek secara manual.
-- Assignment normal berhasil membuat `student_class_histories`.
-- Histori aktif lama dinonaktifkan sebelum histori baru dibuat.
-- Histori baru dibuat dengan `is_current = true`.
-- Sistem menolak assignment jika siswa sudah memiliki histori kelas pada semester yang sama.
-- Sistem menolak semester yang tidak sesuai dengan tahun ajaran.
-- Sistem menolak rombel yang tidak sesuai dengan tahun ajaran.
-- Sistem menolak tanggal mulai di luar rentang semester.
-- Test otomatis berjalan aman.
-- Build frontend berhasil.
+- Memperjelas semester aktif sistem pada halaman Tahun Ajaran.
+- Menambahkan kartu Semester Aktif Sistem.
+- Semester aktif sistem diambil dari `semesters.is_active = true`.
+- Aktivasi semester memastikan hanya satu semester yang aktif.
+- Tahun ajaran dari semester aktif ikut menjadi aktif.
+- Semester terkunci tidak bisa diaktifkan kembali.
+- Status locked tidak ditimpa menjadi draft saat aktivasi semester lain.
+- Test AcademicYear diperkuat untuk mengecek tampilan semester aktif, perpindahan semester aktif, dan penolakan semester terkunci.
+
+File berubah:
+
+- `app/Http/Controllers/Admin/AcademicYearController.php`
+- `resources/views/admin/academic-years/index.blade.php`
+- `tests/Feature/Admin/AcademicYearTest.php`
+- `docs/AI-HANDOFF.md`
+- `docs/PROGRESS.md`
+- `docs/NEXT-STEPS.md`
+- `docs/CHANGELOG.md`
+- `docs/DECISIONS.md`
 
 Catatan:
 
 - Tidak ada perubahan database.
 - Tidak ada permission baru.
-- Tidak ada fitur besar baru pada tahap ini.
-- Penentuan semester aktif sistem belum dibuat.
-- Tahap berikutnya diarahkan ke penentuan semester aktif sistem.
+- Bulk Rombel dan Tambah Riwayat Kelas belum otomatis memakai semester aktif sistem.
+- Integrasi semester aktif ke form akademik dibuat pada tahap berikutnya.
 
 Tahap berikutnya:
 
-- Tahap 12.30 — Penentuan Semester Aktif Sistem.
+- Tahap 12.31 — Integrasi Semester Aktif ke Riwayat Kelas dan Bulk Rombel.
 
 ---
 

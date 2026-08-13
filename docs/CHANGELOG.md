@@ -5,6 +5,14 @@ Format mengikuti gaya sederhana: tanggal, tahap/commit, perubahan.
 ---
 ## 2026-08-13
 
+### `feat: clarify active academic semester`
+
+- Menambahkan kartu Semester Aktif Sistem pada halaman Tahun Ajaran.
+- Memperkuat proses aktivasi semester.
+- Memastikan hanya satu semester yang aktif.
+- Menolak aktivasi semester terkunci.
+- Memperkuat test AcademicYear terkait semester aktif sistem.
+
 ### `chore: review bulk student class assignment`
 
 - Melakukan review fitur bulk assignment siswa ke rombel.

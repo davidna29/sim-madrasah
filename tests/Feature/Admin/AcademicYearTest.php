@@ -167,6 +167,175 @@ class AcademicYearTest extends TestCase
         ]);
     }
 
+    // Menguji bahwa pengguna dapat melihat semester aktif sistem pada halaman tahun akademik
+    public function test_user_can_see_active_system_semester_on_academic_year_page(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'academic_years.view');
+
+        $academicYear = AcademicYear::create([
+            'code' => '2026-2027-active-view',
+            'name' => '2026/2027 Active View',
+            'start_date' => '2026-07-01',
+            'end_date' => '2027-06-30',
+            'status' => 'active',
+            'is_active' => true,
+            'is_locked' => false,
+        ]);
+
+        Semester::create([
+            'academic_year_id' => $academicYear->id,
+            'code' => '2026-2027-active-view-ganjil',
+            'name' => 'Semester Ganjil 2026/2027 Active View',
+            'semester_type' => 'ganjil',
+            'start_date' => '2026-07-01',
+            'end_date' => '2026-12-31',
+            'status' => 'active',
+            'is_active' => true,
+            'is_locked' => false,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->get(route('admin.academic-years.index'));
+
+        $response
+            ->assertStatus(200)
+            ->assertSee('Semester Aktif Sistem')
+            ->assertSee('2026/2027 Active View')
+            ->assertSee('Semester Ganjil 2026/2027 Active View');
+    }
+
+    // Menguji bahwa mengaktifkan semester baru akan menonaktifkan semester aktif sebelumnya
+    public function test_activating_semester_deactivates_previous_active_semester(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'academic_years.activate');
+
+        $oldAcademicYear = AcademicYear::create([
+            'code' => '2026-2027-old-active',
+            'name' => '2026/2027 Old Active',
+            'start_date' => '2026-07-01',
+            'end_date' => '2027-06-30',
+            'status' => 'active',
+            'is_active' => true,
+            'is_locked' => false,
+        ]);
+
+        $oldSemester = Semester::create([
+            'academic_year_id' => $oldAcademicYear->id,
+            'code' => '2026-2027-old-active-ganjil',
+            'name' => 'Semester Ganjil 2026/2027 Old Active',
+            'semester_type' => 'ganjil',
+            'start_date' => '2026-07-01',
+            'end_date' => '2026-12-31',
+            'status' => 'active',
+            'is_active' => true,
+            'is_locked' => false,
+        ]);
+
+        $newAcademicYear = AcademicYear::create([
+            'code' => '2027-2028-new-active',
+            'name' => '2027/2028 New Active',
+            'start_date' => '2027-07-01',
+            'end_date' => '2028-06-30',
+            'status' => 'draft',
+            'is_active' => false,
+            'is_locked' => false,
+        ]);
+
+        $newSemester = Semester::create([
+            'academic_year_id' => $newAcademicYear->id,
+            'code' => '2027-2028-new-active-ganjil',
+            'name' => 'Semester Ganjil 2027/2028 New Active',
+            'semester_type' => 'ganjil',
+            'start_date' => '2027-07-01',
+            'end_date' => '2027-12-31',
+            'status' => 'draft',
+            'is_active' => false,
+            'is_locked' => false,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->put(route('admin.semesters.activate', $newSemester));
+
+        $response
+            ->assertRedirect(route('admin.academic-years.index'))
+            ->assertSessionHas('success');
+
+        $this->assertDatabaseHas('academic_years', [
+            'id' => $oldAcademicYear->id,
+            'is_active' => false,
+            'status' => 'draft',
+        ]);
+
+        $this->assertDatabaseHas('semesters', [
+            'id' => $oldSemester->id,
+            'is_active' => false,
+            'status' => 'draft',
+        ]);
+
+        $this->assertDatabaseHas('academic_years', [
+            'id' => $newAcademicYear->id,
+            'is_active' => true,
+            'status' => 'active',
+        ]);
+
+        $this->assertDatabaseHas('semesters', [
+            'id' => $newSemester->id,
+            'is_active' => true,
+            'status' => 'active',
+        ]);
+    }
+
+
+    public function test_user_cannot_activate_locked_semester(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'academic_years.activate');
+
+        $academicYear = AcademicYear::create([
+            'code' => '2026-2027-locked',
+            'name' => '2026/2027 Locked',
+            'start_date' => '2026-07-01',
+            'end_date' => '2027-06-30',
+            'status' => 'draft',
+            'is_active' => false,
+            'is_locked' => false,
+        ]);
+
+        $semester = Semester::create([
+            'academic_year_id' => $academicYear->id,
+            'code' => '2026-2027-locked-ganjil',
+            'name' => 'Semester Ganjil 2026/2027 Locked',
+            'semester_type' => 'ganjil',
+            'start_date' => '2026-07-01',
+            'end_date' => '2026-12-31',
+            'status' => 'locked',
+            'is_active' => false,
+            'is_locked' => true,
+            'locked_at' => now(),
+            'locked_by' => $user->id,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->put(route('admin.semesters.activate', $semester));
+
+        $response->assertSessionHasErrors('semester_id');
+
+        $this->assertDatabaseHas('semesters', [
+            'id' => $semester->id,
+            'is_active' => false,
+            'status' => 'locked',
+            'is_locked' => true,
+        ]);
+    }
+
     private function grantPermissionToUser(
         User $user,
         string $permissionName

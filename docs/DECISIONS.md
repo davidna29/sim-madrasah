@@ -213,3 +213,25 @@ Konsekuensi:
 - User tidak bisa menggabungkan tahun ajaran 2027/2028 dengan semester atau rombel 2026/2027.
 - User tidak bisa memakai tanggal mulai di luar rentang semester.
 - Jika nanti ingin mode skip siswa bermasalah, perlu tahap lanjutan.
+
+---
+## Semester Aktif Sistem Berbasis `semesters.is_active`
+
+Keputusan:
+
+- Semester aktif sistem ditentukan dari kolom `semesters.is_active`.
+- Hanya satu semester yang boleh aktif pada satu waktu.
+- Tahun ajaran dari semester aktif ikut ditandai aktif.
+- Semester terkunci tidak boleh diaktifkan kembali.
+
+Alasan:
+
+- Struktur database sudah memiliki `status`, `is_active`, dan `is_locked` pada `academic_years` dan `semesters`.
+- Proses akademik perlu satu acuan semester aktif.
+- Bulk Rombel, Riwayat Kelas, Absensi, Nilai, dan Jadwal Pelajaran akan membutuhkan acuan semester aktif.
+
+Konsekuensi:
+
+- Menu Tahun Ajaran menjadi pusat aktivasi semester sistem.
+- Fitur akademik berikutnya sebaiknya membaca semester aktif sebagai nilai awal.
+- Penguncian penuh input berdasarkan semester aktif dilakukan bertahap.

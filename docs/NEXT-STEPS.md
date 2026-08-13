@@ -6,27 +6,27 @@ Dokumen ini berisi urutan kerja kecil yang direkomendasikan.
 
 ## Prioritas Terdekat
 
-### Tahap 12.30 — Penentuan Semester Aktif Sistem
+### Tahap 12.31 — Integrasi Semester Aktif ke Riwayat Kelas dan Bulk Rombel
 
 Tujuan:
 
-- Menentukan semester aktif sistem dari menu akademik.
-- Semester aktif sistem menjadi acuan awal untuk proses akademik.
-- Bulk Assignment dan Tambah Riwayat Kelas nantinya diarahkan agar mengikuti semester aktif.
-- Hanya user berwenang yang boleh mengaktifkan semester.
-- Tahap awal perlu membaca ulang struktur `academic_years` dan `semesters`.
+- Mengarahkan form Tambah Riwayat Kelas agar memakai semester aktif sebagai nilai awal.
+- Mengarahkan form Bulk Rombel agar memakai semester aktif sebagai nilai awal.
+- Menampilkan informasi semester aktif pada form akademik.
+- Tetap mengizinkan validasi tahun ajaran, semester, rombel, dan tanggal.
+- Belum mengunci pilihan semester secara penuh pada tahap awal.
 
 Catatan:
 
-- Saat ini kelas aktif siswa masih ditentukan oleh `student_class_histories.is_current`.
-- Semester aktif sistem belum otomatis mengunci input histori kelas.
-- Perubahan ke arah semester aktif sistem harus dilakukan bertahap agar tidak merusak fitur yang sudah berjalan.
+- Semester aktif sistem sudah tersedia dari Tahap 12.30.
+- Kelas aktif siswa tetap dibaca dari `student_class_histories.is_current`.
+- Integrasi dilakukan bertahap agar tidak merusak flow yang sudah berjalan.
 
 Setelah tahap ini stabil:
 
-- Tahap 12.31 — Koreksi dan Edit Riwayat Kelas Siswa.
-- Tahap 12.32 — Kebijakan Nonaktif, Soft Delete, dan Koreksi Data Master.
-- Tahap 12.33 — Awal Modul Jadwal Pelajaran.
+- Tahap 12.32 — Koreksi dan Edit Riwayat Kelas Siswa.
+- Tahap 12.33 — Kebijakan Nonaktif, Soft Delete, dan Koreksi Data Master.
+- Tahap 12.34 — Awal Modul Jadwal Pelajaran.
 
 ---
 

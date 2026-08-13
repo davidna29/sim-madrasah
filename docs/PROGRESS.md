@@ -15,7 +15,7 @@ Terakhir diperbarui: 13 Agustus 2026.
 | Dashboard | Selesai awal | Role-based summary dan shortcut |
 | Layout admin | Selesai awal | Sidebar dan komponen UI |
 | Identitas madrasah | Selesai awal | Edit/update profil madrasah |
-| Tahun ajaran & semester | Selesai awal | Aktivasi dan lock semester |
+| Tahun ajaran & semester | Selesai tahap 12.30 | Aktivasi semester, lock semester, kartu Semester Aktif Sistem |
 | Tingkat kelas | Selesai awal | CRUD |
 | Ruangan | Selesai awal | CRUD |
 | Rombongan belajar | Selesai awal | CRUD + filter tahun ajaran |
@@ -67,27 +67,23 @@ addfd94 feat: add madrasah identity module
 
 ## Fitur Terakhir yang Sudah Tampak di Kode
 
-### Review Bulk Assignment dan Validasi Konteks Akademik
+### Penentuan Semester Aktif Sistem
 
-Status: stabil untuk tahap saat ini.
+Status: selesai.
 
-Yang sudah dicek:
+Fitur:
 
-- route bulk assignment;
-- tombol Bulk Rombel;
-- halaman Bulk Assignment;
-- assignment siswa ke rombel;
-- guard siswa yang sudah memiliki histori pada semester yang sama;
-- validasi semester sesuai tahun ajaran;
-- validasi rombel sesuai tahun ajaran;
-- validasi tanggal mulai dalam rentang semester;
-- test otomatis;
-- build frontend.
+- sistem dapat memiliki satu semester aktif;
+- halaman Tahun Ajaran menampilkan kartu Semester Aktif Sistem;
+- aktivasi semester menonaktifkan semester aktif sebelumnya;
+- tahun ajaran dari semester aktif ikut aktif;
+- semester terkunci tidak bisa diaktifkan kembali.
 
-Catatan lanjutan:
+Validasi:
 
-- Penentuan semester aktif sistem belum dibuat.
-- Tahap berikutnya adalah Penentuan Semester Aktif Sistem.
+- `AcademicYearTest` berhasil;
+- `php artisan test` berhasil;
+- `npm run build` berhasil.
 
 ---
 
