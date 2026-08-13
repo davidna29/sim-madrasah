@@ -5,6 +5,19 @@ Format mengikuti gaya sederhana: tanggal, tahap/commit, perubahan.
 ---
 ## 2026-08-13
 
+### `feat: add bulk student class assignment`
+
+- Menambahkan fitur bulk assignment siswa ke rombel.
+- Menambahkan route dan controller bulk assignment.
+- Menambahkan halaman pemilihan siswa massal.
+- Assignment membuat record `student_class_histories`.
+- Histori aktif lama dinonaktifkan sebelum histori baru dibuat.
+- Menolak assignment jika siswa sudah memiliki histori kelas pada semester yang sama.
+- Menambahkan validasi semester harus sesuai tahun ajaran.
+- Menambahkan validasi rombel harus sesuai tahun ajaran.
+- Menambahkan validasi tanggal mulai harus berada dalam rentang semester.
+- Menambahkan test bulk assignment siswa.
+
 ### `feat: guard student class history per semester`
 
 - Menambahkan guard agar siswa tidak memiliki lebih dari satu histori kelas pada semester yang sama.

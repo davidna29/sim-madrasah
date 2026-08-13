@@ -11,14 +11,25 @@
                 </p>
             </div>
 
-            @can('permission', 'students.create')
-                <a
-                    href="{{ route('admin.students.create') }}"
-                    class="whitespace-nowrap rounded-md bg-green-700 px-4 py-2 text-sm font-medium text-white hover:bg-green-800"
+            <div class="flex flex-wrap items-center gap-2">
+                @can('permission', 'student_class_histories.create')
+                    <a
+                        href="{{ route('admin.students.bulk-class-assignment.create') }}"
+                        class="whitespace-nowrap rounded-md border border-green-700 bg-white px-4 py-2 text-sm font-medium text-green-700 hover:bg-green-50"
                     >
-                    Tambah Siswa
-                </a>
-            @endcan
+                        Bulk Rombel
+                    </a>
+                @endcan
+
+                @can('permission', 'students.create')
+                    <a
+                        href="{{ route('admin.students.create') }}"
+                        class="whitespace-nowrap rounded-md bg-green-700 px-4 py-2 text-sm font-medium text-white hover:bg-green-800"
+                    >
+                        Tambah Siswa
+                    </a>
+                @endcan
+            </div>
         </div>
     </x-slot>
 

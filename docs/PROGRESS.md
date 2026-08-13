@@ -23,7 +23,7 @@ Terakhir diperbarui: 13 Agustus 2026.
 | Pegawai | Selesai awal | CRUD |
 | Akun pegawai | Selesai awal | Create akun dari data pegawai |
 | Siswa | Stabil tahap 12.25 | CRUD, filter rombel, pencarian, filter status, filter tahun masuk, export CSV, review akhir |
-| Riwayat kelas siswa | Selesai tahap 12.27 | Tambah histori kelas siswa, guard satu histori per siswa per semester |
+| Riwayat kelas siswa | Selesai tahap 12.28 | Tambah histori kelas siswa, guard satu histori per siswa per semester, bulk assignment siswa ke rombel, validasi konteks akademik |
 | Akun siswa | Selesai awal | Create akun dari data siswa |
 | Wali siswa | Selesai awal | CRUD wali per siswa |
 | Akun wali siswa | Selesai awal | Create akun wali |
@@ -67,24 +67,27 @@ addfd94 feat: add madrasah identity module
 
 ## Fitur Terakhir yang Sudah Tampak di Kode
 
-### Sinkronisasi Next Steps Setelah Data Siswa Stabil
+### Bulk Assignment Siswa ke Rombel
 
 Status: selesai.
 
-Hasil:
+Fitur:
 
-- Modul Data Siswa tetap berstatus stabil tahap 12.25.
-- Arah kerja setelah Data Siswa ditentukan ulang.
-- Tahap berikutnya adalah Guard Histori Kelas Aktif.
-- Bulk Assignment Siswa ke Rombel dikerjakan setelah guard histori kelas aktif aman.
-- Modul Jadwal Pelajaran menjadi backlog prioritas setelah histori kelas siswa lebih stabil.
+- admin dapat memilih banyak siswa;
+- admin dapat memilih tahun ajaran, semester, rombel, dan tanggal mulai;
+- sistem membuat histori kelas untuk semua siswa terpilih;
+- histori aktif lama dinonaktifkan;
+- histori baru dibuat sebagai `is_current = true`;
+- assignment ditolak jika siswa sudah memiliki histori kelas pada semester yang sama;
+- semester harus sesuai dengan tahun ajaran;
+- rombel harus sesuai dengan tahun ajaran;
+- tanggal mulai harus berada dalam rentang tanggal semester.
 
 Validasi:
 
+- `StudentBulkClassAssignmentTest` berhasil;
 - `php artisan test` berhasil;
-- `npm run build` berhasil;
-- `git status` bersih setelah commit.
-
+- `npm run build` berhasil.
 
 ---
 

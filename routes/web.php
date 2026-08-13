@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\StudentAccountController;
+use App\Http\Controllers\Admin\StudentBulkClassAssignmentController;
 use App\Http\Controllers\Admin\StudentClassHistoryController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\StudentGuardianAccountController;
@@ -220,6 +221,15 @@ Route::middleware([
     Route::get('/students/export', [StudentController::class, 'export'])
         ->middleware('permission:students.view') // sesuaikan middleware jika ada
         ->name('students.export');
+
+    // Tambahkan route untuk bulk assignment siswa ke rombel
+    Route::get('/students/bulk-class-assignment', [StudentBulkClassAssignmentController::class, 'create'])
+        ->middleware('permission:student_class_histories.create')
+        ->name('students.bulk-class-assignment.create');
+
+    Route::post('/students/bulk-class-assignment', [StudentBulkClassAssignmentController::class, 'store'])
+        ->middleware('permission:student_class_histories.create')
+        ->name('students.bulk-class-assignment.store');
 
     // Tambahkan route untuk manajemen siswa (students)
     Route::get('/students', [StudentController::class, 'index'])

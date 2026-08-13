@@ -11,6 +11,7 @@ use App\Models\StudentClassHistory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
@@ -166,26 +167,46 @@ class StudentClassHistoryController extends Controller
             ],
         ], $messages);
 
-        $semester = Semester::query()
-            ->findOrFail($validated['semester_id']);
+        $validated['is_current'] = $request->boolean('is_current');
+
+        // Pastikan konteks akademik valid
+        $this->ensureAcademicContextIsValid($validated);
+
+        return $validated;
+    }
+
+    /**
+     * Pastikan tahun ajaran, semester, rombel, dan tanggal mulai saling cocok.
+     *
+     * @param  array<string, mixed>  $validated
+     */
+    private function ensureAcademicContextIsValid(array $validated): void
+    {
+        $semester = Semester::findOrFail((int) $validated['semester_id']);
+        $classGroup = ClassGroup::findOrFail((int) $validated['class_group_id']);
 
         if ((int) $semester->academic_year_id !== (int) $validated['academic_year_id']) {
             throw ValidationException::withMessages([
-                'semester_id' => 'Semester tidak sesuai dengan tahun ajaran yang dipilih.',
+                'semester_id' => 'Semester harus sesuai dengan tahun ajaran yang dipilih.',
             ]);
         }
-
-        $classGroup = ClassGroup::query()
-            ->findOrFail($validated['class_group_id']);
 
         if ((int) $classGroup->academic_year_id !== (int) $validated['academic_year_id']) {
             throw ValidationException::withMessages([
-                'class_group_id' => 'Rombongan belajar tidak sesuai dengan tahun ajaran yang dipilih.',
+                'class_group_id' => 'Rombongan belajar harus sesuai dengan tahun ajaran yang dipilih.',
             ]);
         }
 
-        $validated['is_current'] = $request->boolean('is_current');
+        if (! empty($validated['start_date'])) {
+            $semesterStartDate = Carbon::parse($semester->start_date)->toDateString();
+            $semesterEndDate = Carbon::parse($semester->end_date)->toDateString();
+            $startDate = Carbon::parse($validated['start_date'])->toDateString();
 
-        return $validated;
+            if ($startDate < $semesterStartDate || $startDate > $semesterEndDate) {
+                throw ValidationException::withMessages([
+                    'start_date' => 'Tanggal mulai harus berada dalam rentang tanggal semester yang dipilih.',
+                ]);
+            }
+        }
     }
 }

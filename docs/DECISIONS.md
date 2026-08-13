@@ -187,3 +187,29 @@ Konsekuensi:
 
 - Histori aktif maupun nonaktif tidak boleh dobel pada semester yang sama.
 - Jika nanti ingin mengizinkan lebih dari satu histori dalam semester yang sama, perlu migration untuk mengubah constraint database.
+
+## Bulk Assignment Siswa Mengikuti Guard dan Konteks Akademik
+
+Keputusan:
+
+- Bulk assignment siswa ke rombel membuat record `student_class_histories`.
+- Histori aktif lama dinonaktifkan sebelum histori baru dibuat.
+- Assignment ditolak jika siswa sudah memiliki histori kelas pada semester yang sama.
+- Semester harus sesuai dengan tahun ajaran yang dipilih.
+- Rombel harus sesuai dengan tahun ajaran yang dipilih.
+- Tanggal mulai harus berada dalam rentang tanggal semester.
+
+Alasan:
+
+- Kelas siswa harus tetap berbasis histori.
+- `currentClassHistory` membutuhkan satu histori aktif yang jelas.
+- Guard semester dari Tahap 12.27 mencegah data ganda.
+- Validasi konteks akademik mencegah kombinasi tahun ajaran, semester, rombel, dan tanggal yang tidak logis.
+
+Konsekuensi:
+
+- Fitur bulk assignment tidak menghapus histori lama.
+- Assignment massal berhenti jika ada siswa yang melanggar guard semester.
+- User tidak bisa menggabungkan tahun ajaran 2027/2028 dengan semester atau rombel 2026/2027.
+- User tidak bisa memakai tanggal mulai di luar rentang semester.
+- Jika nanti ingin mode skip siswa bermasalah, perlu tahap lanjutan.

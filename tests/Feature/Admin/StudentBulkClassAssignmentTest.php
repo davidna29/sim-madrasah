@@ -16,84 +16,79 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class StudentClassHistoryTest extends TestCase
+class StudentBulkClassAssignmentTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_user_can_view_student_class_history_page(): void
+    public function test_user_can_open_bulk_class_assignment_page(): void
     {
         $user = User::factory()->create();
 
-        $this->grantPermissionToUser($user, 'student_class_histories.view');
-
-        [$student, $academicYear, $semester, $classGroup] = $this->createStudentClassData();
-
-        StudentClassHistory::create([
-            'student_id' => $student->id,
-            'academic_year_id' => $academicYear->id,
-            'semester_id' => $semester->id,
-            'class_group_id' => $classGroup->id,
-            'status' => 'active',
-            'start_date' => '2026-07-01',
-            'is_current' => true,
-        ]);
+        $this->grantPermissionToUser($user, 'student_class_histories.create');
 
         $response = $this
             ->actingAs($user)
-            ->get(route('admin.students.class-histories.index', $student));
+            ->get(route('admin.students.bulk-class-assignment.create'));
 
         $response
             ->assertStatus(200)
-            ->assertSee('Riwayat Kelas Siswa')
-            ->assertSee('Ahmad Siswa')
-            ->assertSee('Kelas VII A');
+            ->assertSee('Bulk Assignment Siswa ke Rombel')
+            ->assertSee('Pilih Siswa');
     }
 
-    public function test_user_can_create_student_class_history(): void
+    public function test_user_can_bulk_assign_students_to_class_group(): void
     {
         $user = User::factory()->create();
 
         $this->grantPermissionToUser($user, 'student_class_histories.create');
 
-        [$student, $academicYear, $semester, $classGroup] = $this->createStudentClassData();
+        [$academicYear, $semester, $classGroup, $studentA, $studentB] = $this->createBulkAssignmentData();
 
         $response = $this
             ->actingAs($user)
-            ->post(route('admin.students.class-histories.store', $student), [
+            ->post(route('admin.students.bulk-class-assignment.store'), [
+                'student_ids' => [
+                    $studentA->id,
+                    $studentB->id,
+                ],
                 'academic_year_id' => $academicYear->id,
                 'semester_id' => $semester->id,
                 'class_group_id' => $classGroup->id,
-                'status' => 'active',
                 'start_date' => '2026-07-01',
-                'end_date' => null,
-                'is_current' => '1',
-                'notes' => 'Penempatan awal.',
+                'notes' => 'Assignment massal.',
             ]);
 
-        $response->assertRedirect(
-            route('admin.students.class-histories.index', $student)
-        );
+        $response
+            ->assertRedirect(route('admin.students.index'))
+            ->assertSessionHas('success');
+
+        $this->assertDatabaseCount('student_class_histories', 2);
 
         $this->assertDatabaseHas('student_class_histories', [
-            'student_id' => $student->id,
-            'academic_year_id' => $academicYear->id,
+            'student_id' => $studentA->id,
             'semester_id' => $semester->id,
             'class_group_id' => $classGroup->id,
-            'status' => 'active',
+            'is_current' => true,
+        ]);
+
+        $this->assertDatabaseHas('student_class_histories', [
+            'student_id' => $studentB->id,
+            'semester_id' => $semester->id,
+            'class_group_id' => $classGroup->id,
             'is_current' => true,
         ]);
     }
 
-    public function test_student_cannot_have_duplicate_class_history_in_same_semester(): void
+    public function test_bulk_assignment_rejects_student_that_already_has_history_in_same_semester(): void
     {
         $user = User::factory()->create();
 
         $this->grantPermissionToUser($user, 'student_class_histories.create');
 
-        [$student, $academicYear, $semester, $classGroup] = $this->createStudentClassData();
+        [$academicYear, $semester, $classGroup, $studentA, $studentB] = $this->createBulkAssignmentData();
 
         StudentClassHistory::create([
-            'student_id' => $student->id,
+            'student_id' => $studentA->id,
             'academic_year_id' => $academicYear->id,
             'semester_id' => $semester->id,
             'class_group_id' => $classGroup->id,
@@ -104,93 +99,44 @@ class StudentClassHistoryTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->post(route('admin.students.class-histories.store', $student), [
+            ->post(route('admin.students.bulk-class-assignment.store'), [
+                'student_ids' => [
+                    $studentA->id,
+                    $studentB->id,
+                ],
                 'academic_year_id' => $academicYear->id,
                 'semester_id' => $semester->id,
                 'class_group_id' => $classGroup->id,
-                'status' => 'active',
                 'start_date' => '2026-07-01',
-                'is_current' => '1',
+                'notes' => 'Assignment massal.',
             ]);
 
-        // Pastikan validasi gagal karena siswa sudah memiliki histori kelas aktif pada semester ini
-        $response->assertSessionHasErrors([
-            'semester_id' => 'Siswa sudah memiliki histori kelas pada semester ini.',
-        ]);
+        $response->assertSessionHasErrors('student_ids');
 
         $this->assertDatabaseCount('student_class_histories', 1);
 
         $this->assertDatabaseHas('student_class_histories', [
-            'student_id' => $student->id,
+            'student_id' => $studentA->id,
             'semester_id' => $semester->id,
             'class_group_id' => $classGroup->id,
             'is_current' => true,
         ]);
-    }
 
-    // Menguji bahwa siswa TIDAK BISA menambahkan histori kelas non-aktif di semester yang sama
-    public function test_user_cannot_add_non_current_class_history_in_same_semester(): void
-    {
-        $user = User::factory()->create();
-
-        $this->grantPermissionToUser($user, 'student_class_histories.create');
-
-        [$student, $academicYear, $semester, $classGroup] = $this->createStudentClassData();
-
-        StudentClassHistory::create([
-            'student_id' => $student->id,
-            'academic_year_id' => $academicYear->id,
+        $this->assertDatabaseMissing('student_class_histories', [
+            'student_id' => $studentB->id,
             'semester_id' => $semester->id,
             'class_group_id' => $classGroup->id,
-            'status' => 'active',
-            'start_date' => '2026-07-01',
-            'is_current' => true,
-        ]);
-
-        $secondClassGroup = ClassGroup::create([
-            'academic_year_id' => $academicYear->id,
-            'grade_level_id' => $classGroup->grade_level_id,
-            'room_id' => $classGroup->room_id,
-            'code' => 'VII-B',
-            'name' => 'Kelas VII B',
-            'parallel_name' => 'B',
-            'capacity' => 32,
-            'status' => 'active',
-            'is_active' => true,
-        ]);
-
-        $response = $this
-            ->actingAs($user)
-            ->post(route('admin.students.class-histories.store', $student), [
-                'academic_year_id' => $academicYear->id,
-                'semester_id' => $semester->id,
-                'class_group_id' => $secondClassGroup->id,
-                'status' => 'active',
-                'start_date' => '2026-08-01',
-                'is_current' => '0',
-                'notes' => 'Catatan riwayat nonaktif.',
-            ]);
-
-        $response->assertSessionHasErrors('semester_id');
-
-        $this->assertDatabaseCount('student_class_histories', 1);
-
-        $this->assertDatabaseHas('student_class_histories', [
-            'student_id' => $student->id,
-            'semester_id' => $semester->id,
-            'class_group_id' => $classGroup->id,
-            'is_current' => true,
         ]);
     }
 
     /**
-     * @return array{0: Student, 1: AcademicYear, 2: Semester, 3: ClassGroup}
+     * @return array{0: AcademicYear, 1: Semester, 2: ClassGroup, 3: Student, 4: Student}
      */
-    private function createStudentClassData(): array
+    private function createBulkAssignmentData(): array
     {
         $academicYear = AcademicYear::create([
-            'code' => '2026-2027',
-            'name' => '2026/2027',
+            'code' => '2026-2027-bulk',
+            'name' => '2026/2027 Bulk',
             'start_date' => '2026-07-01',
             'end_date' => '2027-06-30',
             'status' => 'active',
@@ -200,8 +146,8 @@ class StudentClassHistoryTest extends TestCase
 
         $semester = Semester::create([
             'academic_year_id' => $academicYear->id,
-            'code' => '2026-2027-ganjil',
-            'name' => 'Semester Ganjil 2026/2027',
+            'code' => '2026-2027-bulk-ganjil',
+            'name' => 'Semester Ganjil 2026/2027 Bulk',
             'semester_type' => 'ganjil',
             'start_date' => '2026-07-01',
             'end_date' => '2026-12-31',
@@ -211,15 +157,15 @@ class StudentClassHistoryTest extends TestCase
         ]);
 
         $gradeLevel = GradeLevel::create([
-            'code' => 'VII',
-            'name' => 'Kelas VII',
+            'code' => 'VII-BULK',
+            'name' => 'Kelas VII Bulk',
             'level_number' => 7,
             'is_active' => true,
         ]);
 
         $room = Room::create([
-            'code' => 'R-VII-A',
-            'name' => 'Ruang VII A',
+            'code' => 'R-BULK',
+            'name' => 'Ruang Bulk',
             'room_type' => 'classroom',
             'capacity' => 32,
             'is_active' => true,
@@ -229,38 +175,56 @@ class StudentClassHistoryTest extends TestCase
             'academic_year_id' => $academicYear->id,
             'grade_level_id' => $gradeLevel->id,
             'room_id' => $room->id,
-            'code' => 'VII-A',
-            'name' => 'Kelas VII A',
+            'code' => 'VII-BULK-A',
+            'name' => 'Kelas VII Bulk A',
             'parallel_name' => 'A',
             'capacity' => 32,
             'status' => 'active',
             'is_active' => true,
         ]);
 
-        $person = Person::create([
-            'full_name' => 'Ahmad Siswa',
-            'email' => 'ahmad@test.local',
+        $personA = Person::create([
+            'full_name' => 'Ahmad Bulk',
+            'email' => 'ahmad.bulk@test.local',
         ]);
 
-        $student = Student::create([
-            'person_id' => $person->id,
+        $studentA = Student::create([
+            'person_id' => $personA->id,
             'admission_academic_year_id' => $academicYear->id,
-            'student_number' => 'SIS-001',
-            'nisn' => '1000000001',
-            'registration_number' => 'REG-001',
+            'student_number' => 'BULK-001',
+            'nisn' => '5000000001',
+            'registration_number' => 'REG-BULK-001',
+            'admission_date' => '2026-07-01',
+            'status' => 'active',
+            'is_active' => true,
+        ]);
+
+        $personB = Person::create([
+            'full_name' => 'Siti Bulk',
+            'email' => 'siti.bulk@test.local',
+        ]);
+
+        $studentB = Student::create([
+            'person_id' => $personB->id,
+            'admission_academic_year_id' => $academicYear->id,
+            'student_number' => 'BULK-002',
+            'nisn' => '5000000002',
+            'registration_number' => 'REG-BULK-002',
             'admission_date' => '2026-07-01',
             'status' => 'active',
             'is_active' => true,
         ]);
 
         return [
-            $student,
             $academicYear,
             $semester,
             $classGroup,
+            $studentA,
+            $studentB,
         ];
     }
 
+    // Grants a specific permission to a user
     private function grantPermissionToUser(
         User $user,
         string $permissionName
@@ -317,18 +281,17 @@ class StudentClassHistoryTest extends TestCase
         ]);
     }
 
-    // Menguji bahwa siswa TIDAK BISA menambahkan histori kelas dengan semester dari tahun akademik yang berbeda
-    public function test_student_class_history_rejects_semester_from_different_academic_year(): void
+    public function test_bulk_assignment_rejects_semester_from_different_academic_year(): void
     {
         $user = User::factory()->create();
 
         $this->grantPermissionToUser($user, 'student_class_histories.create');
 
-        [$student, $academicYear, $semester, $classGroup] = $this->createStudentClassData();
+        [$academicYear, $semester, $classGroup, $studentA, $studentB] = $this->createBulkAssignmentData();
 
         $otherAcademicYear = AcademicYear::create([
-            'code' => '2027-2028-history',
-            'name' => '2027/2028 History',
+            'code' => '2027-2028-bulk',
+            'name' => '2027/2028 Bulk',
             'start_date' => '2027-07-01',
             'end_date' => '2028-06-30',
             'status' => 'active',
@@ -338,13 +301,16 @@ class StudentClassHistoryTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->post(route('admin.students.class-histories.store', $student), [
+            ->post(route('admin.students.bulk-class-assignment.store'), [
+                'student_ids' => [
+                    $studentA->id,
+                    $studentB->id,
+                ],
                 'academic_year_id' => $otherAcademicYear->id,
                 'semester_id' => $semester->id,
                 'class_group_id' => $classGroup->id,
-                'status' => 'active',
                 'start_date' => '2027-08-13',
-                'is_current' => '1',
+                'notes' => 'Assignment salah tahun.',
             ]);
 
         $response->assertSessionHasErrors('semester_id');
@@ -352,24 +318,26 @@ class StudentClassHistoryTest extends TestCase
         $this->assertDatabaseCount('student_class_histories', 0);
     }
 
-    // Menguji bahwa siswa TIDAK BISA menambahkan histori kelas dengan tanggal mulai di luar rentang semester
-    public function test_student_class_history_rejects_start_date_outside_semester_range(): void
+    public function test_bulk_assignment_rejects_start_date_outside_semester_range(): void
     {
         $user = User::factory()->create();
 
         $this->grantPermissionToUser($user, 'student_class_histories.create');
 
-        [$student, $academicYear, $semester, $classGroup] = $this->createStudentClassData();
+        [$academicYear, $semester, $classGroup, $studentA, $studentB] = $this->createBulkAssignmentData();
 
         $response = $this
             ->actingAs($user)
-            ->post(route('admin.students.class-histories.store', $student), [
+            ->post(route('admin.students.bulk-class-assignment.store'), [
+                'student_ids' => [
+                    $studentA->id,
+                    $studentB->id,
+                ],
                 'academic_year_id' => $academicYear->id,
                 'semester_id' => $semester->id,
                 'class_group_id' => $classGroup->id,
-                'status' => 'active',
                 'start_date' => '2027-08-13',
-                'is_current' => '1',
+                'notes' => 'Assignment tanggal salah.',
             ]);
 
         $response->assertSessionHasErrors('start_date');

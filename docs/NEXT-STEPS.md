@@ -6,29 +6,22 @@ Dokumen ini berisi urutan kerja kecil yang direkomendasikan.
 
 ## Prioritas Terdekat
 
-### Tahap 12.27 — Guard Histori Kelas Aktif
+### Tahap 12.29 — Review Bulk Assignment dan Validasi Konteks Akademik
 
 Tujuan:
 
-- Membuat aturan aplikasi agar satu siswa tidak memiliki dua histori kelas aktif pada semester yang sama.
-- Validasi dilakukan pada proses tambah histori kelas siswa.
-- Jika siswa sudah memiliki histori aktif pada semester yang sama, sistem harus menolak input baru.
-- Histori lama tidak boleh dihapus otomatis pada tahap ini.
+- Mengecek ulang flow bulk assignment.
+- Memastikan pesan error mudah dipahami.
+- Memastikan tombol Bulk Rombel mudah ditemukan.
+- Memastikan histori aktif lama dinonaktifkan dengan benar.
+- Memastikan guard semester tetap berjalan.
+- Memastikan validasi tahun ajaran, semester, rombel, dan tanggal berjalan benar.
 
-File kemungkinan berubah:
+Setelah tahap ini stabil:
 
-- `app/Http/Controllers/Admin/StudentClassHistoryController.php`
-- `tests/Feature/Admin/StudentClassHistoryTest.php`
-- `docs/AI-HANDOFF.md`
-- `docs/PROGRESS.md`
-- `docs/NEXT-STEPS.md`
-- `docs/CHANGELOG.md`
-
-Catatan:
-
-- Tidak membuat migration baru pada tahap awal.
-- Tidak membuat permission baru.
-- Jika nanti dibutuhkan constraint database, itu dibuat pada tahap terpisah.
+- Tahap 12.30 — Penentuan Semester Aktif Sistem.
+- Tahap 12.31 — Koreksi dan Edit Riwayat Kelas Siswa.
+- Tahap 12.32 — Awal Modul Jadwal Pelajaran.
 
 ---
 
