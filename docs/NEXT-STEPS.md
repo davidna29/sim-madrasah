@@ -1,69 +1,62 @@
 # Next Steps — SIM Madrasah
 
-Dokumen ini berisi urutan kerja kecil yang direkomendasikan setelah fitur pencarian siswa.
+Dokumen ini berisi urutan kerja kecil yang direkomendasikan.
 
 ---
 
 ## Prioritas Terdekat
 
-### Tahap 12.26 — Penentuan Modul Lanjutan Setelah Data Siswa
+### Tahap 12.27 — Guard Histori Kelas Aktif
 
 Tujuan:
 
-- Membaca ulang `docs/AI-HANDOFF.md`, `docs/PROGRESS.md`, dan `docs/NEXT-STEPS.md`.
-- Menentukan modul berikutnya yang paling aman dikerjakan.
-- Tidak langsung membuat fitur baru sebelum arah modul berikutnya jelas.
-- Memastikan tidak ada pekerjaan Data Siswa yang masih tertinggal.
+- Membuat aturan aplikasi agar satu siswa tidak memiliki dua histori kelas aktif pada semester yang sama.
+- Validasi dilakukan pada proses tambah histori kelas siswa.
+- Jika siswa sudah memiliki histori aktif pada semester yang sama, sistem harus menolak input baru.
+- Histori lama tidak boleh dihapus otomatis pada tahap ini.
+
+File kemungkinan berubah:
+
+- `app/Http/Controllers/Admin/StudentClassHistoryController.php`
+- `tests/Feature/Admin/StudentClassHistoryTest.php`
+- `docs/AI-HANDOFF.md`
+- `docs/PROGRESS.md`
+- `docs/NEXT-STEPS.md`
+- `docs/CHANGELOG.md`
 
 Catatan:
 
-- Modul Data Siswa sudah stabil pada Tahap 12.25.
-- Tahap berikutnya harus mengikuti prioritas terakhir yang tercatat di dokumentasi.
+- Tidak membuat migration baru pada tahap awal.
+- Tidak membuat permission baru.
+- Jika nanti dibutuhkan constraint database, itu dibuat pada tahap terpisah.
 
 ---
 
-### Tahap 12.22 — Filter Siswa Berdasarkan Tahun Ajaran Masuk
-
-Tujuan:
-
-- Menambahkan filter `admission_academic_year_id` pada daftar siswa.
-- Filter tetap bisa digabung dengan `q`, `class_group_id`, dan `status`.
-
----
-
-### Tahap 12.23 — Export Hasil Filter Siswa
-
-Tujuan:
-
-- Export daftar siswa sesuai hasil filter di halaman `Data Siswa`.
-- Format awal: Excel.
-- Hindari export semua data jika user sedang memakai filter.
-
----
-
-### Tahap 12.24 — Bulk Assignment Siswa ke Rombel
+### Tahap 12.28 — Bulk Assignment Siswa ke Rombel
 
 Tujuan:
 
 - Memilih banyak siswa.
-- Menempatkan ke rombel tertentu pada tahun ajaran dan semester tertentu.
+- Menempatkan siswa ke rombel tertentu pada tahun ajaran dan semester tertentu.
 - Membuat record `student_class_histories`.
-- Menonaktifkan `is_current` lama jika masih satu siswa.
+- Menonaktifkan histori aktif lama jika diperlukan.
+- Mengikuti guard histori kelas aktif yang sudah dibuat pada Tahap 12.27.
 
 Perhatian:
 
 - Jangan hapus histori lama.
 - Wajib validasi satu siswa tidak boleh punya dua record aktif untuk semester yang sama.
+- Fitur ini dikerjakan setelah guard histori kelas aktif aman.
 
 ---
 
-### Tahap 12.25 — Guard Histori Kelas Aktif
+### Tahap 12.29 — Awal Modul Jadwal Pelajaran
 
 Tujuan:
 
-- Membuat aturan aplikasi agar hanya satu `student_class_histories.is_current = true` per siswa.
-- Bisa dimulai dari logic controller/service.
-- Pertimbangkan index/constraint jika database mendukung.
+- Memulai modul Jadwal Pelajaran setelah modul Data Siswa dan histori kelas stabil.
+- Modul ini membutuhkan guru, mata pelajaran, rombel, tahun ajaran, dan semester.
+- Tahap awal harus dimulai dari desain database dan relasi, bukan langsung UI.
 
 ---
 

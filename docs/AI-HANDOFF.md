@@ -10,40 +10,31 @@ saya mengembangkannya sekarang di macbook air m2 dengan laravel herd
 
 ## Tahap Terakhir Selesai
 
-### Tahap 12.25 — Review Akhir Modul Data Siswa
+### Tahap 12.26 — Sinkronisasi Next Steps Setelah Data Siswa Stabil
 
 Status: selesai.
 
-Ringkasan review:
+Ringkasan:
 
-- Halaman Data Siswa sudah dicek secara manual.
-- Pencarian siswa sudah mendukung nama, NIS, NISN, dan nomor registrasi.
-- Filter rombongan belajar sudah memakai kelas aktif dari `student_class_histories`.
-- Filter status sudah mendukung `active`, `inactive`, `transferred`, `graduated`, dan `alumni`.
-- Filter tahun masuk sudah memakai `students.admission_academic_year_id`.
-- Export CSV sudah mengikuti filter aktif.
-- Export CSV sudah memakai label status Indonesia.
-- Tombol dan layout filter sudah dirapikan.
-- Test otomatis berjalan dengan hasil aman.
-- Build frontend berhasil.
-
-File yang dicek:
-
-- `routes/web.php`
-- `app/Http/Controllers/Admin/StudentController.php`
-- `resources/views/admin/students/index.blade.php`
-- `tests/Feature/Admin/StudentTest.php`
+- Membaca ulang `docs/AI-HANDOFF.md`, `docs/PROGRESS.md`, dan `docs/NEXT-STEPS.md`.
+- Menemukan bahwa modul Data Siswa sudah stabil pada Tahap 12.25.
+- Menemukan bahwa masih ada pekerjaan lanjutan terkait histori kelas siswa.
+- Menentukan urutan tahap berikutnya:
+  1. Tahap 12.27 — Guard Histori Kelas Aktif.
+  2. Tahap 12.28 — Bulk Assignment Siswa ke Rombel.
+  3. Tahap 12.29 — Awal Modul Jadwal Pelajaran.
+- Tidak ada perubahan kode aplikasi pada tahap ini.
 
 Catatan:
 
 - Tidak ada perubahan database.
 - Tidak ada permission baru.
-- Tidak ada keputusan teknis besar baru.
-- Modul Data Siswa dinyatakan stabil untuk tahap saat ini.
+- Tidak ada fitur baru.
+- Tahap ini hanya menyinkronkan arah kerja dokumentasi.
 
 Tahap berikutnya:
 
-- Tahap 12.26 — Penentuan Modul Lanjutan Setelah Data Siswa.
+- Tahap 12.27 — Guard Histori Kelas Aktif.
 
 ---
 
@@ -147,11 +138,16 @@ Catatan hasil cek di environment AI: `php artisan test` tidak bisa dijalankan ka
 
 Rekomendasi tahap kecil berikutnya:
 
-1. Tahap 12.21 — filter siswa berdasarkan status.
-2. Tahap 12.22 — filter siswa berdasarkan tahun ajaran masuk.
-3. Tahap 12.23 — tombol export hasil filter siswa.
-4. Tahap 12.24 — bulk assignment siswa ke rombel.
-5. Tahap 12.25 — validasi satu siswa hanya punya satu kelas aktif per semester.
+1. Tahap 12.27 — Guard Histori Kelas Aktif.
+2. Tahap 12.28 — Bulk Assignment Siswa ke Rombel.
+3. Tahap 12.29 — Awal Modul Jadwal Pelajaran.
+
+Alasan urutan:
+
+- Modul Data Siswa sudah stabil pada Tahap 12.25.
+- Guard histori kelas aktif perlu dibuat sebelum bulk assignment.
+- Bulk assignment akan membuat banyak record `student_class_histories`.
+- Modul Jadwal Pelajaran sebaiknya dimulai setelah data siswa dan histori kelas lebih aman.
 
 Lihat detail di `docs/NEXT-STEPS.md`.
 

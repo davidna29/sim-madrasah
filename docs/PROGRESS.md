@@ -1,6 +1,6 @@
 # Progress Pengembangan — SIM Madrasah
 
-Terakhir diperbarui: 12 Agustus 2026.
+Terakhir diperbarui: 13 Agustus 2026.
 
 ---
 
@@ -67,24 +67,17 @@ addfd94 feat: add madrasah identity module
 
 ## Fitur Terakhir yang Sudah Tampak di Kode
 
-### Review Akhir Modul Data Siswa
+### Sinkronisasi Next Steps Setelah Data Siswa Stabil
 
-Status: stabil untuk tahap saat ini.
+Status: selesai.
 
-Fitur yang sudah dicek:
+Hasil:
 
-- daftar siswa;
-- tambah siswa;
-- edit siswa;
-- detail siswa;
-- pencarian siswa;
-- filter rombongan belajar;
-- filter status;
-- filter tahun masuk;
-- export CSV berdasarkan filter aktif;
-- link riwayat kelas;
-- link wali siswa;
-- link portofolio siswa.
+- Modul Data Siswa tetap berstatus stabil tahap 12.25.
+- Arah kerja setelah Data Siswa ditentukan ulang.
+- Tahap berikutnya adalah Guard Histori Kelas Aktif.
+- Bulk Assignment Siswa ke Rombel dikerjakan setelah guard histori kelas aktif aman.
+- Modul Jadwal Pelajaran menjadi backlog prioritas setelah histori kelas siswa lebih stabil.
 
 Validasi:
 

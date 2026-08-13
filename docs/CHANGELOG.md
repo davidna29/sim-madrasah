@@ -5,6 +5,13 @@ Format mengikuti gaya sederhana: tanggal, tahap/commit, perubahan.
 ---
 ## 2026-08-13
 
+### `docs: sync next steps after student module review`
+
+- Menyinkronkan arah kerja setelah modul Data Siswa stabil.
+- Menentukan Tahap 12.27 sebagai Guard Histori Kelas Aktif.
+- Menempatkan Bulk Assignment Siswa ke Rombel setelah guard histori kelas aktif.
+- Menempatkan Modul Jadwal Pelajaran sebagai tahap setelah histori kelas siswa lebih stabil.
+
 ### `chore: review student module`
 
 - Melakukan review akhir modul Data Siswa.
