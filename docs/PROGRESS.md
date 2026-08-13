@@ -23,7 +23,7 @@ Terakhir diperbarui: 13 Agustus 2026.
 | Pegawai | Selesai awal | CRUD |
 | Akun pegawai | Selesai awal | Create akun dari data pegawai |
 | Siswa | Stabil tahap 12.25 | CRUD, filter rombel, pencarian, filter status, filter tahun masuk, export CSV, review akhir |
-| Riwayat kelas siswa | Selesai tahap 12.28 | Tambah histori kelas siswa, guard satu histori per siswa per semester, bulk assignment siswa ke rombel, validasi konteks akademik |
+| Riwayat kelas siswa | Stabil tahap 12.29 | Tambah histori kelas siswa, guard satu histori per siswa per semester, bulk assignment siswa ke rombel, validasi konteks akademik, review bulk assignment |
 | Akun siswa | Selesai awal | Create akun dari data siswa |
 | Wali siswa | Selesai awal | CRUD wali per siswa |
 | Akun wali siswa | Selesai awal | Create akun wali |
@@ -67,27 +67,27 @@ addfd94 feat: add madrasah identity module
 
 ## Fitur Terakhir yang Sudah Tampak di Kode
 
-### Bulk Assignment Siswa ke Rombel
+### Review Bulk Assignment dan Validasi Konteks Akademik
 
-Status: selesai.
+Status: stabil untuk tahap saat ini.
 
-Fitur:
+Yang sudah dicek:
 
-- admin dapat memilih banyak siswa;
-- admin dapat memilih tahun ajaran, semester, rombel, dan tanggal mulai;
-- sistem membuat histori kelas untuk semua siswa terpilih;
-- histori aktif lama dinonaktifkan;
-- histori baru dibuat sebagai `is_current = true`;
-- assignment ditolak jika siswa sudah memiliki histori kelas pada semester yang sama;
-- semester harus sesuai dengan tahun ajaran;
-- rombel harus sesuai dengan tahun ajaran;
-- tanggal mulai harus berada dalam rentang tanggal semester.
+- route bulk assignment;
+- tombol Bulk Rombel;
+- halaman Bulk Assignment;
+- assignment siswa ke rombel;
+- guard siswa yang sudah memiliki histori pada semester yang sama;
+- validasi semester sesuai tahun ajaran;
+- validasi rombel sesuai tahun ajaran;
+- validasi tanggal mulai dalam rentang semester;
+- test otomatis;
+- build frontend.
 
-Validasi:
+Catatan lanjutan:
 
-- `StudentBulkClassAssignmentTest` berhasil;
-- `php artisan test` berhasil;
-- `npm run build` berhasil.
+- Penentuan semester aktif sistem belum dibuat.
+- Tahap berikutnya adalah Penentuan Semester Aktif Sistem.
 
 ---
 

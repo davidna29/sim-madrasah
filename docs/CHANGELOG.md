@@ -5,6 +5,14 @@ Format mengikuti gaya sederhana: tanggal, tahap/commit, perubahan.
 ---
 ## 2026-08-13
 
+### `chore: review bulk student class assignment`
+
+- Melakukan review fitur bulk assignment siswa ke rombel.
+- Memastikan validasi konteks akademik berjalan.
+- Memastikan guard histori kelas per semester tetap berjalan.
+- Memastikan test otomatis dan build frontend berhasil.
+- Mengarahkan tahap berikutnya ke penentuan semester aktif sistem.
+
 ### `feat: add bulk student class assignment`
 
 - Menambahkan fitur bulk assignment siswa ke rombel.

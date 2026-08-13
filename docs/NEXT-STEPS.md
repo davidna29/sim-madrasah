@@ -6,22 +6,27 @@ Dokumen ini berisi urutan kerja kecil yang direkomendasikan.
 
 ## Prioritas Terdekat
 
-### Tahap 12.29 — Review Bulk Assignment dan Validasi Konteks Akademik
+### Tahap 12.30 — Penentuan Semester Aktif Sistem
 
 Tujuan:
 
-- Mengecek ulang flow bulk assignment.
-- Memastikan pesan error mudah dipahami.
-- Memastikan tombol Bulk Rombel mudah ditemukan.
-- Memastikan histori aktif lama dinonaktifkan dengan benar.
-- Memastikan guard semester tetap berjalan.
-- Memastikan validasi tahun ajaran, semester, rombel, dan tanggal berjalan benar.
+- Menentukan semester aktif sistem dari menu akademik.
+- Semester aktif sistem menjadi acuan awal untuk proses akademik.
+- Bulk Assignment dan Tambah Riwayat Kelas nantinya diarahkan agar mengikuti semester aktif.
+- Hanya user berwenang yang boleh mengaktifkan semester.
+- Tahap awal perlu membaca ulang struktur `academic_years` dan `semesters`.
+
+Catatan:
+
+- Saat ini kelas aktif siswa masih ditentukan oleh `student_class_histories.is_current`.
+- Semester aktif sistem belum otomatis mengunci input histori kelas.
+- Perubahan ke arah semester aktif sistem harus dilakukan bertahap agar tidak merusak fitur yang sudah berjalan.
 
 Setelah tahap ini stabil:
 
-- Tahap 12.30 — Penentuan Semester Aktif Sistem.
 - Tahap 12.31 — Koreksi dan Edit Riwayat Kelas Siswa.
-- Tahap 12.32 — Awal Modul Jadwal Pelajaran.
+- Tahap 12.32 — Kebijakan Nonaktif, Soft Delete, dan Koreksi Data Master.
+- Tahap 12.33 — Awal Modul Jadwal Pelajaran.
 
 ---
 

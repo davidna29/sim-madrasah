@@ -10,48 +10,37 @@ saya mengembangkannya sekarang di macbook air m2 dengan laravel herd
 
 ## Tahap Terakhir Selesai
 
-### Tahap 12.28 — Bulk Assignment Siswa ke Rombel
+### Tahap 12.29 — Review Bulk Assignment dan Validasi Konteks Akademik
 
 Status: selesai.
 
 Ringkasan:
 
-- Menambahkan fitur bulk assignment siswa ke rombongan belajar.
-- Admin dapat memilih banyak siswa sekaligus.
-- Admin memilih tahun ajaran, semester, rombel, dan tanggal mulai.
-- Sistem membuat record `student_class_histories` untuk setiap siswa yang dipilih.
-- Histori aktif lama milik siswa dinonaktifkan sebelum histori baru dibuat.
+- Melakukan review fitur Bulk Assignment Siswa ke Rombel.
+- Route bulk assignment sudah dicek.
+- Tombol Bulk Rombel sudah dicek pada halaman Data Siswa.
+- Halaman Bulk Assignment sudah dicek secara manual.
+- Assignment normal berhasil membuat `student_class_histories`.
+- Histori aktif lama dinonaktifkan sebelum histori baru dibuat.
 - Histori baru dibuat dengan `is_current = true`.
 - Sistem menolak assignment jika siswa sudah memiliki histori kelas pada semester yang sama.
-- Sistem memvalidasi semester agar sesuai dengan tahun ajaran yang dipilih.
-- Sistem memvalidasi rombel agar sesuai dengan tahun ajaran yang dipilih.
-- Sistem memvalidasi tanggal mulai agar berada dalam rentang tanggal semester.
-- Fitur memakai permission `student_class_histories.create`.
-
-File berubah:
-
-- `routes/web.php`
-- `app/Http/Controllers/Admin/StudentBulkClassAssignmentController.php`
-- `resources/views/admin/students/index.blade.php`
-- `resources/views/admin/students/bulk-class-assignment.blade.php`
-- `tests/Feature/Admin/StudentBulkClassAssignmentTest.php`
-- `docs/AI-HANDOFF.md`
-- `docs/PROGRESS.md`
-- `docs/NEXT-STEPS.md`
-- `docs/CHANGELOG.md`
-- `docs/DECISIONS.md`
+- Sistem menolak semester yang tidak sesuai dengan tahun ajaran.
+- Sistem menolak rombel yang tidak sesuai dengan tahun ajaran.
+- Sistem menolak tanggal mulai di luar rentang semester.
+- Test otomatis berjalan aman.
+- Build frontend berhasil.
 
 Catatan:
 
 - Tidak ada perubahan database.
 - Tidak ada permission baru.
-- Fitur mengikuti guard histori kelas per semester dari Tahap 12.27.
-- Penentuan semester aktif sistem belum dibuat pada tahap ini.
-- Semester aktif sistem direkomendasikan menjadi tahap lanjutan.
+- Tidak ada fitur besar baru pada tahap ini.
+- Penentuan semester aktif sistem belum dibuat.
+- Tahap berikutnya diarahkan ke penentuan semester aktif sistem.
 
 Tahap berikutnya:
 
-- Tahap 12.29 — Review Bulk Assignment dan Validasi Konteks Akademik.
+- Tahap 12.30 — Penentuan Semester Aktif Sistem.
 
 ---
 
