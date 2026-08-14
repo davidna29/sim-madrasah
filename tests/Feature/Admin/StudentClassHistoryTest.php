@@ -49,6 +49,33 @@ class StudentClassHistoryTest extends TestCase
             ->assertSee('Kelas VII A');
     }
 
+    // Menguji bahwa halaman create riwayat kelas menampilkan semester aktif dan terpilih secara default
+    public function test_user_can_see_active_semester_default_on_create_page(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'student_class_histories.create');
+
+        [$student, $academicYear, $semester] = $this->createStudentClassData();
+
+        $response = $this
+            ->actingAs($user)
+            ->get(route('admin.students.class-histories.create', $student));
+
+        $response
+            ->assertStatus(200)
+            ->assertSee('Semester aktif sistem:')
+            ->assertSee($semester->name)
+            ->assertSeeInOrder([
+                'value="'.$academicYear->id.'"',
+                'selected',
+            ], false)
+            ->assertSeeInOrder([
+                'value="'.$semester->id.'"',
+                'selected',
+            ], false);
+    }
+
     public function test_user_can_create_student_class_history(): void
     {
         $user = User::factory()->create();

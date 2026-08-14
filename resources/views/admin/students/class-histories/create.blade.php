@@ -21,6 +21,16 @@
                 @csrf
 
                 <div class="p-6 space-y-6">
+                    {{-- 1) Kotak Informasi Semester Aktif --}}
+                    @if ($activeSemester)
+                        <div class="rounded-md border border-blue-200 bg-blue-50 p-3 text-sm text-blue-800">
+                            Semester aktif sistem: 
+                            <span class="font-medium">
+                                {{ $activeSemester->academicYear?->name ?? '-' }} - {{ $activeSemester->name }}
+                            </span>
+                        </div>
+                    @endif
+
                     <div>
                         <x-input-label for="academic_year_id" value="Tahun Ajaran" />
 
@@ -35,7 +45,8 @@
                             @foreach ($academicYears as $academicYear)
                                 <option
                                     value="{{ $academicYear->id }}"
-                                    @selected((string) old('academic_year_id') === (string) $academicYear->id)
+                                    {{-- 2) Default Pilihan Tahun Ajaran mengikuti Semester Aktif --}}
+                                    @selected((string) old('academic_year_id', $activeSemester?->academic_year_id) === (string) $academicYear->id)
                                 >
                                     {{ $academicYear->name }}
                                 </option>
@@ -59,7 +70,8 @@
                             @foreach ($semesters as $semester)
                                 <option
                                     value="{{ $semester->id }}"
-                                    @selected((string) old('semester_id') === (string) $semester->id)
+                                    {{-- 3) Default Pilihan Semester mengikuti Semester Aktif --}}
+                                    @selected((string) old('semester_id', $activeSemester?->id) === (string) $semester->id)
                                 >
                                     {{ $semester->academicYear?->name }}
                                     -

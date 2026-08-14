@@ -291,7 +291,6 @@ class AcademicYearTest extends TestCase
         ]);
     }
 
-
     public function test_user_cannot_activate_locked_semester(): void
     {
         $user = User::factory()->create();

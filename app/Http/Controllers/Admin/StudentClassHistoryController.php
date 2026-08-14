@@ -89,7 +89,13 @@ class StudentClassHistoryController extends Controller
      */
     private function formData(): array
     {
+        $activeSemester = Semester::query()
+            ->with('academicYear')
+            ->where('is_active', true)
+            ->first();
+
         return [
+            'activeSemester' => $activeSemester,
             'academicYears' => AcademicYear::query()
                 ->orderByDesc('start_date')
                 ->get(),

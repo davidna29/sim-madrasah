@@ -43,7 +43,17 @@
             >
                 @csrf
 
-                <div class="bg-white p-6 shadow-sm sm:rounded-lg">
+                <div class="bg-white p-6 shadow-sm sm:rounded-lg space-y-6">
+                    {{-- 1) Banner Informasi Semester Aktif --}}
+                    @if ($activeSemester)
+                        <div class="rounded-md border border-blue-200 bg-blue-50 p-3 text-sm text-blue-800">
+                            Semester aktif sistem: 
+                            <span class="font-medium">
+                                {{ $activeSemester->academicYear?->name ?? '-' }} - {{ $activeSemester->name }}
+                            </span>
+                        </div>
+                    @endif
+
                     <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
                         <div>
                             <x-input-label for="academic_year_id" value="Tahun Ajaran" />
@@ -59,7 +69,8 @@
                                 @foreach ($academicYears as $academicYear)
                                     <option
                                         value="{{ $academicYear->id }}"
-                                        @selected((string) old('academic_year_id') === (string) $academicYear->id)
+                                        {{-- 2) Default Tahun Ajaran mengikuti Semester Aktif --}}
+                                        @selected((string) old('academic_year_id', $activeSemester?->academic_year_id) === (string) $academicYear->id)
                                     >
                                         {{ $academicYear->name }}
                                     </option>
@@ -81,7 +92,8 @@
                                 @foreach ($semesters as $semester)
                                     <option
                                         value="{{ $semester->id }}"
-                                        @selected((string) old('semester_id') === (string) $semester->id)
+                                        {{-- 3) Default Semester mengikuti Semester Aktif --}}
+                                        @selected((string) old('semester_id', $activeSemester?->id) === (string) $semester->id)
                                     >
                                         {{ $semester->academicYear?->name }}
                                         -
@@ -120,18 +132,25 @@
                         <div>
                             <x-input-label for="start_date" value="Tanggal Mulai" />
 
-                            <x-text-input
+                            @php
+                                $defaultStartDate = old(
+                                    'start_date',
+                                    $activeSemester?->start_date?->format('Y-m-d')
+                                );
+                            @endphp
+
+                            <input
                                 id="start_date"
-                                name="start_date"
                                 type="date"
-                                class="mt-1 block w-full"
-                                :value="old('start_date', now()->toDateString())"
+                                name="start_date"
+                                value="{{ $defaultStartDate }}"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
                                 required
                             />
                         </div>
                     </div>
 
-                    <div class="mt-4">
+                    <div>
                         <x-input-label for="notes" value="Catatan" />
 
                         <textarea
@@ -260,4 +279,33 @@
             </form>
         </div>
     </div>
+
+    @push('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const semesterSelect = document.getElementById('semester_id');
+                const startDateInput = document.getElementById('start_date');
+
+                const semesterDates = @json(
+                    $semesters->mapWithKeys(function ($semester) {
+                        return [
+                            $semester->id => optional($semester->start_date)->format('Y-m-d'),
+                        ];
+                    })
+                );
+
+                if (!semesterSelect || !startDateInput) {
+                    return;
+                }
+
+                semesterSelect.addEventListener('change', function () {
+                    const selectedSemesterId = this.value;
+
+                    if (semesterDates[selectedSemesterId]) {
+                        startDateInput.value = semesterDates[selectedSemesterId];
+                    }
+                });
+            });
+        </script>
+    @endpush
 </x-app-layout>

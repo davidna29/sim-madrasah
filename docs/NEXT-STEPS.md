@@ -8,19 +8,22 @@ Dokumen ini berisi urutan kerja kecil yang direkomendasikan.
 
 ### Tahap 12.31 — Integrasi Semester Aktif ke Riwayat Kelas dan Bulk Rombel
 
-Tujuan:
+Status: selesai.
 
-- Mengarahkan form Tambah Riwayat Kelas agar memakai semester aktif sebagai nilai awal.
-- Mengarahkan form Bulk Rombel agar memakai semester aktif sebagai nilai awal.
-- Menampilkan informasi semester aktif pada form akademik.
-- Tetap mengizinkan validasi tahun ajaran, semester, rombel, dan tanggal.
-- Belum mengunci pilihan semester secara penuh pada tahap awal.
+Tujuan (tercapai):
+
+- Mengarahkan form Tambah Riwayat Kelas agar memakai semester aktif sebagai nilai awal. ✓
+- Mengarahkan form Bulk Rombel agar memakai semester aktif sebagai nilai awal. ✓
+- Menampilkan informasi semester aktif pada form akademik. ✓
+- Tetap mengizinkan validasi tahun ajaran, semester, rombel, dan tanggal. ✓
+- Tanggal mulai pada bulk rombel otomatis mengikuti semester aktif. ✓
 
 Catatan:
 
 - Semester aktif sistem sudah tersedia dari Tahap 12.30.
 - Kelas aktif siswa tetap dibaca dari `student_class_histories.is_current`.
 - Integrasi dilakukan bertahap agar tidak merusak flow yang sudah berjalan.
+- Sub-tahap 12.31K menambahkan sinkronisasi tanggal mulai saat semester diganti.
 
 Setelah tahap ini stabil:
 

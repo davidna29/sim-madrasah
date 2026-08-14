@@ -3,6 +3,23 @@
 Format mengikuti gaya sederhana: tanggal, tahap/commit, perubahan.
 
 ---
+## 2026-08-14
+
+### `feat: default active semester in academic forms`
+
+- Menambahkan semester aktif sebagai nilai awal pada form riwayat kelas.
+- Menambahkan semester aktif sebagai nilai awal pada form bulk rombel.
+- Menampilkan informasi semester aktif di form akademik.
+- Menambahkan test tampilan semester aktif di form.
+- Menambahkan test validasi default semester.
+
+### `feat: auto start date from active semester in bulk assignment`
+
+- Menambahkan auto tanggal mulai berdasarkan semester aktif pada bulk assignment.
+- Tanggal mulai tersinkronkan ketika semester diganti di form.
+- Menambahkan JavaScript untuk sinkronisasi tanggal real-time.
+- Menambahkan test auto tanggal mulai di form bulk assignment.
+
 ## 2026-08-13
 
 ### `feat: clarify active academic semester`

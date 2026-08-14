@@ -23,7 +23,7 @@ Terakhir diperbarui: 13 Agustus 2026.
 | Pegawai | Selesai awal | CRUD |
 | Akun pegawai | Selesai awal | Create akun dari data pegawai |
 | Siswa | Stabil tahap 12.25 | CRUD, filter rombel, pencarian, filter status, filter tahun masuk, export CSV, review akhir |
-| Riwayat kelas siswa | Stabil tahap 12.29 | Tambah histori kelas siswa, guard satu histori per siswa per semester, bulk assignment siswa ke rombel, validasi konteks akademik, review bulk assignment |
+| Riwayat kelas siswa | Selesai tahap 12.31 | Tambah histori siswa, bulk rombel, default semester aktif, auto tanggal |
 | Akun siswa | Selesai awal | Create akun dari data siswa |
 | Wali siswa | Selesai awal | CRUD wali per siswa |
 | Akun wali siswa | Selesai awal | Create akun wali |
@@ -67,23 +67,26 @@ addfd94 feat: add madrasah identity module
 
 ## Fitur Terakhir yang Sudah Tampak di Kode
 
-### Penentuan Semester Aktif Sistem
+### Integrasi Semester Aktif ke Riwayat Kelas dan Bulk Rombel
 
 Status: selesai.
 
 Fitur:
 
-- sistem dapat memiliki satu semester aktif;
-- halaman Tahun Ajaran menampilkan kartu Semester Aktif Sistem;
-- aktivasi semester menonaktifkan semester aktif sebelumnya;
-- tahun ajaran dari semester aktif ikut aktif;
-- semester terkunci tidak bisa diaktifkan kembali.
+- form tambah riwayat kelas memakai semester aktif sebagai default;
+- form bulk rombel memakai semester aktif sebagai default;
+- tanggal mulai pada bulk rombel mengikuti semester aktif;
+- tanggal mulai tersinkronkan jika semester diganti;
+- informasi semester aktif ditampil di form;
+- validasi tahun ajaran, semester, rombel, dan tanggal tetap aktif.
 
 Validasi:
 
-- `AcademicYearTest` berhasil;
+- test riwayat kelas berhasil;
+- test bulk assignment berhasil;
 - `php artisan test` berhasil;
-- `npm run build` berhasil.
+- `npm run build` berhasil;
+- uji manual di Laravel Herd berhasil.
 
 ---
 

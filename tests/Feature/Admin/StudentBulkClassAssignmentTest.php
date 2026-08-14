@@ -36,6 +36,72 @@ class StudentBulkClassAssignmentTest extends TestCase
             ->assertSee('Pilih Siswa');
     }
 
+    // Menguji bahwa halaman bulk assignment menampilkan semester aktif dan terpilih secara default
+    public function test_user_can_see_active_semester_default_on_bulk_assignment_page(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'student_class_histories.create');
+
+        [$academicYear, $semester] = $this->createBulkAssignmentData();
+
+        $response = $this
+            ->actingAs($user)
+            ->get(route('admin.students.bulk-class-assignment.create'));
+
+        $response
+            ->assertStatus(200)
+            ->assertSee('Semester aktif sistem:')
+            ->assertSee($semester->name)
+            ->assertSeeInOrder([
+                'value="'.$academicYear->id.'"',
+                'selected',
+            ], false)
+            ->assertSeeInOrder([
+                'value="'.$semester->id.'"',
+                'selected',
+            ], false);
+    }
+
+    // Menguji bahwa tanggal mulai pada form bulk assignment terisi otomatis sesuai tanggal mulai semester aktif
+    public function test_user_can_see_active_semester_start_date_in_bulk_assignment_form(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'student_class_histories.create');
+
+        $academicYear = AcademicYear::create([
+            'code' => '2027-2028-active',
+            'name' => '2027/2028',
+            'start_date' => '2027-07-01',
+            'end_date' => '2028-06-30',
+            'status' => 'active',
+            'is_active' => true,
+            'is_locked' => false,
+        ]);
+
+        $semester = Semester::create([
+            'academic_year_id' => $academicYear->id,
+            'code' => '2027-2028-genap',
+            'name' => 'Semester Genap 2027/2028',
+            'semester_type' => 'genap',
+            'start_date' => '2026-08-13',
+            'end_date' => '2027-01-31',
+            'status' => 'active',
+            'is_active' => true,
+            'is_locked' => false,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->get(route('admin.students.bulk-class-assignment.create'));
+
+        $response
+            ->assertStatus(200)
+            ->assertSee('Semester aktif sistem')
+            ->assertSee('value="2026-08-13"', false);
+    }
+
     public function test_user_can_bulk_assign_students_to_class_group(): void
     {
         $user = User::factory()->create();

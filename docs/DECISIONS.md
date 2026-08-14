@@ -235,3 +235,30 @@ Konsekuensi:
 - Menu Tahun Ajaran menjadi pusat aktivasi semester sistem.
 - Fitur akademik berikutnya sebaiknya membaca semester aktif sebagai nilai awal.
 - Penguncian penuh input berdasarkan semester aktif dilakukan bertahap.
+
+---
+
+## Semester Aktif Sebagai Default Form Akademik
+
+Keputusan:
+
+- Form riwayat kelas dan bulk rombel memakai semester aktif sistem sebagai nilai awal.
+- Tanggal mulai pada bulk rombel diambil dari `start_date` semester aktif.
+- Tanggal mulai tersinkronkan otomatis saat semester diganti di form.
+- User masih bisa mengganti pilihan semester dan tanggal manual.
+- Penguncian penuh input berdasarkan semester aktif belum diterapkan.
+
+Alasan:
+
+- Memudahkan input harian untuk pengguna admin.
+- Mengurangi salah pilih semester dan tanggal.
+- Menjaga flow lama tetap aman dan reversibel.
+- Semester aktif sudah tersedia dari Tahap 12.30.
+- Validasi masih berjalan normal, tidak ada perubahan business logic.
+
+Konsekuensi:
+
+- Form akademik lebih cepat diisi, namun user tetap punya fleksibilitas.
+- JavaScript tambahan untuk sinkronisasi tanggal, tetapi tidak merusak validasi server-side.
+- Jika nanti semester aktif diubah saat user mengedit form, nilai form tidak otomatis berubah (hanya saat halaman dibuka ulang).
+- Tahap lanjutan bisa menambahkan penguncian penuh input jika semester aktif berubah di sistem.

@@ -35,6 +35,11 @@ class StudentBulkClassAssignmentController extends Controller
             ->orderByDesc('id')
             ->get();
 
+        $activeSemester = Semester::query()
+            ->with('academicYear')
+            ->where('is_active', true)
+            ->first();
+
         $semesters = Semester::query()
             ->with('academicYear')
             ->orderByDesc('academic_year_id')
@@ -57,6 +62,7 @@ class StudentBulkClassAssignmentController extends Controller
             'academicYears' => $academicYears,
             'semesters' => $semesters,
             'classGroups' => $classGroups,
+            'activeSemester' => $activeSemester,
         ]);
     }
 

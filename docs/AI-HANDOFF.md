@@ -10,26 +10,28 @@ saya mengembangkannya sekarang di macbook air m2 dengan laravel herd
 
 ## Tahap Terakhir Selesai
 
-### Tahap 12.30 — Penentuan Semester Aktif Sistem
+### Tahap 12.31 — Integrasi Semester Aktif ke Riwayat Kelas dan Bulk Rombel
 
 Status: selesai.
 
 Ringkasan:
 
-- Memperjelas semester aktif sistem pada halaman Tahun Ajaran.
-- Menambahkan kartu Semester Aktif Sistem.
-- Semester aktif sistem diambil dari `semesters.is_active = true`.
-- Aktivasi semester memastikan hanya satu semester yang aktif.
-- Tahun ajaran dari semester aktif ikut menjadi aktif.
-- Semester terkunci tidak bisa diaktifkan kembali.
-- Status locked tidak ditimpa menjadi draft saat aktivasi semester lain.
-- Test AcademicYear diperkuat untuk mengecek tampilan semester aktif, perpindahan semester aktif, dan penolakan semester terkunci.
+- Form Tambah Riwayat Kelas memakai semester aktif sebagai nilai awal.
+- Form Bulk Rombel memakai semester aktif sebagai nilai awal.
+- Informasi semester aktif ditampilkan di form akademik.
+- Validasi tahun ajaran, semester, rombel, dan tanggal tetap berjalan.
+- Tanggal mulai pada bulk rombel otomatis mengikuti semester aktif.
+- Tanggal mulai tersinkronkan saat semester diganti di form.
+- Pilihan semester belum dikunci penuh pada tahap ini.
 
 File berubah:
 
-- `app/Http/Controllers/Admin/AcademicYearController.php`
-- `resources/views/admin/academic-years/index.blade.php`
-- `tests/Feature/Admin/AcademicYearTest.php`
+- `app/Http/Controllers/Admin/StudentClassHistoryController.php`
+- `app/Http/Controllers/Admin/StudentBulkClassAssignmentController.php`
+- `resources/views/admin/students/class-histories/create.blade.php`
+- `resources/views/admin/students/bulk-class-assignment.blade.php`
+- `tests/Feature/Admin/StudentClassHistoryTest.php`
+- `tests/Feature/Admin/StudentBulkClassAssignmentTest.php`
 - `docs/AI-HANDOFF.md`
 - `docs/PROGRESS.md`
 - `docs/NEXT-STEPS.md`
@@ -40,12 +42,12 @@ Catatan:
 
 - Tidak ada perubahan database.
 - Tidak ada permission baru.
-- Bulk Rombel dan Tambah Riwayat Kelas belum otomatis memakai semester aktif sistem.
-- Integrasi semester aktif ke form akademik dibuat pada tahap berikutnya.
+- Tahap 12.31 terdiri dari 2 sub-tahap: 12.31 (integrasi awal) dan 12.31K (perbaikan tanggal mulai pada bulk rombel).
+- Tahap berikutnya akan fokus pada koreksi dan edit riwayat kelas siswa.
 
 Tahap berikutnya:
 
-- Tahap 12.31 — Integrasi Semester Aktif ke Riwayat Kelas dan Bulk Rombel.
+- Tahap 12.32 — Koreksi dan Edit Riwayat Kelas Siswa.
 
 ---
 
