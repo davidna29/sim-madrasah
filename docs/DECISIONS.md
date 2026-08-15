@@ -121,6 +121,27 @@ Dihindari sebagai dependency wajib:
 - PostgreSQL-only,
 - microservice.
 
+## ADR-007 — `InitialAdminSeeder` Hanya Boleh Jalan di Environment Local
+
+Status: diterima.
+
+Alasan:
+
+- `InitialAdminSeeder` membaca password administrator dari `.env` (`SIM_INITIAL_ADMIN_PASSWORD`),
+  yang berisiko sama di banyak instalasi kalau nilai default tidak diganti.
+- Administrator production sebaiknya dibuat sadar dan sengaja oleh operator, bukan otomatis lewat
+  seeder yang bisa lupa dikonfigurasi ulang.
+- Kode seeder ini melempar `RuntimeException` kecuali `app()->environment('local')`.
+
+Konsekuensi:
+
+- `docs/DEPLOYMENT.md` **tidak lagi** menyuruh menjalankan `InitialAdminSeeder` di production.
+- Administrator awal production dibuat manual lewat `php artisan tinker`, langkahnya ada di
+  `docs/DEPLOYMENT.md` bagian 5.1.
+- Kalau nanti ingin proses ini lebih otomatis (misalnya command `artisan` khusus untuk production),
+  perlu tahap lanjutan yang sengaja dirancang aman untuk production.
+
+
 ---
 
 ## Export Data Siswa Tahap Awal Menggunakan CSV

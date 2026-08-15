@@ -89,10 +89,64 @@ Jangan bagikan `.env` production ke AI atau pihak lain.
 ```bash
 php artisan migrate --force
 php artisan db:seed --class=RbacSeeder --force
-php artisan db:seed --class=InitialAdminSeeder --force
 ```
 
+> **Penting:** `InitialAdminSeeder` **tidak bisa** dijalankan di production. Seeder ini sengaja
+> memblokir dirinya sendiri kecuali `APP_ENV=local` (lihat ADR-007 di `docs/DECISIONS.md`), supaya
+> tidak ada password administrator bawaan yang sama di semua instalasi production. Ikuti langkah
+> 5.1 di bawah untuk membuat administrator awal di production.
+
 Seeder lain bisa dijalankan sesuai kebutuhan data awal.
+
+### 5.1 Membuat Administrator Awal di Production
+
+Karena `InitialAdminSeeder` diblokir di production, buat administrator awal secara manual lewat
+`php artisan tinker`:
+
+```bash
+php artisan tinker
+```
+
+Lalu jalankan (ganti nama, email, username, dan password sesuai kebutuhan):
+
+```php
+$person = App\Models\Person::create([
+    'full_name' => 'Nama Anda',
+    'email' => 'admin@domain-anda.sch.id',
+]);
+
+$user = App\Models\User::create([
+    'person_id' => $person->id,
+    'name' => 'Nama Anda',
+    'username' => 'superadmin',
+    'email' => 'admin@domain-anda.sch.id',
+    'password' => Hash::make('PasswordKuatAnda123!'),
+    'account_type' => 'internal',
+    'status' => 'active',
+    'failed_login_count' => 0,
+]);
+
+$role = App\Models\Role::where('name', 'super_admin')->firstOrFail();
+$user->roles()->attach($role->id, ['assigned_at' => now()]);
+```
+
+Sebelum menjalankan `User::create()`, disarankan cek dulu apakah username/email sudah dipakai
+(misalnya sisa dari percobaan sebelumnya), supaya tidak kena `UniqueConstraintViolationException`:
+
+```php
+App\Models\User::withTrashed()
+    ->where('username', 'superadmin')
+    ->orWhere('email', 'admin@domain-anda.sch.id')
+    ->first();
+```
+
+Kalau user sudah ada tapi belum punya role (`$user->roles` kosong), cukup pasang role-nya saja
+tanpa membuat `Person`/`User` baru:
+
+```php
+$role = App\Models\Role::where('name', 'super_admin')->firstOrFail();
+$user->roles()->attach($role->id, ['assigned_at' => now()]);
+```
 
 ---
 
