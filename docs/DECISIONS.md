@@ -121,6 +121,8 @@ Dihindari sebagai dependency wajib:
 - PostgreSQL-only,
 - microservice.
 
+---
+
 ## ADR-007 — `InitialAdminSeeder` Hanya Boleh Jalan di Environment Local
 
 Status: diterima.
@@ -141,6 +143,55 @@ Konsekuensi:
 - Kalau nanti ingin proses ini lebih otomatis (misalnya command `artisan` khusus untuk production),
   perlu tahap lanjutan yang sengaja dirancang aman untuk production.
 
+---
+
+## ADR-008 — Paritas Lokal ↔ Production, Seeder Wajib vs Seeder Demo
+
+Status: diterima.
+
+Latar belakang:
+
+- Saat deployment production pertama (`sim.misnu.sch.id`), halaman `/admin/madrasah` 404
+  karena `MadrasahSeeder` belum pernah dijalankan.
+- Saat ditelusuri, `DatabaseSeeder.php` (dipanggil `php artisan migrate --seed` sesuai
+  `README.md`) ternyata hanya membuat satu user dummy, tidak memanggil `RbacSeeder`,
+  `MadrasahSeeder`, atau seeder lain. Artinya bug yang sama akan terjadi juga di setup
+  lokal baru manapun yang benar-benar mengikuti `README.md` dari nol — bukan cuma masalah
+  hosting.
+
+Keputusan:
+
+- `DatabaseSeeder.php` diperbarui supaya `php artisan migrate --seed` menghasilkan aplikasi
+  yang benar-benar bisa dipakai (role, permission, identitas madrasah, data referensi,
+  data demo, dan administrator awal lewat `InitialAdminSeeder`).
+- Seeder dibagi 3 kelompok, didokumentasikan di `docs/DEPLOYMENT.md` bagian 5.1:
+  1. **Wajib** — struktur sistem, aman dan perlu dijalankan di production
+     (`RbacSeeder`, `MadrasahSeeder`).
+  2. **Opsional** — data referensi contoh, aman untuk production sebagai titik awal
+     (`GradeLevelSeeder`, `RoomSeeder`, `SubjectSeeder`, `AcademicYearSeeder`).
+  3. **Demo saja** — data fiktif (nama siswa/guru contoh, email `@sim-madrasah.test`),
+     **tidak boleh** dijalankan di production
+     (`ClassGroupSeeder`, `EmployeeSeeder`, `StudentSeeder`, `StudentGuardianSeeder`,
+     `StudentClassHistorySeeder`).
+- `.env.example` diberi nilai default `SIM_INITIAL_ADMIN_PASSWORD` supaya
+  `php artisan migrate --seed` tidak error di setup lokal baru.
+- Production **tidak pernah** memakai `php artisan migrate --seed` polos — selalu
+  `php artisan migrate --force` diikuti seeder terpilih satu per satu (lihat
+  `docs/DEPLOYMENT.md`).
+- Prinsip umum ditambahkan ke `docs/AI-HANDOFF.md` bagian 3.1: sebelum menandai satu
+  tahap selesai, bayangkan seseorang meng-clone repo dari nol dan mengikuti `README.md`
+  persis apa adanya — kalau fitur baru butuh data yang tidak otomatis tersedia dari alur
+  itu, seeder-nya harus dilengkapi atau didokumentasikan secara eksplisit.
+
+Konsekuensi:
+
+- Developer/AI berikutnya yang menambah controller dengan pola `Model::firstOrFail()`
+  pada data singleton **wajib** memastikan seeder pembuatnya masuk kelompok "Wajib" di
+  atas dan tercatat di `docs/DEPLOYMENT.md`.
+- Menambah seeder baru berarti menambah entri baru ke tabel klasifikasi di
+  `docs/DEPLOYMENT.md` bagian 5.1, bukan cuma menambah seeder ke `DatabaseSeeder.php`.
+- Kalau nanti ada seeder wajib baru untuk modul lain (misalnya konfigurasi sistem lain
+  yang sifatnya singleton), pola yang sama harus diikuti.
 
 ---
 

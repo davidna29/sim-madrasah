@@ -79,6 +79,26 @@ Tahap berikutnya:
 - Riwayat kelas siswa disimpan di `student_class_histories`.
 - Kelas aktif siswa dibaca dari relasi `currentClassHistory` dengan `is_current = true`.
 
+### 3.1 Prinsip Paritas Lokal ↔ Production
+
+Lihat ADR-008 di `docs/DECISIONS.md` untuk latar belakang lengkap.
+
+- Fitur yang baru dibuat harus bisa diuji lewat alur setup standar di `README.md`
+  (`php artisan migrate --seed`), bukan cuma lewat data yang kebetulan sudah ada
+  di database lokal AI/developer saat itu.
+- Kalau sebuah halaman/controller bergantung pada satu baris data tertentu
+  (misalnya `Model::where(...)->firstOrFail()` pada data singleton seperti
+  identitas madrasah), pastikan seeder yang membuat data itu masuk daftar
+  seeder **wajib** di `DatabaseSeeder.php` dan didokumentasikan di
+  `docs/DEPLOYMENT.md` bagian "Seeder Wajib vs Seeder Demo".
+- Seeder wajib (struktur sistem, bukan data fiktif) harus aman dijalankan
+  di production. Seeder demo (data contoh siswa/guru fiktif) tidak boleh
+  ikut daftar wajib dan tidak boleh disarankan untuk production.
+- Sebelum menandai satu tahap selesai, bayangkan seseorang meng-clone repo
+  dari nol lalu mengikuti `README.md` persis apa adanya — apakah fitur baru
+  tetap berfungsi? Kalau tidak, itu tanda ada seeder/config/migration yang
+  belum lengkap.
+
 ---
 
 ## 4. Modul yang Sudah Ada

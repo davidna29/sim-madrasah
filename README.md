@@ -67,6 +67,12 @@ npm run build
 php artisan serve
 ```
 
+> Catatan: `php artisan migrate --seed` menyertakan data demo (siswa, guru, rombel contoh)
+> untuk kebutuhan pengembangan lokal, dan otomatis membuat administrator awal
+> (`superadmin` / lihat `.env` bagian `SIM_INITIAL_ADMIN_*`). **Jangan** dipakai persis
+> seperti ini di production — ikuti `docs/DEPLOYMENT.md` yang memakai seeder terpilih
+> satu per satu tanpa data demo.
+
 Untuk mode pengembangan frontend:
 
 ```bash
