@@ -195,6 +195,43 @@ Konsekuensi:
 
 ---
 
+## ADR-009 — File Konfigurasi Server (`.htaccess`) Wajib Ikut Di-Commit ke Git
+
+Status: diterima.
+
+Latar belakang:
+
+- Hosting production (`sim.misnu.sch.id`, Hostinger shared hosting) memakai fitur
+  **Deploy Otomatis dari GitHub**: setiap `git push` ke branch `main` langsung disegarkan
+  ke `public_html`.
+- Paket hosting yang dipakai **tidak mendukung mengubah document root** ke folder
+  `public/` Laravel — document root tetap `public_html` (root repo), sehingga dibutuhkan
+  `.htaccess` di root repo yang mengarahkan semua request ke `public/index.php`.
+- `.htaccess` sempat dibuat manual lewat File Manager Hostinger (tidak lewat Git). Setelah
+  push berikutnya (commit `d400dcf`, perbaikan seeder), auto-deploy menyegarkan ulang
+  `public_html` dan `.htaccess` manual itu **hilang**, situs kembali 403 Forbidden.
+- File `.env` tidak ikut terhapus karena Hostinger secara khusus mengecualikan `.env` dari
+  proses penyegaran auto-deploy. `.htaccess` tidak mendapat perlakuan khusus yang sama.
+
+Keputusan:
+
+- `.htaccess` di root repo (sejajar `composer.json`, bukan yang bawaan Laravel di dalam
+  `public/`) **wajib ikut di-commit ke Git**, bukan dibuat manual di server.
+- Prinsip umum: di hosting dengan auto-deploy dari Git, **apapun yang perlu bertahan**
+  di server (file konfigurasi web server, dsb.) harus masuk repo. Perubahan manual lewat
+  File Manager hanya aman untuk `.env` dan file yang secara eksplisit dikecualikan
+  provider hosting dari proses auto-deploy.
+
+Konsekuensi:
+
+- Kalau nanti ada konfigurasi server lain yang dibutuhkan (misalnya `robots.txt` khusus,
+  header keamanan tambahan), lakukan lewat file yang di-commit ke repo, bukan diedit
+  langsung di server.
+- Sebelum menyimpulkan sebuah perubahan server "sudah beres", cek dulu apakah perubahan
+  itu bertahan setelah deploy berikutnya, bukan cuma langsung setelah dibuat.
+
+---
+
 ## Export Data Siswa Tahap Awal Menggunakan CSV
 
 Keputusan:
