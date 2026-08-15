@@ -8,7 +8,7 @@ Dokumen ini adalah panduan awal deployment. Sesuaikan dengan hosting yang diguna
 
 Project ditargetkan bisa berjalan di shared hosting yang mendukung:
 
-- PHP 8.2 atau lebih baru,
+- PHP 8.4 atau lebih baru,
 - Composer,
 - MySQL/MariaDB,
 - ekstensi PHP umum Laravel.

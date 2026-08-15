@@ -54,7 +54,7 @@ Tahap berikutnya:
 ## 2. Teknologi
 
 - Laravel 12
-- PHP `^8.2`
+- PHP `^8.4`
 - Laravel Breeze
 - Blade
 - Tailwind CSS

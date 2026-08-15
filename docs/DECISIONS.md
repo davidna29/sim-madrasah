@@ -232,6 +232,46 @@ Konsekuensi:
 
 ---
 
+## ADR-010 — Syarat Minimum PHP Dinaikkan dari `^8.2` ke `^8.4`
+
+Status: diterima.
+
+Latar belakang:
+
+- `composer.json` dan seluruh dokumentasi menyatakan syarat minimum `PHP ^8.2`.
+- Saat deployment production pertama, `php artisan key:generate` gagal dijalankan memakai
+  PHP 8.2.30 (versi default CLI Hostinger) dengan pesan:
+  `Your Composer dependencies require a PHP version ">= 8.4.1". You are running 8.2.30.`
+- Penyebabnya: `vendor/` yang sebenarnya terpasang dibangun di Laravel Herd (lokal) yang
+  memakai PHP 8.4. Karena `composer.json` tidak mengunci versi platform, `composer update`
+  di Herd memilih versi terbaru dependency yang kompatibel dengan PHP 8.4 — dan sebagian
+  dependency itu ternyata mensyaratkan PHP 8.4.1 ke atas untuk dijalankan, meski
+  `composer.json` root masih menulis `^8.2`.
+- Ini adalah pelanggaran terselubung dari prinsip Paritas Lokal ↔ Production (ADR-008):
+  dokumentasi menjanjikan PHP 8.2 cukup, padahal `composer.lock` yang sesungguhnya dipakai
+  butuh PHP 8.4+.
+
+Keputusan:
+
+- `composer.json` (`require.php`) diubah dari `^8.2` menjadi `^8.4`, mengikuti kenyataan
+  environment yang benar-benar dipakai (Laravel Herd lokal dan Hostinger production
+  sama-sama PHP 8.4).
+- Semua dokumentasi (`README.md`, `docs/AI-HANDOFF.md`, `docs/DEPLOYMENT.md`) diperbarui
+  mengikuti perubahan ini.
+
+Konsekuensi:
+
+- Setup lokal baru wajib memakai PHP 8.4 ke atas, bukan 8.2.
+- Kalau di kemudian hari sengaja ingin mendukung PHP 8.2 lagi, perlu verifikasi ulang
+  seluruh dependency di `composer.lock` benar-benar kompatibel dengan 8.2 (bukan cuma
+  mengubah angka di `composer.json`).
+- Prinsip umum: kalau ada perbedaan antara apa yang dituliskan `composer.json`/dokumentasi
+  dan apa yang sungguhan dibutuhkan `vendor/`, dokumentasi harus disesuaikan dengan
+  kenyataan `vendor/`, bukan sebaliknya — karena `vendor/` adalah yang benar-benar
+  dieksekusi di production.
+
+  ---
+
 ## Export Data Siswa Tahap Awal Menggunakan CSV
 
 Keputusan:

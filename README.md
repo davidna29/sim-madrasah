@@ -2,15 +2,14 @@
 
 SIM Madrasah adalah aplikasi Sistem Informasi Manajemen Madrasah berbasis Laravel untuk membantu pengelolaan data inti madrasah: identitas madrasah, tahun ajaran, semester, kelas, ruangan, mata pelajaran, pegawai, siswa, wali siswa, akun pengguna, hak akses, dan portofolio digital siswa.
 
-> Status dokumentasi: dibuat sebagai paket handoff AI pada 12 Agustus 2026.  
-> Status kode yang terbaca dari repository: `fd723a4 docs: tambah panduan kontribusi untuk tim`, dengan fitur terakhir `cfb94ab feat: add student search`.
+> Status dokumentasi: dibuat pertama kali sebagai paket handoff AI pada 12 Agustus 2026, tapi bukan maksud tanggal update terakhirnya file ini.   
 
 ---
 
 ## Teknologi Utama
 
 - Laravel 12
-- PHP `^8.2`
+- PHP `^8.4`
 - Laravel Breeze
 - Blade Template
 - Tailwind CSS
