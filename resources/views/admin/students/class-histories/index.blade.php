@@ -84,6 +84,9 @@
                                 <th class="px-4 py-3 text-left font-semibold text-gray-700">
                                     Status
                                 </th>
+                                <th class="px-4 py-3 text-left font-semibold text-gray-700">
+                                    Aksi
+                                </th>
                             </tr>
                         </thead>
 
@@ -131,10 +134,21 @@
                                             @endif
                                         </div>
                                     </td>
+
+                                    <td class="px-4 py-3">
+                                        @can('permission', 'student_class_histories.update')
+                                            <a
+                                                href="{{ route('admin.students.class-histories.edit', [$student, $history]) }}"
+                                                class="text-sm font-medium text-green-700 hover:text-green-900"
+                                            >
+                                                Edit
+                                            </a>
+                                        @endcan
+                                    </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="px-4 py-6 text-center text-gray-500">
+                                    <td colspan="7" class="px-4 py-6 text-center text-gray-500">
                                         Belum ada riwayat kelas siswa.
                                     </td>
                                 </tr>

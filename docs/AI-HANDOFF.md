@@ -10,44 +10,44 @@ saya mengembangkannya sekarang di macbook air m2 dengan laravel herd
 
 ## Tahap Terakhir Selesai
 
-### Tahap 12.31 — Integrasi Semester Aktif ke Riwayat Kelas dan Bulk Rombel
+### Tahap 12.32 — Koreksi dan Edit Riwayat Kelas Siswa
 
 Status: selesai.
 
 Ringkasan:
 
-- Form Tambah Riwayat Kelas memakai semester aktif sebagai nilai awal.
-- Form Bulk Rombel memakai semester aktif sebagai nilai awal.
-- Informasi semester aktif ditampilkan di form akademik.
-- Validasi tahun ajaran, semester, rombel, dan tanggal tetap berjalan.
-- Tanggal mulai pada bulk rombel otomatis mengikuti semester aktif.
-- Tanggal mulai tersinkronkan saat semester diganti di form.
-- Pilihan semester belum dikunci penuh pada tahap ini.
+- Menambahkan halaman edit riwayat kelas siswa.
+- Semua field histori dapat dikoreksi: tahun ajaran, semester, rombel, status, tanggal, catatan, dan status kelas saat ini.
+- Mengedit histori menjadi "kelas saat ini" otomatis menonaktifkan histori aktif lain milik siswa yang sama.
+- Validasi akademik (kecocokan semester-tahun ajaran-rombel-rentang tanggal) dipakai ulang dari alur tambah histori.
+- Validasi unique semester per siswa mengecualikan record yang sedang diedit.
+- `assigned_by` tidak berubah saat edit — tetap mencatat siapa yang pertama kali membuat histori.
+- Tidak ada fitur hapus histori pada tahap ini, sesuai prinsip "jangan hapus histori".
 
 File berubah:
 
 - `app/Http/Controllers/Admin/StudentClassHistoryController.php`
-- `app/Http/Controllers/Admin/StudentBulkClassAssignmentController.php`
-- `resources/views/admin/students/class-histories/create.blade.php`
-- `resources/views/admin/students/bulk-class-assignment.blade.php`
+- `routes/web.php`
+- `database/seeders/RbacSeeder.php`
+- `resources/views/admin/students/class-histories/edit.blade.php`
+- `resources/views/admin/students/class-histories/index.blade.php`
 - `tests/Feature/Admin/StudentClassHistoryTest.php`
-- `tests/Feature/Admin/StudentBulkClassAssignmentTest.php`
 - `docs/AI-HANDOFF.md`
 - `docs/PROGRESS.md`
 - `docs/NEXT-STEPS.md`
 - `docs/CHANGELOG.md`
+- `docs/RBAC.md`
 - `docs/DECISIONS.md`
 
 Catatan:
 
 - Tidak ada perubahan database.
-- Tidak ada permission baru.
-- Tahap 12.31 terdiri dari 2 sub-tahap: 12.31 (integrasi awal) dan 12.31K (perbaikan tanggal mulai pada bulk rombel).
-- Tahap berikutnya akan fokus pada koreksi dan edit riwayat kelas siswa.
+- Permission baru: `student_class_histories.update`.
+- Fitur hapus histori kelas belum dibuat dan sengaja ditunda.
 
 Tahap berikutnya:
 
-- Tahap 12.32 — Koreksi dan Edit Riwayat Kelas Siswa.
+- Tahap 12.33 — Kebijakan Nonaktif, Soft Delete, dan Koreksi Data Master.
 
 ---
 

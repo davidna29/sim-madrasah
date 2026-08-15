@@ -28,7 +28,9 @@ Catatan:
 Setelah tahap ini stabil:
 
 - Tahap 12.32 — Koreksi dan Edit Riwayat Kelas Siswa.
+Status: selesai.
 - Tahap 12.33 — Kebijakan Nonaktif, Soft Delete, dan Koreksi Data Master.
+Status: selanjutnya
 - Tahap 12.34 — Awal Modul Jadwal Pelajaran.
 
 ---

@@ -23,7 +23,7 @@ Terakhir diperbarui: 13 Agustus 2026.
 | Pegawai | Selesai awal | CRUD |
 | Akun pegawai | Selesai awal | Create akun dari data pegawai |
 | Siswa | Stabil tahap 12.25 | CRUD, filter rombel, pencarian, filter status, filter tahun masuk, export CSV, review akhir |
-| Riwayat kelas siswa | Selesai tahap 12.31 | Tambah histori siswa, bulk rombel, default semester aktif, auto tanggal |
+| Riwayat kelas siswa | Selesai tahap 12.32 | Tambah histori, edit histori, bulk rombel, default semester aktif, auto tanggal |
 | Akun siswa | Selesai awal | Create akun dari data siswa |
 | Wali siswa | Selesai awal | CRUD wali per siswa |
 | Akun wali siswa | Selesai awal | Create akun wali |
@@ -66,6 +66,23 @@ addfd94 feat: add madrasah identity module
 ---
 
 ## Fitur Terakhir yang Sudah Tampak di Kode
+
+### Koreksi dan Edit Riwayat Kelas Siswa
+
+Status: selesai.
+
+Fitur:
+
+- edit histori kelas siswa yang sudah tercatat;
+- mengedit ke "kelas saat ini" menonaktifkan histori aktif lain milik siswa yang sama;
+- validasi akademik tetap berjalan saat edit;
+- belum ada fitur hapus histori.
+
+Validasi:
+
+- `StudentClassHistoryTest` berhasil;
+- `php artisan test` berhasil;
+- `npm run build` berhasil.
 
 ### Integrasi Semester Aktif ke Riwayat Kelas dan Bulk Rombel
 

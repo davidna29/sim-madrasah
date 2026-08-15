@@ -94,7 +94,7 @@ Role sistem yang terdaftar pada `RbacSeeder`:
 | `students.update` | students | update |
 | `students.account.create` | students | account_create |
 | `student_class_histories.view` | student_class_histories | view |
-| `student_class_histories.create` | student_class_histories | create |
+| `student_class_histories.update` | student_class_histories | update |
 | `student_guardians.view` | student_guardians | view |
 | `student_guardians.create` | student_guardians | create |
 | `student_guardians.update` | student_guardians | update |

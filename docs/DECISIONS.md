@@ -411,3 +411,23 @@ Konsekuensi:
 - JavaScript tambahan untuk sinkronisasi tanggal, tetapi tidak merusak validasi server-side.
 - Jika nanti semester aktif diubah saat user mengedit form, nilai form tidak otomatis berubah (hanya saat halaman dibuka ulang).
 - Tahap lanjutan bisa menambahkan penguncian penuh input jika semester aktif berubah di sistem.
+
+---
+## Edit Riwayat Kelas Siswa Tanpa Fitur Hapus
+
+Keputusan:
+
+- Histori kelas siswa bisa dikoreksi/diedit lewat form edit.
+- Tidak ada fitur hapus histori kelas siswa pada tahap ini.
+- `assigned_by` tidak diperbarui saat histori diedit.
+
+Alasan:
+
+- `ARCHITECTURE.md` §7 menegaskan histori kelas lama tidak boleh dihapus.
+- Kebutuhan paling umum adalah koreksi kesalahan input (rombel/tanggal/status salah), bukan penghapusan.
+- Fitur hapus berisiko konflik dengan modul masa depan yang akan bergantung pada histori kelas (Absensi, Nilai, Jadwal Pelajaran) — akan dipertimbangkan terpisah kalau benar-benar dibutuhkan.
+
+Konsekuensi:
+
+- Kesalahan fatal pada histori kelas untuk saat ini diatasi lewat edit, bukan hapus-lalu-buat-ulang.
+- Kalau suatu saat fitur hapus dibutuhkan, harus jadi tahap terpisah dengan aturan main sendiri (misalnya hanya boleh hapus histori yang `is_current = false` dan tidak dipakai modul lain).

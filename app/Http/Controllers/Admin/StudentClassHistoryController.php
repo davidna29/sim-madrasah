@@ -49,6 +49,20 @@ class StudentClassHistoryController extends Controller
         ] + $this->formData());
     }
 
+    public function edit(
+        Student $student,
+        StudentClassHistory $classHistory
+    ): View {
+        abort_unless($classHistory->student_id === $student->id, 404);
+
+        $student->load('person');
+
+        return view('admin.students.class-histories.edit', [
+            'student' => $student,
+            'classHistory' => $classHistory,
+        ] + $this->formData());
+    }
+
     public function store(
         Request $request,
         Student $student
@@ -80,6 +94,41 @@ class StudentClassHistoryController extends Controller
         return redirect()
             ->route('admin.students.class-histories.index', $student)
             ->with('success', 'Riwayat kelas siswa berhasil ditambahkan.');
+    }
+
+    public function update(
+        Request $request,
+        Student $student,
+        StudentClassHistory $classHistory
+    ): RedirectResponse {
+        abort_unless($classHistory->student_id === $student->id, 404);
+
+        $validated = $this->validateClassHistory($request, $student, $classHistory);
+
+        DB::transaction(function () use ($validated, $student, $classHistory): void {
+            if ($validated['is_current']) {
+                $student->classHistories()
+                    ->where('id', '!=', $classHistory->id)
+                    ->update([
+                        'is_current' => false,
+                    ]);
+            }
+
+            $classHistory->update([
+                'academic_year_id' => $validated['academic_year_id'],
+                'semester_id' => $validated['semester_id'],
+                'class_group_id' => $validated['class_group_id'],
+                'status' => $validated['status'],
+                'start_date' => $validated['start_date'] ?? null,
+                'end_date' => $validated['end_date'] ?? null,
+                'is_current' => $validated['is_current'],
+                'notes' => $validated['notes'] ?? null,
+            ]);
+        });
+
+        return redirect()
+            ->route('admin.students.class-histories.index', $student)
+            ->with('success', 'Riwayat kelas siswa berhasil diperbarui.');
     }
 
     /**
@@ -124,7 +173,8 @@ class StudentClassHistoryController extends Controller
      */
     private function validateClassHistory(
         Request $request,
-        Student $student
+        Student $student,
+        ?StudentClassHistory $ignoringHistory = null
     ): array {
         $messages = [
             'semester_id.unique' => 'Siswa sudah memiliki histori kelas pada semester ini.',
@@ -144,7 +194,8 @@ class StudentClassHistoryController extends Controller
                             'student_id',
                             $student->id
                         )
-                    ),
+                    )
+                    ->ignore($ignoringHistory?->id),
             ],
             'class_group_id' => [
                 'required',

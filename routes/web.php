@@ -265,6 +265,15 @@ Route::middleware([
         ->middleware('permission:student_class_histories.create')
         ->name('students.class-histories.store');
 
+    // Tambahkan route untuk edit dan update riwayat kelas siswa
+    Route::get('/students/{student}/class-histories/{classHistory}/edit', [StudentClassHistoryController::class, 'edit'])
+        ->middleware('permission:student_class_histories.update')
+        ->name('students.class-histories.edit');
+
+    Route::put('/students/{student}/class-histories/{classHistory}', [StudentClassHistoryController::class, 'update'])
+        ->middleware('permission:student_class_histories.update')
+        ->name('students.class-histories.update');
+
     // Tambahkan route untuk manajemen akun siswa (student accounts)
     Route::get('/students/{student}/account/create', [StudentAccountController::class, 'create'])
         ->middleware('permission:students.account.create')

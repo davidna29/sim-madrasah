@@ -3,6 +3,15 @@
 Format mengikuti gaya sederhana: tanggal, tahap/commit, perubahan.
 
 ---
+## 2026-08-15
+
+### `feat: add student class history edit`
+
+- Menambahkan halaman edit riwayat kelas siswa.
+- Menambahkan permission `student_class_histories.update`.
+- Mengedit histori menjadi "kelas saat ini" menonaktifkan histori aktif lain.
+- Menambah test edit dan update riwayat kelas siswa.
+
 ## 2026-08-14
 
 ### `feat: default active semester in academic forms`

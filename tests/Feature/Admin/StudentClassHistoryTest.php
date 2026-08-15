@@ -210,6 +210,183 @@ class StudentClassHistoryTest extends TestCase
         ]);
     }
 
+    public function test_user_can_view_edit_class_history_page(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'student_class_histories.update');
+
+        [$student, $academicYear, $semester, $classGroup] = $this->createStudentClassData();
+
+        $history = StudentClassHistory::create([
+            'student_id' => $student->id,
+            'academic_year_id' => $academicYear->id,
+            'semester_id' => $semester->id,
+            'class_group_id' => $classGroup->id,
+            'status' => 'active',
+            'start_date' => '2026-07-01',
+            'is_current' => true,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->get(route('admin.students.class-histories.edit', [$student, $history]));
+
+        $response
+            ->assertStatus(200)
+            ->assertSee('Edit Riwayat Kelas')
+            ->assertSeeInOrder([
+                'value="'.$semester->id.'"',
+                'selected',
+            ], false);
+    }
+
+    public function test_user_can_update_student_class_history(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'student_class_histories.update');
+
+        [$student, $academicYear, $semester, $classGroup] = $this->createStudentClassData();
+
+        $history = StudentClassHistory::create([
+            'student_id' => $student->id,
+            'academic_year_id' => $academicYear->id,
+            'semester_id' => $semester->id,
+            'class_group_id' => $classGroup->id,
+            'status' => 'active',
+            'start_date' => '2026-07-01',
+            'is_current' => true,
+            'notes' => 'Catatan awal.',
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->put(route('admin.students.class-histories.update', [$student, $history]), [
+                'academic_year_id' => $academicYear->id,
+                'semester_id' => $semester->id,
+                'class_group_id' => $classGroup->id,
+                'status' => 'completed',
+                'start_date' => '2026-07-01',
+                'end_date' => '2026-12-01',
+                'is_current' => '0',
+                'notes' => 'Catatan setelah koreksi.',
+            ]);
+
+        $response->assertRedirect(
+            route('admin.students.class-histories.index', $student)
+        );
+
+        $this->assertDatabaseHas('student_class_histories', [
+            'id' => $history->id,
+            'status' => 'completed',
+            'is_current' => false,
+            'notes' => 'Catatan setelah koreksi.',
+        ]);
+    }
+
+    // Menguji bahwa mengedit histori menjadi "kelas saat ini" menonaktifkan histori aktif lain milik siswa yang sama
+    public function test_updating_history_to_current_deactivates_other_current_history(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'student_class_histories.update');
+
+        [$student, $academicYear, $semester, $classGroup] = $this->createStudentClassData();
+
+        $currentHistory = StudentClassHistory::create([
+            'student_id' => $student->id,
+            'academic_year_id' => $academicYear->id,
+            'semester_id' => $semester->id,
+            'class_group_id' => $classGroup->id,
+            'status' => 'active',
+            'start_date' => '2026-07-01',
+            'is_current' => true,
+        ]);
+
+        $otherSemester = Semester::create([
+            'academic_year_id' => $academicYear->id,
+            'code' => '2026-2027-genap',
+            'name' => 'Semester Genap 2026/2027',
+            'semester_type' => 'genap',
+            'start_date' => '2027-01-01',
+            'end_date' => '2027-06-30',
+            'status' => 'draft',
+            'is_active' => false,
+            'is_locked' => false,
+        ]);
+
+        $editedHistory = StudentClassHistory::create([
+            'student_id' => $student->id,
+            'academic_year_id' => $academicYear->id,
+            'semester_id' => $otherSemester->id,
+            'class_group_id' => $classGroup->id,
+            'status' => 'active',
+            'start_date' => '2027-01-01',
+            'is_current' => false,
+        ]);
+
+        $this
+            ->actingAs($user)
+            ->put(route('admin.students.class-histories.update', [$student, $editedHistory]), [
+                'academic_year_id' => $academicYear->id,
+                'semester_id' => $otherSemester->id,
+                'class_group_id' => $classGroup->id,
+                'status' => 'active',
+                'start_date' => '2027-01-01',
+                'is_current' => '1',
+            ]);
+
+        $this->assertDatabaseHas('student_class_histories', [
+            'id' => $editedHistory->id,
+            'is_current' => true,
+        ]);
+
+        $this->assertDatabaseHas('student_class_histories', [
+            'id' => $currentHistory->id,
+            'is_current' => false,
+        ]);
+    }
+
+    // Menguji bahwa menyimpan ulang histori dengan semester yang sama TIDAK menabrak validasi unique milik dirinya sendiri
+    public function test_updating_history_with_same_semester_does_not_trigger_unique_error(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'student_class_histories.update');
+
+        [$student, $academicYear, $semester, $classGroup] = $this->createStudentClassData();
+
+        $history = StudentClassHistory::create([
+            'student_id' => $student->id,
+            'academic_year_id' => $academicYear->id,
+            'semester_id' => $semester->id,
+            'class_group_id' => $classGroup->id,
+            'status' => 'active',
+            'start_date' => '2026-07-01',
+            'is_current' => true,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->put(route('admin.students.class-histories.update', [$student, $history]), [
+                'academic_year_id' => $academicYear->id,
+                'semester_id' => $semester->id,
+                'class_group_id' => $classGroup->id,
+                'status' => 'active',
+                'start_date' => '2026-08-01',
+                'is_current' => '1',
+                'notes' => 'Tanggal mulai dikoreksi.',
+            ]);
+
+        $response->assertSessionDoesntHaveErrors('semester_id');
+
+        $this->assertDatabaseHas('student_class_histories', [
+            'id' => $history->id,
+            'start_date' => '2026-08-01 00:00:00',
+        ]);
+    }
+
     /**
      * @return array{0: Student, 1: AcademicYear, 2: Semester, 3: ClassGroup}
      */
