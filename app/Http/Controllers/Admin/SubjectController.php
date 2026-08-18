@@ -39,6 +39,19 @@ class SubjectController extends Controller
             ->with('success', 'Mata pelajaran berhasil dibuat.');
     }
 
+    public function toggleActive(Subject $subject): RedirectResponse
+    {
+        $subject->update([
+            'is_active' => ! $subject->is_active,
+        ]);
+
+        return redirect()
+            ->route('admin.subjects.index')
+            ->with('success', $subject->is_active
+                ? 'Mata pelajaran berhasil diaktifkan.'
+                : 'Mata pelajaran berhasil dinonaktifkan.');
+    }
+
     public function edit(Subject $subject): View
     {
         return view('admin.subjects.edit', [

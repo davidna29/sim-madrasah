@@ -101,6 +101,45 @@ class SubjectTest extends TestCase
         ]);
     }
 
+
+    public function test_user_can_toggle_subject_active_status(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'subjects.update');
+
+        $subject = Subject::create([
+            'code' => 'MTK',
+            'name' => 'Matematika',
+            'subject_group' => 'general',
+            'is_local_content' => false,
+            'is_religious' => false,
+            'is_active' => true,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->put(route('admin.subjects.toggle-active', $subject));
+
+        $response
+            ->assertRedirect(route('admin.subjects.index'))
+            ->assertSessionHas('success');
+
+        $this->assertDatabaseHas('subjects', [
+            'id' => $subject->id,
+            'is_active' => false,
+        ]);
+
+        $this
+            ->actingAs($user)
+            ->put(route('admin.subjects.toggle-active', $subject));
+
+        $this->assertDatabaseHas('subjects', [
+            'id' => $subject->id,
+            'is_active' => true,
+        ]);
+    }
+    
     private function grantPermissionToUser(
         User $user,
         string $permissionName

@@ -101,6 +101,7 @@ Role sistem yang terdaftar pada `RbacSeeder`:
 | `student_guardians.account.create` | student_guardians | account_create |
 | `student_portfolios.view` | student_portfolios | view |
 | `student_portfolios.print` | student_portfolios | print |
+> Catatan: permission `academic_years.update`, `rooms.update`, `subjects.update`, dan `grade_levels.update` sebelumnya sudah terdaftar tapi belum dipakai di route manapun. Sejak Tahap 12.33, permission ini dipakai untuk fitur toggle Nonaktifkan/Aktifkan dan Edit Tahun Ajaran/Semester.
 
 ---
 

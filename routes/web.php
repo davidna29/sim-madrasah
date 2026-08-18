@@ -88,6 +88,14 @@ Route::middleware([
         ->middleware('permission:academic_years.create')
         ->name('academic-years.store');
 
+    Route::get('/academic-years/{academicYear}/edit', [AcademicYearController::class, 'edit'])
+        ->middleware('permission:academic_years.update')
+        ->name('academic-years.edit');
+
+    Route::put('/academic-years/{academicYear}', [AcademicYearController::class, 'update'])
+        ->middleware('permission:academic_years.update')
+        ->name('academic-years.update');
+
     Route::put('/semesters/{semester}/activate', [AcademicYearController::class, 'activateSemester'])
         ->middleware('permission:academic_years.activate')
         ->name('semesters.activate');
@@ -98,6 +106,14 @@ Route::middleware([
     Route::get('/grade-levels', [GradeLevelController::class, 'index'])
         ->middleware('permission:grade_levels.view')
         ->name('grade-levels.index');
+
+    Route::get('/semesters/{semester}/edit', [AcademicYearController::class, 'editSemester'])
+        ->middleware('permission:academic_years.update')
+        ->name('semesters.edit');
+
+    Route::put('/semesters/{semester}', [AcademicYearController::class, 'updateSemester'])
+        ->middleware('permission:academic_years.update')
+        ->name('semesters.update');
 
     // Tambahkan route untuk create, store, edit, dan update grade levels
     Route::get('/grade-levels/create', [GradeLevelController::class, 'create'])
@@ -115,6 +131,10 @@ Route::middleware([
     Route::put('/grade-levels/{gradeLevel}', [GradeLevelController::class, 'update'])
         ->middleware('permission:grade_levels.update')
         ->name('grade-levels.update');
+
+    Route::put('/grade-levels/{gradeLevel}/toggle-active', [GradeLevelController::class, 'toggleActive'])
+        ->middleware('permission:grade_levels.update')
+        ->name('grade-levels.toggle-active');
 
     Route::get('/rooms', [RoomController::class, 'index'])
         ->middleware('permission:rooms.view')
@@ -135,6 +155,10 @@ Route::middleware([
     Route::put('/rooms/{room}', [RoomController::class, 'update'])
         ->middleware('permission:rooms.update')
         ->name('rooms.update');
+
+    Route::put('/rooms/{room}/toggle-active', [RoomController::class, 'toggleActive'])
+        ->middleware('permission:rooms.update')
+        ->name('rooms.toggle-active');
 
     // Tambahkan route untuk manajemen rombongan belajar (class groups)
     Route::get('/class-groups', [ClassGroupController::class, 'index'])
@@ -186,6 +210,10 @@ Route::middleware([
     Route::put('/subjects/{subject}', [SubjectController::class, 'update'])
         ->middleware('permission:subjects.update')
         ->name('subjects.update');
+
+    Route::put('/subjects/{subject}/toggle-active', [SubjectController::class, 'toggleActive'])
+        ->middleware('permission:subjects.update')
+        ->name('subjects.toggle-active');
 
     // Tambahkan route untuk manajemen pegawai (employees)
     Route::get('/employees', [EmployeeController::class, 'index'])

@@ -89,14 +89,28 @@
                                     </td>
 
                                     <td class="px-4 py-3">
-                                        @can('permission', 'grade_levels.update')
-                                            <a
-                                                href="{{ route('admin.grade-levels.edit', $gradeLevel) }}"
-                                                class="text-sm font-medium text-green-700 hover:text-green-900"
-                                            >
-                                                Edit
-                                            </a>
-                                        @endcan
+                                        <div class="flex flex-wrap gap-3">
+                                            @can('permission', 'grade_levels.update')
+                                                <a
+                                                    href="{{ route('admin.grade-levels.edit', $gradeLevel) }}"
+                                                    class="text-sm font-medium text-green-700 hover:text-green-900"
+                                                >
+                                                    Edit
+                                                </a>
+
+                                                <form method="POST" action="{{ route('admin.grade-levels.toggle-active', $gradeLevel) }}">
+                                                    @csrf
+                                                    @method('PUT')
+
+                                                    <button
+                                                        type="submit"
+                                                        class="text-sm font-medium {{ $gradeLevel->is_active ? 'text-red-700 hover:text-red-900' : 'text-green-700 hover:text-green-900' }}"
+                                                    >
+                                                        {{ $gradeLevel->is_active ? 'Nonaktifkan' : 'Aktifkan' }}
+                                                    </button>
+                                                </form>
+                                            @endcan
+                                        </div>
                                     </td>
                                 </tr>
                             @empty

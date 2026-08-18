@@ -106,6 +106,30 @@ Validasi:
 - uji manual di Laravel Herd berhasil.
 
 ---
+### Kebijakan Nonaktif dan Koreksi Data Master
+
+Status: selesai (sebagian — lihat catatan cakupan).
+
+Fitur:
+
+- toggle Nonaktifkan/Aktifkan per baris untuk Ruangan, Mata Pelajaran, Tingkat Kelas;
+- edit Tahun Ajaran dan Semester (sebelumnya tidak bisa dikoreksi sama sekali);
+- Tahun Ajaran/Semester terkunci tidak bisa diedit;
+- banner pesan error umum di halaman Tahun Ajaran.
+
+Cakupan yang ditunda:
+
+- toggle nonaktif untuk Rombongan Belajar, Siswa, Pegawai (field status lebih kompleks);
+- soft delete (`deleted_at`) untuk data master;
+- fitur buka kunci (unlock) semester/tahun ajaran.
+
+Validasi:
+
+- `GradeLevelRoomCrudTest`, `SubjectTest`, `AcademicYearTest` berhasil;
+- `php artisan test` berhasil (147 passed);
+- `npm run build` berhasil.
+
+---
 
 ## Catatan yang Perlu Dirapikan
 

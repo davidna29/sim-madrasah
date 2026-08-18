@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Validation\Rule;
 
 class AcademicYearController extends Controller
 {
@@ -34,6 +35,17 @@ class AcademicYearController extends Controller
     public function create(): View
     {
         return view('admin.academic-years.create');
+    }
+
+    public function edit(AcademicYear $academicYear): View
+    {
+        if ($academicYear->is_locked) {
+            abort(403, 'Tahun ajaran yang sudah dikunci tidak bisa diedit.');
+        }
+
+        return view('admin.academic-years.edit', [
+            'academicYear' => $academicYear,
+        ]);
     }
 
     public function store(Request $request): RedirectResponse
@@ -79,6 +91,28 @@ class AcademicYearController extends Controller
         return redirect()
             ->route('admin.academic-years.index')
             ->with('success', 'Tahun ajaran berhasil dibuat.');
+    }
+
+    public function update(Request $request, AcademicYear $academicYear): RedirectResponse
+    {
+        if ($academicYear->is_locked) {
+            throw ValidationException::withMessages([
+                'code' => 'Tahun ajaran yang sudah dikunci tidak bisa diedit.',
+            ]);
+        }
+
+        $validated = $this->validateAcademicYearUpdate($request, $academicYear);
+
+        $academicYear->update([
+            'code' => $validated['code'],
+            'name' => $validated['name'],
+            'start_date' => $validated['start_date'],
+            'end_date' => $validated['end_date'],
+        ]);
+
+        return redirect()
+            ->route('admin.academic-years.index')
+            ->with('success', 'Tahun ajaran berhasil diperbarui.');
     }
 
     public function activateSemester(Semester $semester): RedirectResponse
@@ -140,6 +174,40 @@ class AcademicYearController extends Controller
             ->with('success', 'Semester berhasil dikunci.');
     }
 
+    public function editSemester(Semester $semester): View
+    {
+        if ($semester->is_locked) {
+            abort(403, 'Semester yang sudah dikunci tidak bisa diedit.');
+        }
+
+        return view('admin.academic-years.semesters.edit', [
+            'semester' => $semester,
+        ]);
+    }
+
+    public function updateSemester(Request $request, Semester $semester): RedirectResponse
+    {
+        if ($semester->is_locked) {
+            throw ValidationException::withMessages([
+                'code' => 'Semester yang sudah dikunci tidak bisa diedit.',
+            ]);
+        }
+
+        $validated = $this->validateSemesterUpdate($request, $semester);
+
+        $semester->update([
+            'code' => $validated['code'],
+            'name' => $validated['name'],
+            'semester_type' => $validated['semester_type'],
+            'start_date' => $validated['start_date'],
+            'end_date' => $validated['end_date'],
+        ]);
+
+        return redirect()
+            ->route('admin.academic-years.index')
+            ->with('success', 'Semester berhasil diperbarui.');
+    }
+
     /**
      * Validasi input tahun ajaran.
      *
@@ -185,6 +253,92 @@ class AcademicYearController extends Controller
                 'required',
                 'date',
                 'after:genap_start_date',
+            ],
+        ]);
+    }
+
+    /**
+     * Validasi input edit tahun ajaran.
+     *
+     * @return array<string, mixed>
+     */
+    private function validateAcademicYearUpdate(
+        Request $request,
+        AcademicYear $academicYear
+    ): array {
+        return $request->validate([
+            'code' => [
+                'required',
+                'string',
+                'max:20',
+                Rule::unique('academic_years', 'code')->ignore($academicYear->id),
+            ],
+            'name' => [
+                'required',
+                'string',
+                'max:30',
+            ],
+            'start_date' => [
+                'required',
+                'date',
+            ],
+            'end_date' => [
+                'required',
+                'date',
+                'after:start_date',
+            ],
+        ]);
+    }
+
+
+    /**
+     * Validasi input edit semester.
+     *
+     * @return array<string, mixed>
+     */
+    private function validateSemesterUpdate(
+        Request $request,
+        Semester $semester
+    ): array {
+        return $request->validate([
+            'code' => [
+                'required',
+                'string',
+                'max:30',
+                Rule::unique('semesters', 'code')
+                    ->where(
+                        fn ($query) => $query->where(
+                            'academic_year_id',
+                            $semester->academic_year_id
+                        )
+                    )
+                    ->ignore($semester->id),
+            ],
+            'name' => [
+                'required',
+                'string',
+                'max:50',
+            ],
+            'semester_type' => [
+                'required',
+                'in:ganjil,genap',
+                Rule::unique('semesters', 'semester_type')
+                    ->where(
+                        fn ($query) => $query->where(
+                            'academic_year_id',
+                            $semester->academic_year_id
+                        )
+                    )
+                    ->ignore($semester->id),
+            ],
+            'start_date' => [
+                'required',
+                'date',
+            ],
+            'end_date' => [
+                'required',
+                'date',
+                'after:start_date',
             ],
         ]);
     }

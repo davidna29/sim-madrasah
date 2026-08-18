@@ -182,6 +182,79 @@ class GradeLevelRoomCrudTest extends TestCase
         ]);
     }
 
+    public function test_user_can_toggle_grade_level_active_status(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'grade_levels.update');
+
+        $gradeLevel = GradeLevel::create([
+            'code' => 'VII',
+            'name' => 'Kelas VII',
+            'level_number' => 7,
+            'is_active' => true,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->put(route('admin.grade-levels.toggle-active', $gradeLevel));
+
+        $response
+            ->assertRedirect(route('admin.grade-levels.index'))
+            ->assertSessionHas('success');
+
+        $this->assertDatabaseHas('grade_levels', [
+            'id' => $gradeLevel->id,
+            'is_active' => false,
+        ]);
+
+        $this
+            ->actingAs($user)
+            ->put(route('admin.grade-levels.toggle-active', $gradeLevel));
+
+        $this->assertDatabaseHas('grade_levels', [
+            'id' => $gradeLevel->id,
+            'is_active' => true,
+        ]);
+    }
+
+    public function test_user_can_toggle_room_active_status(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'rooms.update');
+
+        $room = Room::create([
+            'code' => 'LAB-KOM',
+            'name' => 'Laboratorium Komputer',
+            'room_type' => 'laboratory',
+            'capacity' => 30,
+            'is_active' => true,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->put(route('admin.rooms.toggle-active', $room));
+
+        $response
+            ->assertRedirect(route('admin.rooms.index'))
+            ->assertSessionHas('success');
+
+        $this->assertDatabaseHas('rooms', [
+            'id' => $room->id,
+            'is_active' => false,
+        ]);
+
+        $this
+            ->actingAs($user)
+            ->put(route('admin.rooms.toggle-active', $room));
+
+        $this->assertDatabaseHas('rooms', [
+            'id' => $room->id,
+            'is_active' => true,
+        ]);
+    }
+
     private function grantPermissionToUser(
         User $user,
         string $permissionName

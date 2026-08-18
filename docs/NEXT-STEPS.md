@@ -27,10 +27,8 @@ Catatan:
 
 Setelah tahap ini stabil:
 
-- Tahap 12.32 — Koreksi dan Edit Riwayat Kelas Siswa.
-Status: selesai.
-- Tahap 12.33 — Kebijakan Nonaktif, Soft Delete, dan Koreksi Data Master.
-Status: selanjutnya
+- Tahap 12.32 — Koreksi dan Edit Riwayat Kelas Siswa. Status: selesai.
+- Tahap 12.33 — Kebijakan Nonaktif dan Koreksi Data Master. Selesai (cakupan disesuaikan — lihat `docs/DECISIONS.md`).
 - Tahap 12.34 — Awal Modul Jadwal Pelajaran.
 
 ---
@@ -79,6 +77,23 @@ Tujuan:
 | 10 | Akreditasi | Instrumen, dokumen bukti, monitoring |
 
 ---
+
+### Usulan — Buka Kunci (Unlock) Semester dan Tahun Ajaran
+
+Tujuan:
+
+- Menyediakan cara resmi membuka kunci semester/tahun ajaran yang terlanjur dikunci secara keliru.
+
+Catatan penting sebelum dikerjakan:
+
+- Saat ini `lockSemester()` sengaja tidak punya pasangan `unlockSemester()` — ini keputusan desain, bukan celah yang lupa dibuat. Lihat `docs/ARCHITECTURE.md` §7 (prinsip jangan ubah histori data lama) dan `docs/DECISIONS.md` (semester terkunci tidak boleh diaktifkan kembali).
+- Kalau dikerjakan, sebaiknya tidak sekadar tombol biasa:
+  - Permission terpisah dan lebih ketat (misal `academic_years.unlock`), bukan numpang ke `academic_years.update`.
+  - Dicatat siapa yang membuka kunci, kapan, dan kenapa (audit trail) — mirip `locked_by`/`locked_at` yang sudah ada, tapi versi unlock.
+  - Pertimbangkan apakah perlu alasan wajib diisi saat unlock.
+- Belum ada urgensi mendesak — dicatat di sini supaya tidak terlupa, bukan berarti harus segera dikerjakan.
+
+--- 
 
 ## Prompt untuk Memulai Tahap Berikutnya
 

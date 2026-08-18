@@ -3,6 +3,15 @@
 Format mengikuti gaya sederhana: tanggal, tahap/commit, perubahan.
 
 ---
+## 2026-08-19
+
+### `feat: add active toggle and master data correction`
+
+- Menambahkan tombol Nonaktifkan/Aktifkan per baris untuk Ruangan, Mata Pelajaran, Tingkat Kelas.
+- Menambahkan Edit untuk Tahun Ajaran dan Semester.
+- Tahun Ajaran/Semester terkunci tidak bisa diedit.
+- Menambahkan banner pesan error umum di halaman Tahun Ajaran.
+
 ## 2026-08-18
 
 ### `fix: assign super_admin role correctly on fresh install`

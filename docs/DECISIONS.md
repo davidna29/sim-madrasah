@@ -432,6 +432,7 @@ Konsekuensi:
 - Kesalahan fatal pada histori kelas untuk saat ini diatasi lewat edit, bukan hapus-lalu-buat-ulang.
 - Kalau suatu saat fitur hapus dibutuhkan, harus jadi tahap terpisah dengan aturan main sendiri (misalnya hanya boleh hapus histori yang `is_current = false` dan tidak dipakai modul lain).
 
+---
 ## Urutan Seeder: InitialAdminSeeder Dipindah ke Awal
 
 Keputusan:
@@ -448,3 +449,21 @@ Konsekuensi:
 
 - Instalasi baru sekarang otomatis mendapat akun `superadmin` dengan role `super_admin` terpasang dengan benar.
 - Perlu diingat ke depannya: kalau ada seeder lain yang mencari user berdasarkan data dari seeder lain, urutan `$this->call([...])` di `DatabaseSeeder.php` harus benar-benar diperhatikan.
+---
+## Cakupan Tahap 12.33 Disesuaikan Saat Pengerjaan
+
+Keputusan:
+
+- Fitur nonaktif dibatasi ke 3 modul sederhana: Ruangan, Mata Pelajaran, Tingkat Kelas.
+- Rombongan Belajar, Siswa, Pegawai ditunda karena punya field `status`/`employment_status` terpisah dari `is_active`.
+- Tombol nonaktif berbentuk aksi per baris di daftar, bukan checklist pilih banyak sekaligus.
+- Edit Tahun Ajaran dan Semester ditambahkan sebagai bagian "koreksi data master" karena ditemukan gap nyata: sebelumnya tidak ada jalur edit sama sekali untuk keduanya.
+- Tahun Ajaran/Semester yang `is_locked = true` tidak bisa diedit oleh siapapun, termasuk superadmin.
+- Fitur buka kunci (unlock) sengaja tidak dibuat di tahap ini — dicatat sebagai usulan terpisah di `docs/NEXT-STEPS.md`.
+- Soft delete (`deleted_at`) untuk data master ditunda seluruhnya.
+
+Alasan:
+
+- Modul dengan field status ganda (Rombongan Belajar/Siswa/Pegawai) butuh keputusan bisnis tersendiri: apakah nonaktifkan mengubah `is_active` saja atau `status` juga — supaya tidak buru-buru salah desain.
+- Gap edit Tahun Ajaran/Semester ditemukan lewat pengecekan langsung ke seluruh controller admin sebelum tahap ini dimulai.
+- Prinsip "jangan ubah data terkunci" (lihat semester lock di Tahap 12.30) diterapkan konsisten ke fitur edit baru ini.

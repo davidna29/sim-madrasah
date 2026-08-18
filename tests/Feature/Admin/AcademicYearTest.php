@@ -335,6 +335,242 @@ class AcademicYearTest extends TestCase
         ]);
     }
 
+
+    public function test_user_can_update_academic_year(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'academic_years.update');
+
+        $academicYear = AcademicYear::create([
+            'code' => '2026-2027-edit',
+            'name' => '2026/2027 Edit',
+            'start_date' => '2026-07-01',
+            'end_date' => '2027-06-30',
+            'status' => 'draft',
+            'is_active' => false,
+            'is_locked' => false,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->put(route('admin.academic-years.update', $academicYear), [
+                'code' => '2026-2027-edit',
+                'name' => '2026/2027 Edit Revisi',
+                'start_date' => '2026-07-15',
+                'end_date' => '2027-06-30',
+            ]);
+
+        $response
+            ->assertRedirect(route('admin.academic-years.index'))
+            ->assertSessionHas('success');
+
+       $this->assertDatabaseHas('academic_years', [
+            'id' => $academicYear->id,
+            'name' => '2026/2027 Edit Revisi',
+        ]);
+
+        $this->assertSame(
+            '2026-07-15',
+            $academicYear->fresh()->start_date->format('Y-m-d')
+        );
+    }
+
+    // Menguji bahwa tahun ajaran yang sudah terkunci tidak bisa diedit
+    public function test_user_cannot_update_locked_academic_year(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'academic_years.update');
+
+        $academicYear = AcademicYear::create([
+            'code' => '2026-2027-locked-edit',
+            'name' => '2026/2027 Locked Edit',
+            'start_date' => '2026-07-01',
+            'end_date' => '2027-06-30',
+            'status' => 'active',
+            'is_active' => true,
+            'is_locked' => true,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->put(route('admin.academic-years.update', $academicYear), [
+                'code' => '2026-2027-locked-edit',
+                'name' => 'Coba Ubah',
+                'start_date' => '2026-07-01',
+                'end_date' => '2027-06-30',
+            ]);
+
+        $response->assertSessionHasErrors('code');
+
+        $this->assertDatabaseHas('academic_years', [
+            'id' => $academicYear->id,
+            'name' => '2026/2027 Locked Edit',
+        ]);
+    }
+
+    public function test_user_can_update_semester(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'academic_years.update');
+
+        $academicYear = AcademicYear::create([
+            'code' => '2026-2027-sem-edit',
+            'name' => '2026/2027 Sem Edit',
+            'start_date' => '2026-07-01',
+            'end_date' => '2027-06-30',
+            'status' => 'draft',
+            'is_active' => false,
+            'is_locked' => false,
+        ]);
+
+        $semester = Semester::create([
+            'academic_year_id' => $academicYear->id,
+            'code' => '2026-2027-sem-edit-ganjil',
+            'name' => 'Semester Ganjil 2026/2027 Sem Edit',
+            'semester_type' => 'ganjil',
+            'start_date' => '2026-07-01',
+            'end_date' => '2026-12-31',
+            'status' => 'draft',
+            'is_active' => false,
+            'is_locked' => false,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->put(route('admin.semesters.update', $semester), [
+                'code' => '2026-2027-sem-edit-ganjil',
+                'name' => 'Semester Ganjil Revisi',
+                'semester_type' => 'ganjil',
+                'start_date' => '2026-07-15',
+                'end_date' => '2026-12-31',
+            ]);
+
+        $response
+            ->assertRedirect(route('admin.academic-years.index'))
+            ->assertSessionHas('success');
+
+        $this->assertDatabaseHas('semesters', [
+            'id' => $semester->id,
+            'name' => 'Semester Ganjil Revisi',
+        ]);
+
+        $this->assertSame(
+            '2026-07-15',
+            $semester->fresh()->start_date->format('Y-m-d')
+        );
+    }
+
+    // Menguji bahwa semester yang sudah terkunci tidak bisa diedit
+    public function test_user_cannot_update_locked_semester(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'academic_years.update');
+
+        $academicYear = AcademicYear::create([
+            'code' => '2026-2027-sem-locked',
+            'name' => '2026/2027 Sem Locked',
+            'start_date' => '2026-07-01',
+            'end_date' => '2027-06-30',
+            'status' => 'active',
+            'is_active' => true,
+            'is_locked' => false,
+        ]);
+
+        $semester = Semester::create([
+            'academic_year_id' => $academicYear->id,
+            'code' => '2026-2027-sem-locked-ganjil',
+            'name' => 'Semester Ganjil Locked',
+            'semester_type' => 'ganjil',
+            'start_date' => '2026-07-01',
+            'end_date' => '2026-12-31',
+            'status' => 'locked',
+            'is_active' => false,
+            'is_locked' => true,
+            'locked_at' => now(),
+            'locked_by' => $user->id,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->put(route('admin.semesters.update', $semester), [
+                'code' => '2026-2027-sem-locked-ganjil',
+                'name' => 'Coba Ubah',
+                'semester_type' => 'ganjil',
+                'start_date' => '2026-07-01',
+                'end_date' => '2026-12-31',
+            ]);
+
+        $response->assertSessionHasErrors('code');
+
+        $this->assertDatabaseHas('semesters', [
+            'id' => $semester->id,
+            'name' => 'Semester Ganjil Locked',
+        ]);
+    }
+
+    // Menguji bahwa mengedit semester tanpa mengubah tipe tidak menabrak validasi unique milik dirinya sendiri
+    public function test_updating_semester_with_same_type_does_not_trigger_unique_error(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'academic_years.update');
+
+        $academicYear = AcademicYear::create([
+            'code' => '2026-2027-sem-unique',
+            'name' => '2026/2027 Sem Unique',
+            'start_date' => '2026-07-01',
+            'end_date' => '2027-06-30',
+            'status' => 'draft',
+            'is_active' => false,
+            'is_locked' => false,
+        ]);
+
+        $ganjil = Semester::create([
+            'academic_year_id' => $academicYear->id,
+            'code' => '2026-2027-sem-unique-ganjil',
+            'name' => 'Semester Ganjil',
+            'semester_type' => 'ganjil',
+            'start_date' => '2026-07-01',
+            'end_date' => '2026-12-31',
+            'status' => 'draft',
+            'is_active' => false,
+            'is_locked' => false,
+        ]);
+
+        Semester::create([
+            'academic_year_id' => $academicYear->id,
+            'code' => '2026-2027-sem-unique-genap',
+            'name' => 'Semester Genap',
+            'semester_type' => 'genap',
+            'start_date' => '2027-01-01',
+            'end_date' => '2027-06-30',
+            'status' => 'draft',
+            'is_active' => false,
+            'is_locked' => false,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->put(route('admin.semesters.update', $ganjil), [
+                'code' => '2026-2027-sem-unique-ganjil',
+                'name' => 'Semester Ganjil Revisi Tanggal',
+                'semester_type' => 'ganjil',
+                'start_date' => '2026-08-01',
+                'end_date' => '2026-12-31',
+            ]);
+
+        $response->assertSessionDoesntHaveErrors(['code', 'semester_type']);
+
+$this->assertSame(
+            '2026-08-01',
+            $ganjil->fresh()->start_date->format('Y-m-d')
+        );
+    }
+
     private function grantPermissionToUser(
         User $user,
         string $permissionName

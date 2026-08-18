@@ -29,6 +29,11 @@
                     {{ session('success') }}
                 </div>
             @endif
+            @if ($errors->any())
+                <div class="rounded-md bg-red-50 p-4 text-sm text-red-700">
+                    {{ $errors->first() }}
+                </div>
+            @endif
 
             <!-- Semester Aktif Sistem -->
             <div class="bg-white shadow-sm sm:rounded-lg border border-gray-100">
@@ -95,7 +100,7 @@
                                 </p>
                             </div>
 
-                            <div class="flex flex-wrap gap-2">
+                            <div class="flex flex-wrap items-center gap-2">
                                 @if ($academicYear->is_active)
                                     <span class="rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700">
                                         Tahun Ajaran Aktif
@@ -105,6 +110,17 @@
                                         Tidak Aktif
                                     </span>
                                 @endif
+
+                                @can('permission', 'academic_years.update')
+                                    @unless ($academicYear->is_locked)
+                                        <a
+                                            href="{{ route('admin.academic-years.edit', $academicYear) }}"
+                                            class="text-sm font-medium text-green-700 hover:text-green-900"
+                                        >
+                                            Edit
+                                        </a>
+                                    @endunless
+                                @endcan
                             </div>
                         </div>
 
@@ -207,6 +223,17 @@
                                                                     Kunci
                                                                 </button>
                                                             </form>
+                                                        @endunless
+                                                    @endcan
+
+                                                    @can('permission', 'academic_years.update')
+                                                        @unless ($semester->is_locked)
+                                                            <a
+                                                                href="{{ route('admin.semesters.edit', $semester) }}"
+                                                                class="text-sm font-medium text-green-700 hover:text-green-900"
+                                                            >
+                                                                Edit
+                                                            </a>
                                                         @endunless
                                                     @endcan
                                                 </div>

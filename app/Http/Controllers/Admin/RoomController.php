@@ -39,6 +39,19 @@ class RoomController extends Controller
             ->with('success', 'Ruangan berhasil dibuat.');
     }
 
+    public function toggleActive(Room $room): RedirectResponse
+    {
+        $room->update([
+            'is_active' => ! $room->is_active,
+        ]);
+
+        return redirect()
+            ->route('admin.rooms.index')
+            ->with('success', $room->is_active
+                ? 'Ruangan berhasil diaktifkan.'
+                : 'Ruangan berhasil dinonaktifkan.');
+    }
+
     public function edit(Room $room): View
     {
         return view('admin.rooms.edit', [

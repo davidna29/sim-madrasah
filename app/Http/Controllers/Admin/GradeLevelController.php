@@ -39,6 +39,19 @@ class GradeLevelController extends Controller
             ->with('success', 'Tingkat kelas berhasil dibuat.');
     }
 
+    public function toggleActive(GradeLevel $gradeLevel): RedirectResponse
+    {
+        $gradeLevel->update([
+            'is_active' => ! $gradeLevel->is_active,
+        ]);
+
+        return redirect()
+            ->route('admin.grade-levels.index')
+            ->with('success', $gradeLevel->is_active
+                ? 'Tingkat kelas berhasil diaktifkan.'
+                : 'Tingkat kelas berhasil dinonaktifkan.');
+    }
+
     public function edit(GradeLevel $gradeLevel): View
     {
         return view('admin.grade-levels.edit', [

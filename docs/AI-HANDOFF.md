@@ -10,44 +10,54 @@ saya mengembangkannya sekarang di macbook air m2 dengan laravel herd
 
 ## Tahap Terakhir Selesai
 
-### Tahap 12.32 — Koreksi dan Edit Riwayat Kelas Siswa
+### Tahap 12.33 — Kebijakan Nonaktif dan Koreksi Data Master
 
 Status: selesai.
 
 Ringkasan:
 
-- Menambahkan halaman edit riwayat kelas siswa.
-- Semua field histori dapat dikoreksi: tahun ajaran, semester, rombel, status, tanggal, catatan, dan status kelas saat ini.
-- Mengedit histori menjadi "kelas saat ini" otomatis menonaktifkan histori aktif lain milik siswa yang sama.
-- Validasi akademik (kecocokan semester-tahun ajaran-rombel-rentang tanggal) dipakai ulang dari alur tambah histori.
-- Validasi unique semester per siswa mengecualikan record yang sedang diedit.
-- `assigned_by` tidak berubah saat edit — tetap mencatat siapa yang pertama kali membuat histori.
-- Tidak ada fitur hapus histori pada tahap ini, sesuai prinsip "jangan hapus histori".
+- Menambahkan tombol Nonaktifkan/Aktifkan per baris (toggle `is_active`) untuk: Ruangan, Mata Pelajaran, Tingkat Kelas.
+- Tombol memakai permission `*.update` yang sudah ada, tidak ada permission baru untuk toggle ini.
+- Menambahkan Edit untuk Tahun Ajaran (kode, nama, tanggal mulai/selesai).
+- Menambahkan Edit untuk Semester (kode, nama, jenis semester, tanggal mulai/selesai).
+- Tahun Ajaran/Semester yang sudah `is_locked = true` tidak bisa diedit — tombol Edit disembunyikan di view, dan diblokir juga di controller.
+- Menambahkan banner pesan error umum di halaman Tahun Ajaran (`$errors->any()`).
+- Ditemukan dan diperbaiki bug terpisah: urutan seeder membuat akun superadmin baru tidak dapat role (lihat `docs/DECISIONS.md`, sudah di-commit terpisah sebelum tahap ini).
+- Fitur buka kunci (unlock) semester/tahun ajaran sengaja TIDAK dibuat — dicatat sebagai usulan di `docs/NEXT-STEPS.md`.
+- Soft delete (`deleted_at`) untuk data master: ditunda, tidak dikerjakan di tahap ini.
 
 File berubah:
 
-- `app/Http/Controllers/Admin/StudentClassHistoryController.php`
+- `app/Http/Controllers/Admin/RoomController.php`
+- `app/Http/Controllers/Admin/SubjectController.php`
+- `app/Http/Controllers/Admin/GradeLevelController.php`
+- `app/Http/Controllers/Admin/AcademicYearController.php`
 - `routes/web.php`
-- `database/seeders/RbacSeeder.php`
-- `resources/views/admin/students/class-histories/edit.blade.php`
-- `resources/views/admin/students/class-histories/index.blade.php`
-- `tests/Feature/Admin/StudentClassHistoryTest.php`
+- `resources/views/admin/rooms/index.blade.php`
+- `resources/views/admin/subjects/index.blade.php`
+- `resources/views/admin/grade-levels/index.blade.php`
+- `resources/views/admin/academic-years/index.blade.php`
+- `resources/views/admin/academic-years/edit.blade.php`
+- `resources/views/admin/academic-years/semesters/edit.blade.php`
+- `tests/Feature/Admin/GradeLevelRoomCrudTest.php`
+- `tests/Feature/Admin/SubjectTest.php`
+- `tests/Feature/Admin/AcademicYearTest.php`
 - `docs/AI-HANDOFF.md`
 - `docs/PROGRESS.md`
 - `docs/NEXT-STEPS.md`
 - `docs/CHANGELOG.md`
 - `docs/RBAC.md`
-- `docs/DECISIONS.md`
 
 Catatan:
 
-- Tidak ada perubahan database.
-- Permission baru: `student_class_histories.update`.
-- Fitur hapus histori kelas belum dibuat dan sengaja ditunda.
+- Tidak ada perubahan struktur database.
+- Tidak ada permission baru (toggle dan edit memakai permission `*.update` yang sudah ada sebelumnya tapi belum dipakai).
+- Rombongan Belajar, Siswa, dan Pegawai sengaja TIDAK dapat tombol nonaktif cepat di tahap ini — field status mereka lebih kompleks (ada `status`/`employment_status` terpisah dari `is_active`), butuh tahap sendiri.
 
 Tahap berikutnya:
 
-- Tahap 12.33 — Kebijakan Nonaktif, Soft Delete, dan Koreksi Data Master.
+- Tahap 12.34 — Awal Modul Jadwal Pelajaran.
+- Usulan (belum prioritas): Buka Kunci (Unlock) Semester dan Tahun Ajaran — lihat `docs/NEXT-STEPS.md`.
 
 ---
 
