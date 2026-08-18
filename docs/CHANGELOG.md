@@ -3,6 +3,13 @@
 Format mengikuti gaya sederhana: tanggal, tahap/commit, perubahan.
 
 ---
+## 2026-08-18
+
+### `fix: assign super_admin role correctly on fresh install`
+
+- Memindahkan `InitialAdminSeeder` ke urutan pertama di `DatabaseSeeder.php`.
+- Memperbaiki bug: akun `superadmin` pada instalasi baru sebelumnya tidak mendapat role `super_admin`, menyebabkan akses ditolak (403) walau login berhasil.
+
 ## 2026-08-15
 
 ### `feat: add student class history edit`

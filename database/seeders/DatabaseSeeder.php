@@ -23,6 +23,10 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            // Administrator awal. Otomatis memblokir diri sendiri
+            // kecuali APP_ENV=local, jadi aman dipanggil di sini.
+            InitialAdminSeeder::class,
+            
             // Wajib supaya aplikasi bisa dipakai sama sekali
             // (role/permission, dan identitas madrasah untuk /admin/madrasah).
             RbacSeeder::class,
@@ -41,10 +45,6 @@ class DatabaseSeeder extends Seeder
             StudentSeeder::class,
             StudentGuardianSeeder::class,
             StudentClassHistorySeeder::class,
-
-            // Administrator awal. Otomatis memblokir diri sendiri
-            // kecuali APP_ENV=local, jadi aman dipanggil di sini.
-            InitialAdminSeeder::class,
         ]);
     }
 }

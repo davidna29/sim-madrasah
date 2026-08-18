@@ -431,3 +431,20 @@ Konsekuensi:
 
 - Kesalahan fatal pada histori kelas untuk saat ini diatasi lewat edit, bukan hapus-lalu-buat-ulang.
 - Kalau suatu saat fitur hapus dibutuhkan, harus jadi tahap terpisah dengan aturan main sendiri (misalnya hanya boleh hapus histori yang `is_current = false` dan tidak dipakai modul lain).
+
+## Urutan Seeder: InitialAdminSeeder Dipindah ke Awal
+
+Keputusan:
+
+- `InitialAdminSeeder` dipindah dari posisi terakhir menjadi seeder **pertama** yang dijalankan di `DatabaseSeeder.php`.
+
+Alasan:
+
+- Ditemukan bug: `RbacSeeder` mencari akun `superadmin` (lewat `username`) untuk diberi role `super_admin`. Karena `InitialAdminSeeder` sebelumnya dijalankan paling akhir, akun itu belum ada saat `RbacSeeder` jalan, sehingga pemberian role gagal secara diam-diam (tidak error, cuma dilewati).
+- Akibatnya: instalasi baru lewat `php artisan migrate --seed` menghasilkan akun `superadmin` yang bisa login tapi tidak punya role apapun — ditolak akses (403) ke seluruh halaman admin.
+- Bug ini tidak terdeteksi oleh test suite karena test membuat user dan role secara manual, tidak lewat urutan `DatabaseSeeder` yang sesungguhnya.
+
+Konsekuensi:
+
+- Instalasi baru sekarang otomatis mendapat akun `superadmin` dengan role `super_admin` terpasang dengan benar.
+- Perlu diingat ke depannya: kalau ada seeder lain yang mencari user berdasarkan data dari seeder lain, urutan `$this->call([...])` di `DatabaseSeeder.php` harus benar-benar diperhatikan.
