@@ -3,6 +3,50 @@
 Format mengikuti gaya sederhana: tanggal, tahap/commit, perubahan.
 
 ---
+## 19 Agustus 2026 — Tahap 12.34D
+
+### Added
+
+- Menambahkan Assignment Rombel ke Template Jadwal.
+- Menambahkan controller `ScheduleTemplateAssignmentController`.
+- Menambahkan route admin untuk Assignment Template Jadwal.
+- Menambahkan halaman daftar Assignment Template Jadwal.
+- Menambahkan halaman tambah Assignment Template Jadwal.
+- Menambahkan form partial Assignment Template Jadwal.
+- Menambahkan filter assignment berdasarkan tahun ajaran dan semester.
+- Menambahkan fitur assign rombel ke template jadwal.
+- Menambahkan fitur replace assignment lama.
+- Menambahkan fitur release/lepas assignment.
+- Menambahkan menu sidebar Assignment Jadwal.
+- Menambahkan test `ScheduleTemplateAssignmentTest`.
+
+### Changed
+
+- Memperbarui sidebar agar menampilkan menu Assignment Jadwal sesuai permission.
+- Memperbarui dokumentasi handoff, progress, next steps, changelog, dan decisions.
+
+### Validation
+
+- Semester harus sesuai dengan tahun ajaran yang dipilih.
+- Rombel harus sesuai dengan tahun ajaran yang dipilih.
+- Template jadwal harus aktif.
+- Template jadwal harus sudah memiliki slot.
+- Satu rombel hanya boleh memiliki satu template pada semester yang sama.
+- Assignment baru ditolak jika rombel sudah memiliki template dan opsi replace tidak dicentang.
+- Assignment lama dapat diganti jika opsi replace dicentang.
+
+### Notes
+
+- Tidak ada perubahan struktur database pada tahap ini.
+- Tidak ada permission baru pada tahap ini.
+- Belum ada jadwal aktual pelajaran.
+- Belum ada plotting beban mengajar.
+- Belum ada ketersediaan guru.
+- Belum ada auto-generate.
+- Belum ada drag-and-drop.
+- Test penuh berhasil: 177 passed.
+- Build frontend berhasil.
+
 ## 19 Agustus 2026 — Tahap 12.34C
 
 ### Added

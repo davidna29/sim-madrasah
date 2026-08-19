@@ -103,6 +103,16 @@
                             Template Jadwal
                         </x-ui.sidebar-link>
                     @endcan
+
+                    <!-- Assignment Template Jadwal -->
+                    @can('permission', 'schedule_templates.view')
+                        <x-ui.sidebar-link
+                            :href="route('admin.schedule-template-assignments.index')"
+                            :active="request()->routeIs('admin.schedule-template-assignments.*')"
+                        >
+                            Assignment Jadwal
+                        </x-ui.sidebar-link>
+                    @endcan
                     <!-- Guru dan Pegawai -->
                     @can('permission', 'employees.view')
                         <x-ui.sidebar-link

@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\MadrasahProfileController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\RoomController;
+use App\Http\Controllers\Admin\ScheduleTemplateAssignmentController;
 use App\Http\Controllers\Admin\ScheduleTemplateController;
 use App\Http\Controllers\Admin\ScheduleTemplateSlotController;
 use App\Http\Controllers\Admin\StudentAccountController;
@@ -270,6 +271,23 @@ Route::middleware([
     Route::delete('/schedule-template-slots/{scheduleTemplateSlot}', [ScheduleTemplateSlotController::class, 'destroy'])
         ->middleware('permission:schedule_templates.update')
         ->name('schedule-template-slots.destroy');
+
+    // Tambahkan route untuk assignment rombel ke template jadwal
+    Route::get('/schedule-template-assignments', [ScheduleTemplateAssignmentController::class, 'index'])
+        ->middleware('permission:schedule_templates.view')
+        ->name('schedule-template-assignments.index');
+
+    Route::get('/schedule-template-assignments/create', [ScheduleTemplateAssignmentController::class, 'create'])
+        ->middleware('permission:schedule_templates.update')
+        ->name('schedule-template-assignments.create');
+
+    Route::post('/schedule-template-assignments', [ScheduleTemplateAssignmentController::class, 'store'])
+        ->middleware('permission:schedule_templates.update')
+        ->name('schedule-template-assignments.store');
+
+    Route::delete('/schedule-template-assignments/{classGroupScheduleTemplate}', [ScheduleTemplateAssignmentController::class, 'destroy'])
+        ->middleware('permission:schedule_templates.update')
+        ->name('schedule-template-assignments.destroy');
 
     // Tambahkan route untuk manajemen pegawai (employees)
     Route::get('/employees', [EmployeeController::class, 'index'])

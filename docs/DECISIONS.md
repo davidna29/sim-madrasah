@@ -553,3 +553,36 @@ Konsekuensi:
 - Admin harus menyelesaikan slot template sebelum melakukan assignment rombel.
 - Jika template sudah dipakai rombel, perubahan slot harus ditangani melalui mekanisme lanjutan, bukan edit langsung.
 - Tahap berikutnya dapat fokus pada Assignment Rombel ke Template karena template dan slot sudah tersedia.
+---
+---
+## ADR-013 — Assignment Rombel ke Template Jadwal Memakai Validasi Konflik dan Replace Eksplisit
+
+Status: diterima.
+
+Keputusan:
+
+- Assignment rombel ke template jadwal dibuat setelah Template Jadwal dan Slot Template tersedia.
+- Satu rombel hanya boleh memiliki satu template jadwal pada kombinasi tahun ajaran dan semester yang sama.
+- Jika rombel sudah memiliki assignment, sistem menolak assignment baru secara default.
+- Admin dapat mengganti assignment lama dengan mencentang opsi `replace_existing`.
+- Template yang dapat dipilih harus aktif.
+- Template yang dapat dipilih harus sudah memiliki slot.
+- Semester harus sesuai dengan tahun ajaran yang dipilih.
+- Rombel harus sesuai dengan tahun ajaran yang dipilih.
+- Release assignment dilakukan dengan menghapus record assignment.
+- Tahap ini tidak menambah permission baru dan tetap memakai permission `schedule_templates`.
+
+Alasan:
+
+- Assignment adalah titik penghubung antara pola jadwal dan rombel.
+- Konflik assignment harus dicegah agar satu rombel tidak memiliki dua pola jadwal dalam semester yang sama.
+- Replace dibuat eksplisit agar admin sadar ketika mengganti template rombel.
+- Template tanpa slot tidak boleh dipakai karena belum memiliki struktur jam.
+- Template nonaktif tidak boleh dipakai agar admin tidak menggunakan template yang belum siap.
+
+Konsekuensi:
+
+- Admin harus menyiapkan Template Jadwal dan Slot Template sebelum melakukan assignment.
+- Jika ingin mengganti template rombel, admin harus memilih opsi replace.
+- Slot template akan terkunci setelah template dipakai rombel karena perubahan slot dapat memengaruhi jadwal rombel.
+- Tahap berikutnya perlu menentukan apakah melanjutkan ke jadwal aktual manual atau membuat modul prasyarat seperti Plotting Beban Mengajar dan Ketersediaan Guru.

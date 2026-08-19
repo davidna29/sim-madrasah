@@ -24,7 +24,7 @@ Terakhir diperbarui: 13 Agustus 2026.
 | Akun pegawai | Selesai awal | Create akun dari data pegawai |
 | Siswa | Stabil tahap 12.25 | CRUD, filter rombel, pencarian, filter status, filter tahun masuk, export CSV, review akhir |
 | Riwayat kelas siswa | Selesai tahap 12.32 | Tambah histori, edit histori, bulk rombel, default semester aktif, auto tanggal |
-| Jadwal Pelajaran | Selesai tahap 12.34C | Fondasi database, CRUD Template Jadwal, dan CRUD Slot Template Jadwal sudah tersedia |
+| Jadwal Pelajaran | Selesai tahap 12.34D | Fondasi database, CRUD Template Jadwal, CRUD Slot Template, dan Assignment Rombel ke Template sudah tersedia |
 | Akun siswa | Selesai awal | Create akun dari data siswa |
 | Wali siswa | Selesai awal | CRUD wali per siswa |
 | Akun wali siswa | Selesai awal | Create akun wali |
@@ -67,6 +67,55 @@ addfd94 feat: add madrasah identity module
 ---
 
 ## Fitur Terakhir yang Sudah Tampak di Kode
+
+### Assignment Rombel ke Template Jadwal
+
+Status: selesai tahap 12.34D.
+
+Fitur:
+
+- daftar Assignment Template Jadwal;
+- tambah Assignment Template Jadwal;
+- filter assignment berdasarkan tahun ajaran;
+- filter assignment berdasarkan semester;
+- assign rombel ke template jadwal;
+- replace assignment lama jika rombel sudah memiliki template;
+- release/lepas assignment dari rombel;
+- menu sidebar Assignment Jadwal;
+- test Assignment Rombel ke Template Jadwal.
+
+Validasi:
+
+- satu rombel hanya boleh memiliki satu template pada kombinasi tahun ajaran dan semester yang sama;
+- assignment baru ditolak jika rombel sudah memiliki template dan opsi replace tidak dicentang;
+- assignment lama dapat diganti jika opsi replace dicentang;
+- semester harus sesuai dengan tahun ajaran yang dipilih;
+- rombel harus sesuai dengan tahun ajaran yang dipilih;
+- template jadwal harus aktif;
+- template jadwal harus sudah memiliki slot.
+
+Permission:
+
+- tidak ada permission baru;
+- melihat assignment memakai `schedule_templates.view`;
+- tambah, replace, dan lepas assignment memakai `schedule_templates.update`.
+
+Cakupan yang belum dibuat:
+
+- jadwal aktual pelajaran;
+- plotting beban mengajar;
+- ketersediaan guru;
+- validasi konflik guru;
+- lock/pin slot jadwal aktual;
+- auto-generate;
+- unassigned pool;
+- drag-and-drop.
+
+Validasi teknis:
+
+- `ScheduleTemplateAssignmentTest` berhasil;
+- `php artisan test` berhasil: 177 passed;
+- `npm run build` berhasil.
 
 ### CRUD Slot Template Jadwal
 

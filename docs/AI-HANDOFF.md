@@ -12,49 +12,42 @@ saya mengembangkannya sekarang di macbook air m2 dengan laravel herd
 
 ## Tahap Terakhir Selesai
 
-### Tahap 12.34C — CRUD Slot Template Jadwal
+### Tahap 12.34D — Assignment Rombel ke Template Jadwal
 
 Status: selesai.
 
 Ringkasan:
 
-- Menambahkan halaman daftar Slot Template Jadwal.
-- Menambahkan halaman tambah Slot Template Jadwal.
-- Menambahkan halaman edit Slot Template Jadwal.
-- Menambahkan fitur hapus Slot Template Jadwal.
-- Menambahkan tombol Slot pada daftar Template Jadwal.
-- Slot template dikelompokkan berdasarkan hari.
-- Slot hanya bisa dibuat pada hari aktif template.
-- Slot tidak boleh memiliki nomor urut dobel pada hari yang sama.
-- Slot tidak boleh memiliki waktu yang bertabrakan pada hari yang sama.
-- Jam selesai harus lebih besar dari jam mulai.
-- Slot non-KBM otomatis disimpan sebagai `is_teaching_slot = false`.
-- Slot KBM otomatis disimpan sebagai `is_teaching_slot = true`.
-- Template yang sudah dipakai rombel tidak dapat diubah slotnya.
+- Menambahkan halaman daftar Assignment Template Jadwal.
+- Menambahkan halaman tambah Assignment Template Jadwal.
+- Menambahkan fitur filter assignment berdasarkan tahun ajaran dan semester.
+- Menambahkan fitur assign rombel ke template jadwal.
+- Menambahkan fitur release/lepas assignment rombel dari template jadwal.
+- Menambahkan validasi konflik assignment.
+- Satu rombel hanya boleh memiliki satu template jadwal pada kombinasi tahun ajaran dan semester yang sama.
+- Jika rombel sudah memiliki assignment, sistem menolak assignment baru secara default.
+- Admin dapat mengganti assignment lama dengan mencentang opsi `replace_existing`.
+- Template yang bisa dipilih harus aktif.
+- Template yang bisa dipilih harus sudah memiliki slot.
+- Semester harus sesuai dengan tahun ajaran yang dipilih.
+- Rombel harus sesuai dengan tahun ajaran yang dipilih.
+- Menambahkan menu sidebar Assignment Jadwal.
 - Tidak menambah permission baru.
-
-Jenis slot yang didukung:
-
-- `kbm`
-- `istirahat`
-- `upacara`
-- `kegiatan_rutin`
 
 Permission yang dipakai:
 
-- `schedule_templates.view` untuk melihat daftar slot.
-- `schedule_templates.update` untuk tambah, edit, dan hapus slot.
+- `schedule_templates.view` untuk melihat daftar assignment.
+- `schedule_templates.update` untuk tambah, replace, dan lepas assignment.
 
 File berubah:
 
-- `app/Http/Controllers/Admin/ScheduleTemplateSlotController.php`
-- `resources/views/admin/schedule-templates/index.blade.php`
-- `resources/views/admin/schedule-templates/slots/index.blade.php`
-- `resources/views/admin/schedule-templates/slots/create.blade.php`
-- `resources/views/admin/schedule-templates/slots/edit.blade.php`
-- `resources/views/admin/schedule-templates/slots/partials/form.blade.php`
+- `app/Http/Controllers/Admin/ScheduleTemplateAssignmentController.php`
+- `resources/views/layouts/sidebar.blade.php`
+- `resources/views/admin/schedule-template-assignments/index.blade.php`
+- `resources/views/admin/schedule-template-assignments/create.blade.php`
+- `resources/views/admin/schedule-template-assignments/partials/form.blade.php`
 - `routes/web.php`
-- `tests/Feature/Admin/ScheduleTemplateSlotCrudTest.php`
+- `tests/Feature/Admin/ScheduleTemplateAssignmentTest.php`
 - `docs/AI-HANDOFF.md`
 - `docs/PROGRESS.md`
 - `docs/NEXT-STEPS.md`
@@ -63,17 +56,18 @@ File berubah:
 
 Validasi:
 
-- `php artisan test --filter=ScheduleTemplateSlotCrudTest` berhasil.
+- `php artisan test --filter=ScheduleTemplateAssignmentTest` berhasil.
 - `./vendor/bin/pint` berhasil.
 - `./vendor/bin/pint --test` berhasil.
-- `php artisan test` berhasil: 168 passed.
+- `php artisan test` berhasil: 177 passed.
 - `npm run build` berhasil.
 
 Catatan:
 
-- Tahap ini belum membuat Assignment Rombel ke Template.
 - Tahap ini belum membuat jadwal aktual pelajaran.
-- Tahap ini belum membuat validasi konflik guru.
+- Tahap ini belum membuat plotting beban mengajar.
+- Tahap ini belum membuat ketersediaan guru.
+- Tahap ini belum membuat validasi konflik guru mengajar di dua rombel.
 - Tahap ini belum membuat lock/pin slot jadwal aktual.
 - Tahap ini belum membuat auto-generate.
 - Tahap ini belum membuat unassigned pool.
@@ -83,8 +77,7 @@ Catatan:
 
 Tahap berikutnya:
 
-- Tahap 12.34D — Assignment Rombel ke Template Jadwal.
-
+- Tahap 12.34E — Fondasi Jadwal Pelajaran Aktual atau Modul Prasyarat Plotting Beban Mengajar.
 ---
 
 ## 2. Teknologi
@@ -168,6 +161,7 @@ Lihat ADR-008 di `docs/DECISIONS.md` untuk latar belakang lengkap.
 27. Fondasi database Modul Jadwal Pelajaran.
 28. CRUD Template Jadwal Pelajaran.
 29. CRUD Slot Template Jadwal.
+30. Assignment Rombel ke Template Jadwal.
 
 ---
 

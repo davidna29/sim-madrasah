@@ -6,35 +6,38 @@ Dokumen ini berisi urutan kerja kecil yang direkomendasikan.
 
 ## Prioritas Terdekat
 
-### Tahap 12.34C — CRUD Slot Template Jadwal
+### Tahap 12.34D — Assignment Rombel ke Template Jadwal
 
 Status: selesai.
 
 Tujuan yang tercapai:
 
-- Menambahkan route admin untuk Slot Template Jadwal. ✓
-- Menambahkan controller `ScheduleTemplateSlotController`. ✓
-- Menambahkan halaman daftar Slot Template Jadwal. ✓
-- Menambahkan halaman tambah Slot Template Jadwal. ✓
-- Menambahkan halaman edit Slot Template Jadwal. ✓
-- Menambahkan fitur hapus Slot Template Jadwal. ✓
-- Menambahkan tombol Slot pada daftar Template Jadwal. ✓
-- Menambahkan validasi nomor urut slot. ✓
-- Menambahkan validasi tabrakan waktu slot. ✓
-- Menambahkan validasi slot hanya pada hari aktif template. ✓
-- Menambahkan proteksi slot untuk template yang sudah dipakai rombel. ✓
-- Menambahkan test CRUD Slot Template Jadwal. ✓
+- Menambahkan route admin untuk Assignment Template Jadwal. ✓
+- Menambahkan controller `ScheduleTemplateAssignmentController`. ✓
+- Menambahkan halaman daftar Assignment Template Jadwal. ✓
+- Menambahkan halaman tambah Assignment Template Jadwal. ✓
+- Menambahkan form partial Assignment Template Jadwal. ✓
+- Menambahkan filter tahun ajaran dan semester. ✓
+- Menambahkan fitur assign rombel ke template jadwal. ✓
+- Menambahkan validasi konflik assignment rombel. ✓
+- Menambahkan opsi replace assignment lama. ✓
+- Menambahkan fitur release/lepas assignment. ✓
+- Menambahkan menu sidebar Assignment Jadwal. ✓
+- Menambahkan test Assignment Template Jadwal. ✓
 
 Catatan proteksi:
 
-- Slot template tidak bisa diubah jika template sudah memiliki assignment rombel.
-- Slot non-KBM tidak boleh menjadi slot mengajar.
-- Slot KBM menjadi dasar untuk jadwal manual dan auto-generate pada tahap lanjutan.
+- Satu rombel hanya boleh memiliki satu template jadwal pada semester yang sama.
+- Assignment baru ditolak jika rombel sudah punya template dan opsi replace tidak dicentang.
+- Template harus aktif sebelum dipakai rombel.
+- Template harus sudah memiliki slot sebelum dipakai rombel.
+- Semester dan rombel harus sesuai dengan tahun ajaran yang dipilih.
 
 Belum dikerjakan:
 
-- Assignment Rombel ke Template.
-- Jadwal Manual Basic.
+- Jadwal aktual pelajaran.
+- Plotting Beban Mengajar.
+- Ketersediaan Guru.
 - Validasi konflik guru.
 - Lock/Pin Slot.
 - Auto-Generate.
@@ -43,7 +46,12 @@ Belum dikerjakan:
 
 Tahap berikutnya:
 
-- Tahap 12.34D — Assignment Rombel ke Template Jadwal.
+- Tahap 12.34E — Fondasi Jadwal Pelajaran Aktual atau Modul Prasyarat Plotting Beban Mengajar.
+
+Rekomendasi:
+
+- Sebelum membuat auto-generate, sebaiknya buat Modul Plotting Beban Mengajar dan Ketersediaan Guru terlebih dahulu.
+- Jika ingin mulai dari jadwal manual, tahap berikutnya dapat membuat tabel jadwal aktual pelajaran dan halaman grid manual basic.
 
 ---
 
