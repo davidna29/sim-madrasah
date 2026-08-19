@@ -10,72 +10,80 @@ saya mengembangkannya sekarang di macbook air m2 dengan laravel herd
 
 ## Tahap Terakhir Selesai
 
-### Tahap 12.34B — CRUD Template Jadwal
+## Tahap Terakhir Selesai
+
+### Tahap 12.34C — CRUD Slot Template Jadwal
 
 Status: selesai.
 
 Ringkasan:
 
-- Menambahkan halaman admin untuk manajemen Template Jadwal.
-- Menambahkan daftar Template Jadwal.
-- Menambahkan form tambah Template Jadwal.
-- Menambahkan form edit Template Jadwal.
-- Menambahkan fitur duplicate/clone Template Jadwal.
-- Menambahkan proteksi delete Template Jadwal.
-- Template aktif tidak boleh dihapus.
-- Template yang sudah memiliki assignment rombel tidak boleh dihapus.
-- Clone template dibuat sebagai `draft` dan `is_active = false`.
-- Clone template ikut menyalin slot template yang sudah ada.
-- Menambahkan menu sidebar Template Jadwal.
-- Menambahkan permission baru untuk `schedule_templates`.
+- Menambahkan halaman daftar Slot Template Jadwal.
+- Menambahkan halaman tambah Slot Template Jadwal.
+- Menambahkan halaman edit Slot Template Jadwal.
+- Menambahkan fitur hapus Slot Template Jadwal.
+- Menambahkan tombol Slot pada daftar Template Jadwal.
+- Slot template dikelompokkan berdasarkan hari.
+- Slot hanya bisa dibuat pada hari aktif template.
+- Slot tidak boleh memiliki nomor urut dobel pada hari yang sama.
+- Slot tidak boleh memiliki waktu yang bertabrakan pada hari yang sama.
+- Jam selesai harus lebih besar dari jam mulai.
+- Slot non-KBM otomatis disimpan sebagai `is_teaching_slot = false`.
+- Slot KBM otomatis disimpan sebagai `is_teaching_slot = true`.
+- Template yang sudah dipakai rombel tidak dapat diubah slotnya.
+- Tidak menambah permission baru.
 
-Permission baru:
+Jenis slot yang didukung:
 
-- `schedule_templates.view`
-- `schedule_templates.create`
-- `schedule_templates.update`
-- `schedule_templates.delete`
+- `kbm`
+- `istirahat`
+- `upacara`
+- `kegiatan_rutin`
+
+Permission yang dipakai:
+
+- `schedule_templates.view` untuk melihat daftar slot.
+- `schedule_templates.update` untuk tambah, edit, dan hapus slot.
 
 File berubah:
 
-- `app/Http/Controllers/Admin/ScheduleTemplateController.php`
-- `database/seeders/RbacSeeder.php`
-- `resources/views/layouts/sidebar.blade.php`
+- `app/Http/Controllers/Admin/ScheduleTemplateSlotController.php`
 - `resources/views/admin/schedule-templates/index.blade.php`
-- `resources/views/admin/schedule-templates/create.blade.php`
-- `resources/views/admin/schedule-templates/edit.blade.php`
-- `resources/views/admin/schedule-templates/partials/form.blade.php`
+- `resources/views/admin/schedule-templates/slots/index.blade.php`
+- `resources/views/admin/schedule-templates/slots/create.blade.php`
+- `resources/views/admin/schedule-templates/slots/edit.blade.php`
+- `resources/views/admin/schedule-templates/slots/partials/form.blade.php`
 - `routes/web.php`
-- `tests/Feature/Admin/ScheduleTemplateCrudTest.php`
+- `tests/Feature/Admin/ScheduleTemplateSlotCrudTest.php`
 - `docs/AI-HANDOFF.md`
 - `docs/PROGRESS.md`
 - `docs/NEXT-STEPS.md`
 - `docs/CHANGELOG.md`
-- `docs/RBAC.md`
 - `docs/DECISIONS.md`
 
 Validasi:
 
-- `php artisan db:seed --class=RbacSeeder` berhasil.
-- `php artisan test --filter=ScheduleTemplateCrudTest` berhasil.
+- `php artisan test --filter=ScheduleTemplateSlotCrudTest` berhasil.
 - `./vendor/bin/pint` berhasil.
 - `./vendor/bin/pint --test` berhasil.
-- `php artisan test` berhasil: 158 passed.
+- `php artisan test` berhasil: 168 passed.
 - `npm run build` berhasil.
 
 Catatan:
 
-- Tahap ini belum membuat CRUD Slot Template.
 - Tahap ini belum membuat Assignment Rombel ke Template.
 - Tahap ini belum membuat jadwal aktual pelajaran.
+- Tahap ini belum membuat validasi konflik guru.
+- Tahap ini belum membuat lock/pin slot jadwal aktual.
 - Tahap ini belum membuat auto-generate.
+- Tahap ini belum membuat unassigned pool.
 - Tahap ini belum membuat drag-and-drop.
 - Tahap ini tidak mengubah struktur database.
-- Tahap ini menambah permission baru di RBAC.
+- Tahap ini tidak menambah permission baru.
 
 Tahap berikutnya:
 
-- Tahap 12.34C — CRUD Slot Template Jadwal.
+- Tahap 12.34D — Assignment Rombel ke Template Jadwal.
 
 ---
 
@@ -159,6 +167,7 @@ Lihat ADR-008 di `docs/DECISIONS.md` untuk latar belakang lengkap.
 26. Pencarian siswa berdasarkan nama, NIS, NISN, dan nomor registrasi.
 27. Fondasi database Modul Jadwal Pelajaran.
 28. CRUD Template Jadwal Pelajaran.
+29. CRUD Slot Template Jadwal.
 
 ---
 

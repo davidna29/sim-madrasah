@@ -3,6 +3,46 @@
 Format mengikuti gaya sederhana: tanggal, tahap/commit, perubahan.
 
 ---
+## 19 Agustus 2026 — Tahap 12.34C
+
+### Added
+
+- Menambahkan CRUD Slot Template Jadwal.
+- Menambahkan controller `ScheduleTemplateSlotController`.
+- Menambahkan route admin untuk Slot Template Jadwal.
+- Menambahkan halaman daftar Slot Template Jadwal.
+- Menambahkan halaman tambah Slot Template Jadwal.
+- Menambahkan halaman edit Slot Template Jadwal.
+- Menambahkan form partial Slot Template Jadwal.
+- Menambahkan tombol Slot pada daftar Template Jadwal.
+- Menambahkan test `ScheduleTemplateSlotCrudTest`.
+
+### Changed
+
+- Memperbarui halaman daftar Template Jadwal agar memiliki akses ke daftar slot.
+- Memperbarui dokumentasi handoff, progress, next steps, changelog, dan decisions.
+
+### Validation
+
+- Slot hanya boleh dibuat pada hari aktif template.
+- Nomor urut slot tidak boleh dobel pada hari yang sama.
+- Waktu slot tidak boleh bertabrakan pada hari yang sama.
+- Jam selesai harus lebih besar dari jam mulai.
+- Slot `kbm` otomatis menjadi slot mengajar.
+- Slot non-KBM otomatis menjadi slot non-mengajar.
+- Slot template dikunci jika template sudah dipakai rombel.
+
+### Notes
+
+- Tidak ada perubahan struktur database pada tahap ini.
+- Tidak ada permission baru pada tahap ini.
+- Belum ada Assignment Rombel ke Template.
+- Belum ada jadwal aktual pelajaran.
+- Belum ada auto-generate.
+- Belum ada drag-and-drop.
+- Test penuh berhasil: 168 passed.
+- Build frontend berhasil.
+
 ## 19 Agustus 2026 — Tahap 12.34B
 
 ### Added

@@ -524,3 +524,32 @@ Konsekuensi:
 - Admin harus menonaktifkan template sebelum dapat menghapusnya.
 - Template yang sudah pernah dipakai rombel tidak dapat dihapus langsung.
 - Tahap berikutnya harus membuat CRUD Slot Template agar template dapat memiliki detail jam per hari.
+---
+---
+## ADR-012 — Slot Template Jadwal Dikunci Setelah Dipakai Rombel
+
+Status: diterima.
+
+Keputusan:
+
+- Slot Template Jadwal dibuat setelah CRUD Template Jadwal selesai.
+- Slot hanya boleh dibuat pada hari aktif template.
+- Slot tidak boleh memiliki nomor urut dobel pada hari yang sama.
+- Slot tidak boleh memiliki rentang waktu yang bertabrakan pada hari yang sama.
+- Slot `kbm` otomatis ditandai sebagai `is_teaching_slot = true`.
+- Slot selain `kbm` otomatis ditandai sebagai `is_teaching_slot = false`.
+- Slot template tidak boleh ditambah, diedit, atau dihapus jika template sudah dipakai oleh rombel.
+- Tahap ini tidak menambah permission baru dan memakai permission `schedule_templates`.
+
+Alasan:
+
+- Slot template adalah pola waktu dasar sebelum rombel memakai template tersebut.
+- Perubahan slot setelah template dipakai rombel dapat mengubah jadwal rombel secara diam-diam.
+- Validasi urutan dan waktu diperlukan agar template tidak memiliki jam yang ambigu.
+- Pemisahan slot KBM dan non-KBM dibutuhkan agar modul jadwal lanjutan tidak menempatkan mata pelajaran pada istirahat, upacara, atau kegiatan rutin.
+
+Konsekuensi:
+
+- Admin harus menyelesaikan slot template sebelum melakukan assignment rombel.
+- Jika template sudah dipakai rombel, perubahan slot harus ditangani melalui mekanisme lanjutan, bukan edit langsung.
+- Tahap berikutnya dapat fokus pada Assignment Rombel ke Template karena template dan slot sudah tersedia.

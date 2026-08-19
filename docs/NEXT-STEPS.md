@@ -6,34 +6,36 @@ Dokumen ini berisi urutan kerja kecil yang direkomendasikan.
 
 ## Prioritas Terdekat
 
-### Tahap 12.34B — CRUD Template Jadwal
+### Tahap 12.34C — CRUD Slot Template Jadwal
 
 Status: selesai.
 
 Tujuan yang tercapai:
 
-- Menambahkan route admin untuk Template Jadwal. ✓
-- Menambahkan controller `ScheduleTemplateController`. ✓
-- Menambahkan halaman daftar Template Jadwal. ✓
-- Menambahkan form tambah Template Jadwal. ✓
-- Menambahkan form edit Template Jadwal. ✓
-- Menambahkan fitur duplicate/clone Template Jadwal. ✓
-- Menambahkan delete dengan proteksi. ✓
-- Menambahkan menu sidebar Template Jadwal. ✓
-- Menambahkan permission RBAC Template Jadwal. ✓
-- Menambahkan test CRUD Template Jadwal. ✓
+- Menambahkan route admin untuk Slot Template Jadwal. ✓
+- Menambahkan controller `ScheduleTemplateSlotController`. ✓
+- Menambahkan halaman daftar Slot Template Jadwal. ✓
+- Menambahkan halaman tambah Slot Template Jadwal. ✓
+- Menambahkan halaman edit Slot Template Jadwal. ✓
+- Menambahkan fitur hapus Slot Template Jadwal. ✓
+- Menambahkan tombol Slot pada daftar Template Jadwal. ✓
+- Menambahkan validasi nomor urut slot. ✓
+- Menambahkan validasi tabrakan waktu slot. ✓
+- Menambahkan validasi slot hanya pada hari aktif template. ✓
+- Menambahkan proteksi slot untuk template yang sudah dipakai rombel. ✓
+- Menambahkan test CRUD Slot Template Jadwal. ✓
 
 Catatan proteksi:
 
-- Template aktif tidak boleh dihapus.
-- Template yang sudah dipakai rombel tidak boleh dihapus.
-- Template hasil clone dibuat `draft` dan `is_active = false`.
+- Slot template tidak bisa diubah jika template sudah memiliki assignment rombel.
+- Slot non-KBM tidak boleh menjadi slot mengajar.
+- Slot KBM menjadi dasar untuk jadwal manual dan auto-generate pada tahap lanjutan.
 
 Belum dikerjakan:
 
-- Slot Template Jadwal.
 - Assignment Rombel ke Template.
 - Jadwal Manual Basic.
+- Validasi konflik guru.
 - Lock/Pin Slot.
 - Auto-Generate.
 - Unassigned Pool.
@@ -41,7 +43,7 @@ Belum dikerjakan:
 
 Tahap berikutnya:
 
-- Tahap 12.34C — CRUD Slot Template Jadwal.
+- Tahap 12.34D — Assignment Rombel ke Template Jadwal.
 
 ---
 

@@ -24,7 +24,7 @@ Terakhir diperbarui: 13 Agustus 2026.
 | Akun pegawai | Selesai awal | Create akun dari data pegawai |
 | Siswa | Stabil tahap 12.25 | CRUD, filter rombel, pencarian, filter status, filter tahun masuk, export CSV, review akhir |
 | Riwayat kelas siswa | Selesai tahap 12.32 | Tambah histori, edit histori, bulk rombel, default semester aktif, auto tanggal |
-| Jadwal Pelajaran | Selesai tahap 12.34B | Fondasi database dan CRUD Template Jadwal sudah tersedia |
+| Jadwal Pelajaran | Selesai tahap 12.34C | Fondasi database, CRUD Template Jadwal, dan CRUD Slot Template Jadwal sudah tersedia |
 | Akun siswa | Selesai awal | Create akun dari data siswa |
 | Wali siswa | Selesai awal | CRUD wali per siswa |
 | Akun wali siswa | Selesai awal | Create akun wali |
@@ -67,6 +67,54 @@ addfd94 feat: add madrasah identity module
 ---
 
 ## Fitur Terakhir yang Sudah Tampak di Kode
+
+### CRUD Slot Template Jadwal
+
+Status: selesai tahap 12.34C.
+
+Fitur:
+
+- daftar slot template per hari;
+- tambah slot template;
+- edit slot template;
+- hapus slot template;
+- tombol Slot dari daftar Template Jadwal;
+- pengelompokan slot berdasarkan hari;
+- dukungan jenis slot KBM dan non-KBM;
+- penguncian slot jika template sudah dipakai rombel;
+- test CRUD Slot Template Jadwal.
+
+Validasi:
+
+- slot hanya boleh dibuat pada hari aktif template;
+- nomor urut slot tidak boleh dobel pada hari yang sama;
+- waktu slot tidak boleh bertabrakan pada hari yang sama;
+- jam selesai harus lebih besar dari jam mulai;
+- slot `kbm` otomatis `is_teaching_slot = true`;
+- slot selain `kbm` otomatis `is_teaching_slot = false`.
+
+Permission:
+
+- tidak ada permission baru;
+- melihat slot memakai `schedule_templates.view`;
+- tambah, edit, dan hapus slot memakai `schedule_templates.update`.
+
+Cakupan yang belum dibuat:
+
+- Assignment Rombel ke Template;
+- jadwal aktual pelajaran;
+- validasi konflik guru;
+- lock/pin slot;
+- auto-generate;
+- unassigned pool;
+- drag-and-drop.
+
+Validasi teknis:
+
+- `ScheduleTemplateSlotCrudTest` berhasil;
+- `php artisan test` berhasil: 168 passed;
+- `npm run build` berhasil.
+
 
 ### CRUD Template Jadwal Pelajaran
 

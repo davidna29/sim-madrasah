@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\ScheduleTemplateController;
+use App\Http\Controllers\Admin\ScheduleTemplateSlotController;
 use App\Http\Controllers\Admin\StudentAccountController;
 use App\Http\Controllers\Admin\StudentBulkClassAssignmentController;
 use App\Http\Controllers\Admin\StudentClassHistoryController;
@@ -244,6 +245,31 @@ Route::middleware([
     Route::delete('/schedule-templates/{scheduleTemplate}', [ScheduleTemplateController::class, 'destroy'])
         ->middleware('permission:schedule_templates.delete')
         ->name('schedule-templates.destroy');
+
+    // Tambahkan route untuk manajemen slot template jadwal
+    Route::get('/schedule-templates/{scheduleTemplate}/slots', [ScheduleTemplateSlotController::class, 'index'])
+        ->middleware('permission:schedule_templates.view')
+        ->name('schedule-templates.slots.index');
+
+    Route::get('/schedule-templates/{scheduleTemplate}/slots/create', [ScheduleTemplateSlotController::class, 'create'])
+        ->middleware('permission:schedule_templates.update')
+        ->name('schedule-templates.slots.create');
+
+    Route::post('/schedule-templates/{scheduleTemplate}/slots', [ScheduleTemplateSlotController::class, 'store'])
+        ->middleware('permission:schedule_templates.update')
+        ->name('schedule-templates.slots.store');
+
+    Route::get('/schedule-template-slots/{scheduleTemplateSlot}/edit', [ScheduleTemplateSlotController::class, 'edit'])
+        ->middleware('permission:schedule_templates.update')
+        ->name('schedule-template-slots.edit');
+
+    Route::put('/schedule-template-slots/{scheduleTemplateSlot}', [ScheduleTemplateSlotController::class, 'update'])
+        ->middleware('permission:schedule_templates.update')
+        ->name('schedule-template-slots.update');
+
+    Route::delete('/schedule-template-slots/{scheduleTemplateSlot}', [ScheduleTemplateSlotController::class, 'destroy'])
+        ->middleware('permission:schedule_templates.update')
+        ->name('schedule-template-slots.destroy');
 
     // Tambahkan route untuk manajemen pegawai (employees)
     Route::get('/employees', [EmployeeController::class, 'index'])

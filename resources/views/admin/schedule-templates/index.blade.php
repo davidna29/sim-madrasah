@@ -149,6 +149,15 @@
 
                                     <td class="px-4 py-3">
                                         <div class="flex flex-wrap gap-3">
+                                             @can('permission', 'schedule_templates.view')
+                                                <a
+                                                    href="{{ route('admin.schedule-templates.slots.index', $template) }}"
+                                                    class="text-sm font-medium text-purple-700 hover:text-purple-900"
+                                                >
+                                                    Slot
+                                                </a>
+                                            @endcan
+
                                             @can('permission', 'schedule_templates.update')
                                                 <a
                                                     href="{{ route('admin.schedule-templates.edit', $template) }}"
