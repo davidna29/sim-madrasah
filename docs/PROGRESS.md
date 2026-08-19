@@ -24,7 +24,7 @@ Terakhir diperbarui: 13 Agustus 2026.
 | Akun pegawai | Selesai awal | Create akun dari data pegawai |
 | Siswa | Stabil tahap 12.25 | CRUD, filter rombel, pencarian, filter status, filter tahun masuk, export CSV, review akhir |
 | Riwayat kelas siswa | Selesai tahap 12.32 | Tambah histori, edit histori, bulk rombel, default semester aktif, auto tanggal |
-| Jadwal Pelajaran | Fondasi tahap 12.34A | Database template jadwal, slot template, dan assignment rombel ke template |
+| Jadwal Pelajaran | Selesai tahap 12.34B | Fondasi database dan CRUD Template Jadwal sudah tersedia |
 | Akun siswa | Selesai awal | Create akun dari data siswa |
 | Wali siswa | Selesai awal | CRUD wali per siswa |
 | Akun wali siswa | Selesai awal | Create akun wali |
@@ -67,6 +67,51 @@ addfd94 feat: add madrasah identity module
 ---
 
 ## Fitur Terakhir yang Sudah Tampak di Kode
+
+### CRUD Template Jadwal Pelajaran
+
+Status: selesai tahap 12.34B.
+
+Fitur:
+
+- daftar Template Jadwal;
+- tambah Template Jadwal;
+- edit Template Jadwal;
+- duplicate/clone Template Jadwal;
+- delete Template Jadwal dengan proteksi;
+- menu sidebar Template Jadwal;
+- permission RBAC untuk Template Jadwal;
+- test CRUD Template Jadwal.
+
+Proteksi:
+
+- template aktif tidak boleh dihapus;
+- template yang sudah memiliki assignment rombel tidak boleh dihapus;
+- clone template dibuat nonaktif agar tidak langsung dipakai tanpa pengecekan admin.
+
+Permission baru:
+
+- `schedule_templates.view`;
+- `schedule_templates.create`;
+- `schedule_templates.update`;
+- `schedule_templates.delete`.
+
+Cakupan yang belum dibuat:
+
+- CRUD Slot Template;
+- Assignment Rombel ke Template;
+- jadwal aktual pelajaran;
+- validasi konflik guru;
+- lock/pin slot;
+- auto-generate;
+- unassigned pool;
+- drag-and-drop.
+
+Validasi:
+
+- `ScheduleTemplateCrudTest` berhasil;
+- `php artisan test` berhasil: 158 passed;
+- `npm run build` berhasil.
 
 ### Koreksi dan Edit Riwayat Kelas Siswa
 

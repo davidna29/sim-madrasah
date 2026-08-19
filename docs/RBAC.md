@@ -85,6 +85,10 @@ Role sistem yang terdaftar pada `RbacSeeder`:
 | `subjects.view` | subjects | view |
 | `subjects.create` | subjects | create |
 | `subjects.update` | subjects | update |
+| `schedule_templates.view` | schedule_templates | view |
+| `schedule_templates.create` | schedule_templates | create |
+| `schedule_templates.update` | schedule_templates | update |
+| `schedule_templates.delete` | schedule_templates | delete |
 | `employees.view` | employees | view |
 | `employees.create` | employees | create |
 | `employees.update` | employees | update |
@@ -102,6 +106,7 @@ Role sistem yang terdaftar pada `RbacSeeder`:
 | `student_portfolios.view` | student_portfolios | view |
 | `student_portfolios.print` | student_portfolios | print |
 > Catatan: permission `academic_years.update`, `rooms.update`, `subjects.update`, dan `grade_levels.update` sebelumnya sudah terdaftar tapi belum dipakai di route manapun. Sejak Tahap 12.33, permission ini dipakai untuk fitur toggle Nonaktifkan/Aktifkan dan Edit Tahun Ajaran/Semester.
+> Catatan Tahap 12.34B: permission `schedule_templates.view`, `schedule_templates.create`, `schedule_templates.update`, dan `schedule_templates.delete` ditambahkan untuk CRUD Template Jadwal. Route admin Template Jadwal wajib memakai permission ini.
 
 ---
 

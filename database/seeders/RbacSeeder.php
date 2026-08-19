@@ -382,6 +382,36 @@ class RbacSeeder extends Seeder
                     'display_name' => 'Mengubah Mata Pelajaran',
                     'description' => 'Mengubah data mata pelajaran.',
                 ],
+
+                // Tambahkan permission untuk modul schedule_templates template jadwal pelajaran
+                [
+                    'name' => 'schedule_templates.view',
+                    'module' => 'schedule_templates',
+                    'action' => 'view',
+                    'display_name' => 'Melihat Template Jadwal',
+                    'description' => 'Melihat daftar template jadwal pelajaran.',
+                ],
+                [
+                    'name' => 'schedule_templates.create',
+                    'module' => 'schedule_templates',
+                    'action' => 'create',
+                    'display_name' => 'Membuat Template Jadwal',
+                    'description' => 'Membuat dan menggandakan template jadwal pelajaran.',
+                ],
+                [
+                    'name' => 'schedule_templates.update',
+                    'module' => 'schedule_templates',
+                    'action' => 'update',
+                    'display_name' => 'Mengubah Template Jadwal',
+                    'description' => 'Mengubah data template jadwal pelajaran.',
+                ],
+                [
+                    'name' => 'schedule_templates.delete',
+                    'module' => 'schedule_templates',
+                    'action' => 'delete',
+                    'display_name' => 'Menghapus Template Jadwal',
+                    'description' => 'Menghapus template jadwal yang tidak aktif dan belum dipakai rombel.',
+                ],
                 // Tambahkan permission untuk modul employees guru dan pegawai
                 [
                     'name' => 'employees.view',

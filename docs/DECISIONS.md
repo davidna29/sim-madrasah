@@ -497,3 +497,30 @@ Konsekuensi:
 - Tahap lanjutan harus mengikuti urutan kecil agar mudah diuji.
 - Auto-generate nanti wajib menghormati slot non-KBM dan slot yang dikunci.
 - Jika auto-generate gagal menempatkan jam tertentu, desain lanjutan harus menyediakan unassigned pool agar sistem tidak error atau infinite loop.
+---
+---
+## ADR-011 — CRUD Template Jadwal Dibuat Terproteksi Sebelum Slot dan Assignment
+
+Status: diterima.
+
+Keputusan:
+
+- CRUD Template Jadwal dibuat sebelum CRUD Slot Template dan Assignment Rombel.
+- Template Jadwal aktif tidak boleh dihapus.
+- Template Jadwal yang sudah memiliki assignment rombel tidak boleh dihapus.
+- Fitur duplicate/clone disediakan agar admin dapat membuat variasi template tanpa mengulang dari nol.
+- Template hasil clone dibuat `draft` dan `is_active = false`.
+- Clone template ikut menyalin slot yang sudah ada agar fitur ini tetap berguna setelah Slot Template dibuat.
+
+Alasan:
+
+- Template Jadwal adalah fondasi sebelum slot, assignment rombel, jadwal manual, dan auto-generate.
+- Delete tanpa proteksi berisiko merusak jadwal rombel yang sudah memakai template tertentu.
+- Clone template mengurangi pekerjaan admin saat madrasah memiliki pola jadwal mirip dengan sedikit penyesuaian.
+- Template hasil clone tidak langsung aktif agar admin sempat meninjau ulang sebelum dipakai.
+
+Konsekuensi:
+
+- Admin harus menonaktifkan template sebelum dapat menghapusnya.
+- Template yang sudah pernah dipakai rombel tidak dapat dihapus langsung.
+- Tahap berikutnya harus membuat CRUD Slot Template agar template dapat memiliki detail jam per hari.

@@ -3,6 +3,47 @@
 Format mengikuti gaya sederhana: tanggal, tahap/commit, perubahan.
 
 ---
+## 19 Agustus 2026 — Tahap 12.34B
+
+### Added
+
+- Menambahkan CRUD Template Jadwal.
+- Menambahkan controller `ScheduleTemplateController`.
+- Menambahkan route admin untuk Template Jadwal.
+- Menambahkan halaman daftar Template Jadwal.
+- Menambahkan halaman tambah Template Jadwal.
+- Menambahkan halaman edit Template Jadwal.
+- Menambahkan form partial Template Jadwal.
+- Menambahkan fitur duplicate/clone Template Jadwal.
+- Menambahkan menu sidebar Template Jadwal.
+- Menambahkan permission `schedule_templates.view`.
+- Menambahkan permission `schedule_templates.create`.
+- Menambahkan permission `schedule_templates.update`.
+- Menambahkan permission `schedule_templates.delete`.
+- Menambahkan test `ScheduleTemplateCrudTest`.
+
+### Changed
+
+- Memperbarui `RbacSeeder` untuk permission Template Jadwal.
+- Memperbarui sidebar agar menampilkan menu Template Jadwal sesuai permission.
+- Memperbarui dokumentasi handoff, progress, next steps, RBAC, dan decisions.
+
+### Protection
+
+- Template Jadwal aktif tidak boleh dihapus.
+- Template Jadwal yang sudah memiliki assignment rombel tidak boleh dihapus.
+- Template hasil clone dibuat `draft` dan `is_active = false`.
+
+### Notes
+
+- Tidak ada perubahan struktur database pada tahap ini.
+- Belum ada CRUD Slot Template.
+- Belum ada Assignment Rombel ke Template.
+- Belum ada auto-generate.
+- Belum ada drag-and-drop.
+- Test penuh berhasil: 158 passed.
+- Build frontend berhasil.
+
 ## 2026-08-19
 
 ### Tahap 12.34A

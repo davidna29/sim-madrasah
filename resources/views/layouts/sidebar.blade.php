@@ -29,6 +29,7 @@
                     auth()->user()?->can('permission', 'rooms.view') ||
                     auth()->user()?->can('permission', 'class_groups.view') ||
                     auth()->user()?->can('permission', 'subjects.view') ||
+                    auth()->user()?->can('permission', 'schedule_templates.view') ||
                     auth()->user()?->can('permission', 'employees.view') ||
                     auth()->user()?->can('permission', 'students.view') ||
                     auth()->user()?->can('permission', 'roles.view') ||
@@ -91,6 +92,15 @@
                             :active="request()->routeIs('admin.subjects.*')"
                         >
                             Mata Pelajaran
+                        </x-ui.sidebar-link>
+                    @endcan
+                    <!-- Template Jadwal -->
+                    @can('permission', 'schedule_templates.view')
+                        <x-ui.sidebar-link
+                            :href="route('admin.schedule-templates.index')"
+                            :active="request()->routeIs('admin.schedule-templates.*')"
+                        >
+                            Template Jadwal
                         </x-ui.sidebar-link>
                     @endcan
                     <!-- Guru dan Pegawai -->

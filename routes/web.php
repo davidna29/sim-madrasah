@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\MadrasahProfileController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\RoomController;
+use App\Http\Controllers\Admin\ScheduleTemplateController;
 use App\Http\Controllers\Admin\StudentAccountController;
 use App\Http\Controllers\Admin\StudentBulkClassAssignmentController;
 use App\Http\Controllers\Admin\StudentClassHistoryController;
@@ -214,6 +215,35 @@ Route::middleware([
     Route::put('/subjects/{subject}/toggle-active', [SubjectController::class, 'toggleActive'])
         ->middleware('permission:subjects.update')
         ->name('subjects.toggle-active');
+
+    // Tambahkan route untuk manajemen template jadwal pelajaran
+    Route::get('/schedule-templates', [ScheduleTemplateController::class, 'index'])
+        ->middleware('permission:schedule_templates.view')
+        ->name('schedule-templates.index');
+
+    Route::get('/schedule-templates/create', [ScheduleTemplateController::class, 'create'])
+        ->middleware('permission:schedule_templates.create')
+        ->name('schedule-templates.create');
+
+    Route::post('/schedule-templates', [ScheduleTemplateController::class, 'store'])
+        ->middleware('permission:schedule_templates.create')
+        ->name('schedule-templates.store');
+
+    Route::get('/schedule-templates/{scheduleTemplate}/edit', [ScheduleTemplateController::class, 'edit'])
+        ->middleware('permission:schedule_templates.update')
+        ->name('schedule-templates.edit');
+
+    Route::put('/schedule-templates/{scheduleTemplate}', [ScheduleTemplateController::class, 'update'])
+        ->middleware('permission:schedule_templates.update')
+        ->name('schedule-templates.update');
+
+    Route::post('/schedule-templates/{scheduleTemplate}/clone', [ScheduleTemplateController::class, 'clone'])
+        ->middleware('permission:schedule_templates.create')
+        ->name('schedule-templates.clone');
+
+    Route::delete('/schedule-templates/{scheduleTemplate}', [ScheduleTemplateController::class, 'destroy'])
+        ->middleware('permission:schedule_templates.delete')
+        ->name('schedule-templates.destroy');
 
     // Tambahkan route untuk manajemen pegawai (employees)
     Route::get('/employees', [EmployeeController::class, 'index'])

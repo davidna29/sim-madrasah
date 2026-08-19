@@ -6,30 +6,42 @@ Dokumen ini berisi urutan kerja kecil yang direkomendasikan.
 
 ## Prioritas Terdekat
 
-### Tahap 12.34A — Fondasi Database Modul Jadwal Pelajaran
+### Tahap 12.34B — CRUD Template Jadwal
 
 Status: selesai.
 
 Tujuan yang tercapai:
 
-- Membuat tabel template jadwal. ✓
-- Membuat tabel slot template jadwal. ✓
-- Membuat tabel assignment rombel ke template jadwal. ✓
-- Menyiapkan relasi model dasar. ✓
-- Menambahkan test fondasi database jadwal. ✓
+- Menambahkan route admin untuk Template Jadwal. ✓
+- Menambahkan controller `ScheduleTemplateController`. ✓
+- Menambahkan halaman daftar Template Jadwal. ✓
+- Menambahkan form tambah Template Jadwal. ✓
+- Menambahkan form edit Template Jadwal. ✓
+- Menambahkan fitur duplicate/clone Template Jadwal. ✓
+- Menambahkan delete dengan proteksi. ✓
+- Menambahkan menu sidebar Template Jadwal. ✓
+- Menambahkan permission RBAC Template Jadwal. ✓
+- Menambahkan test CRUD Template Jadwal. ✓
 
-Catatan:
+Catatan proteksi:
 
-- Tahap ini belum membuat UI.
-- Tahap ini belum membuat route/controller.
-- Tahap ini belum menambah permission.
-- Tahap ini belum membuat fitur auto-generate atau drag-and-drop.
-- Slot non-KBM sudah disiapkan lewat `slot_type` dan `is_teaching_slot`.
+- Template aktif tidak boleh dihapus.
+- Template yang sudah dipakai rombel tidak boleh dihapus.
+- Template hasil clone dibuat `draft` dan `is_active = false`.
+
+Belum dikerjakan:
+
+- Slot Template Jadwal.
+- Assignment Rombel ke Template.
+- Jadwal Manual Basic.
+- Lock/Pin Slot.
+- Auto-Generate.
+- Unassigned Pool.
+- Drag-and-Drop.
 
 Tahap berikutnya:
 
-- Tahap 12.34B — CRUD Template Jadwal.
-- Setelah itu: CRUD Slot Template, Assignment Rombel ke Template, lalu Jadwal Manual Basic.
+- Tahap 12.34C — CRUD Slot Template Jadwal.
 
 ---
 
