@@ -119,6 +119,10 @@
                                     <th class="px-4 py-3 text-left font-semibold text-gray-700">
                                         Status
                                     </th>
+
+                                    <th class="px-4 py-3 text-left font-semibold text-gray-700">
+                                        Aksi
+                                    </th>
                                 </tr>
                             </thead>
 
@@ -166,10 +170,35 @@
                                                 </span>
                                             @endif
                                         </td>
+
+                                        <td class="px-4 py-3">
+                                            @can('teaching_assignments.update')
+                                                <div class="flex flex-wrap items-center gap-3">
+                                                    <a
+                                                        href="{{ route('admin.teaching-assignments.edit', $teachingAssignment) }}"
+                                                        class="text-sm font-medium text-indigo-700 hover:text-indigo-900"
+                                                    >
+                                                        Edit
+                                                    </a>
+
+                                                    <form method="POST" action="{{ route('admin.teaching-assignments.toggle-active', $teachingAssignment) }}">
+                                                        @csrf
+                                                        @method('PUT')
+
+                                                        <button
+                                                            type="submit"
+                                                            class="text-sm font-medium {{ $teachingAssignment->is_active ? 'text-red-700 hover:text-red-900' : 'text-green-700 hover:text-green-900' }}"
+                                                        >
+                                                            {{ $teachingAssignment->is_active ? 'Nonaktifkan' : 'Aktifkan' }}
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            @endcan
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="7" class="px-4 py-6 text-center text-gray-500">
+                                        <td colspan="8" class="px-4 py-6 text-center text-gray-500">
                                             Belum ada data plotting beban mengajar.
                                         </td>
                                     </tr>

@@ -6,6 +6,8 @@ Dokumen ini berisi urutan kerja kecil yang direkomendasikan.
 
 ## Prioritas Terdekat
 
+Belum ada tahap berikutnya yang dipilih. Lihat backlog di bawah untuk kandidat.
+
 ### Tahap 12.34F-2 — Form Tambah (Create) Plotting Beban Mengajar
 
 Status: selesai.
@@ -18,23 +20,37 @@ Tujuan yang tercapai:
 - Tombol "+ Tambah Plotting" di halaman index. ✓
 - Test form create (5 test baru). ✓
 
-Tahap berikutnya:
-
-- Tahap 12.34F-3 — Form Edit dan Toggle Aktif/Nonaktif Plotting Beban Mengajar.
-
 ---
 
 ### Tahap 12.34F-3 — Form Edit dan Toggle Aktif/Nonaktif Plotting Beban Mengajar
 
-Status: belum dikerjakan.
+Status: selesai.
 
-Tujuan:
+Tujuan yang tercapai:
 
-- Route `GET /admin/teaching-assignments/{id}/edit` dan `PUT /admin/teaching-assignments/{id}`, dilindungi `permission:teaching_assignments.update`.
-- Form edit plotting (guru, mapel, rombel, jam per minggu, catatan).
-- Tombol toggle Aktifkan/Nonaktifkan per baris di halaman index.
-- Validasi duplikasi saat edit (exclude record yang sedang diedit).
-- Test form edit dan toggle.
+- Route edit, update, dan toggle-active dengan middleware permission. ✓
+- Form edit plotting (guru, mapel, rombel, jam per minggu, catatan), prefilled. ✓
+- Tombol toggle Aktifkan/Nonaktifkan per baris di halaman index. ✓
+- Validasi duplikasi saat edit (exclude record yang sedang diedit). ✓
+- Test form edit dan toggle (8 test baru). ✓
+- Bonus: bug fix label semester di form tambah yang sebelumnya selalu tertulis "Genap".
+
+---
+
+## Backlog — Usulan Efisiensi Input dari Developer (dicatat 19 Agustus 2026)
+
+Catatan mentah dari developer, belum dikerjakan, belum dipecah jadi tahap resmi:
+
+| # | Usulan | Halaman/modul terkait | Catatan |
+|---|---|---|---|
+| 1 | Edit slot template jadwal jadi jendela mengambang (modal), bukan halaman penuh | Slot Template Jadwal | Perubahan UI, ukuran kecil–sedang |
+| 2 | Copy jadwal slot dari satu hari ke hari lain (misal Senin → Selasa) | Slot Template Jadwal | Perlu didesain: salin semua slot satu hari sekaligus |
+| 3 | Generate slot dummy otomatis sesuai jam pelajaran standar madrasah | Slot Template Jadwal | Perlu disepakati dulu apa itu "standar jam pelajaran" (durasi per jam, jumlah jam per hari, dll) |
+| 4 | Template Excel untuk tambah data massal: tingkat kelas, ruangan, rombel, mapel, guru/pegawai, siswa | Semua master data | Cukup besar, kemungkinan perlu dipecah per modul jadi beberapa tahap terpisah (import Excel per jenis data) |
+| 5 | Opsi "copy penugasan dari semester sebelumnya" di halaman Plotting Beban Mengajar | Plotting Beban Mengajar | Supaya operator tidak input ulang kalau penugasan sama seperti semester lalu |
+| 6 | Prinsip umum: semua input yang sifatnya berulang sebaiknya dikasih jalan pintas/shortcut | Lintas modul | Ini prinsip desain jangka panjang, bukan satu tahap — dipakai sebagai pertimbangan setiap kali mendesain form baru ke depan |
+
+Belum ada urutan prioritas resmi untuk 6 item ini — akan didiskusikan dan dipecah jadi tahap kecil satu per satu saat developer siap mengerjakannya.
 
 ---
 

@@ -57,22 +57,12 @@ class TeachingAssignmentController extends Controller
         $selectedAcademicYearId = $request->integer('academic_year_id') ?: null;
         $selectedSemesterId = $request->integer('semester_id') ?: null;
 
-        $teacherRoleNames = ['guru_mata_pelajaran', 'wali_kelas', 'guru_bk'];
-        $teacherRoleIds = Role::whereIn('name', $teacherRoleNames)->pluck('id');
-
-        $teachers = \App\Models\User::query()
-            ->whereHas('roles', fn ($q) => $q->whereIn('roles.id', $teacherRoleIds))
-            ->where('status', 'active')
-            ->with('person')
-            ->orderBy('name')
-            ->get();
-
         return view('admin.teaching-assignments.create', [
             'academicYears'          => $this->academicYears(),
             'semesters'              => $this->semesters(),
             'classGroups'            => ClassGroup::orderBy('name')->get(),
             'subjects'               => Subject::where('is_active', true)->orderBy('name')->get(),
-            'teachers'               => $teachers,
+            'teachers'               => $this->teachers(),
             'selectedAcademicYearId' => $selectedAcademicYearId,
             'selectedSemesterId'     => $selectedSemesterId,
         ]);
@@ -117,6 +107,84 @@ class TeachingAssignmentController extends Controller
                 'semester_id'      => $validated['semester_id'],
             ])
             ->with('success', 'Plotting beban mengajar berhasil ditambahkan.');
+    }
+
+    public function toggleActive(TeachingAssignment $teachingAssignment): RedirectResponse
+    {
+        $teachingAssignment->update([
+            'is_active' => ! $teachingAssignment->is_active,
+        ]);
+
+        return redirect()
+            ->route('admin.teaching-assignments.index')
+            ->with('success', $teachingAssignment->is_active
+                ? 'Plotting beban mengajar berhasil diaktifkan.'
+                : 'Plotting beban mengajar berhasil dinonaktifkan.');
+    }
+
+    public function edit(TeachingAssignment $teachingAssignment): View
+    {
+        return view('admin.teaching-assignments.edit', [
+            'teachingAssignment' => $teachingAssignment,
+            'academicYears'      => $this->academicYears(),
+            'semesters'          => $this->semesters(),
+            'classGroups'        => ClassGroup::orderBy('name')->get(),
+            'subjects'           => Subject::where('is_active', true)->orderBy('name')->get(),
+            'teachers'           => $this->teachers(),
+        ]);
+    }
+
+    public function update(
+        Request $request,
+        TeachingAssignment $teachingAssignment
+    ): RedirectResponse {
+        $validated = $request->validate([
+            'academic_year_id' => ['required', 'exists:academic_years,id'],
+            'semester_id'      => ['required', 'exists:semesters,id'],
+            'class_group_id'   => ['required', 'exists:class_groups,id'],
+            'subject_id'       => ['required', 'exists:subjects,id'],
+            'teacher_user_id'  => ['required', 'exists:users,id'],
+            'weekly_hours'     => ['required', 'integer', 'min:1', 'max:40'],
+            'notes'            => ['nullable', 'string', 'max:500'],
+        ]);
+
+        $duplicate = TeachingAssignment::where([
+            'academic_year_id' => $validated['academic_year_id'],
+            'semester_id'      => $validated['semester_id'],
+            'class_group_id'   => $validated['class_group_id'],
+            'subject_id'       => $validated['subject_id'],
+            'teacher_user_id'  => $validated['teacher_user_id'],
+        ])
+            ->where('id', '!=', $teachingAssignment->id)
+            ->exists();
+
+        if ($duplicate) {
+            return back()
+                ->withInput()
+                ->withErrors(['teacher_user_id' => 'Kombinasi guru, mata pelajaran, rombel, dan semester ini sudah ada.']);
+        }
+
+        $teachingAssignment->update($validated);
+
+        return redirect()
+            ->route('admin.teaching-assignments.index', [
+                'academic_year_id' => $validated['academic_year_id'],
+                'semester_id'      => $validated['semester_id'],
+            ])
+            ->with('success', 'Plotting beban mengajar berhasil diperbarui.');
+    }
+
+    private function teachers()
+    {
+        $teacherRoleNames = ['guru_mata_pelajaran', 'wali_kelas', 'guru_bk'];
+        $teacherRoleIds = Role::whereIn('name', $teacherRoleNames)->pluck('id');
+
+        return \App\Models\User::query()
+            ->whereHas('roles', fn ($q) => $q->whereIn('roles.id', $teacherRoleIds))
+            ->where('status', 'active')
+            ->with('person')
+            ->orderBy('name')
+            ->get();
     }
 
     private function academicYears()

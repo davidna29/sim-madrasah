@@ -252,6 +252,318 @@ class TeachingAssignmentTest extends TestCase
         ]);
     }
 
+    public function test_user_with_permission_can_toggle_teaching_assignment_active_status(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'teaching_assignments.update');
+
+        $academicYear = $this->createAcademicYear();
+        $semester = $this->createSemester($academicYear);
+        $classGroup = $this->createClassGroup($academicYear);
+        $subject = $this->createSubject();
+        $teacher = $this->createTeacher();
+
+        $teachingAssignment = TeachingAssignment::create([
+            'academic_year_id' => $academicYear->id,
+            'semester_id'      => $semester->id,
+            'class_group_id'   => $classGroup->id,
+            'subject_id'       => $subject->id,
+            'teacher_user_id'  => $teacher->id,
+            'weekly_hours'     => 4,
+            'status'           => 'active',
+            'is_active'        => true,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->put("/admin/teaching-assignments/{$teachingAssignment->id}/toggle-active");
+
+        $response->assertRedirect('/admin/teaching-assignments');
+
+        $this->assertFalse(
+            $teachingAssignment->fresh()->is_active
+        );
+    }
+
+    public function test_user_without_permission_cannot_toggle_teaching_assignment_active_status(): void
+    {
+        $user = User::factory()->create();
+
+        $academicYear = $this->createAcademicYear();
+        $semester = $this->createSemester($academicYear);
+        $classGroup = $this->createClassGroup($academicYear);
+        $subject = $this->createSubject();
+        $teacher = $this->createTeacher();
+
+        $teachingAssignment = TeachingAssignment::create([
+            'academic_year_id' => $academicYear->id,
+            'semester_id'      => $semester->id,
+            'class_group_id'   => $classGroup->id,
+            'subject_id'       => $subject->id,
+            'teacher_user_id'  => $teacher->id,
+            'weekly_hours'     => 4,
+            'status'           => 'active',
+            'is_active'        => true,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->put("/admin/teaching-assignments/{$teachingAssignment->id}/toggle-active");
+
+        $response->assertStatus(403);
+
+        $this->assertTrue(
+            $teachingAssignment->fresh()->is_active
+        );
+    }
+
+    public function test_user_with_permission_can_view_edit_form(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'teaching_assignments.update');
+
+        $academicYear = $this->createAcademicYear();
+        $semester = $this->createSemester($academicYear);
+        $classGroup = $this->createClassGroup($academicYear);
+        $subject = $this->createSubject();
+        $teacher = $this->createTeacher();
+
+        $teachingAssignment = TeachingAssignment::create([
+            'academic_year_id' => $academicYear->id,
+            'semester_id'      => $semester->id,
+            'class_group_id'   => $classGroup->id,
+            'subject_id'       => $subject->id,
+            'teacher_user_id'  => $teacher->id,
+            'weekly_hours'     => 3,
+            'status'           => 'active',
+            'is_active'        => true,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->get("/admin/teaching-assignments/{$teachingAssignment->id}/edit");
+
+        $response
+            ->assertStatus(200)
+            ->assertSee('Edit Plotting Beban Mengajar');
+    }
+
+    public function test_user_without_permission_cannot_view_edit_form(): void
+    {
+        $user = User::factory()->create();
+
+        $academicYear = $this->createAcademicYear();
+        $semester = $this->createSemester($academicYear);
+        $classGroup = $this->createClassGroup($academicYear);
+        $subject = $this->createSubject();
+        $teacher = $this->createTeacher();
+
+        $teachingAssignment = TeachingAssignment::create([
+            'academic_year_id' => $academicYear->id,
+            'semester_id'      => $semester->id,
+            'class_group_id'   => $classGroup->id,
+            'subject_id'       => $subject->id,
+            'teacher_user_id'  => $teacher->id,
+            'weekly_hours'     => 3,
+            'status'           => 'active',
+            'is_active'        => true,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->get("/admin/teaching-assignments/{$teachingAssignment->id}/edit");
+
+        $response->assertStatus(403);
+    }
+
+    public function test_user_with_permission_can_update_teaching_assignment(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'teaching_assignments.update');
+
+        $academicYear = $this->createAcademicYear();
+        $semester = $this->createSemester($academicYear);
+        $classGroup = $this->createClassGroup($academicYear);
+        $subject = $this->createSubject();
+        $teacher = $this->createTeacher();
+        $newTeacher = $this->createTeacher();
+
+        $teachingAssignment = TeachingAssignment::create([
+            'academic_year_id' => $academicYear->id,
+            'semester_id'      => $semester->id,
+            'class_group_id'   => $classGroup->id,
+            'subject_id'       => $subject->id,
+            'teacher_user_id'  => $teacher->id,
+            'weekly_hours'     => 3,
+            'status'           => 'active',
+            'is_active'        => true,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->put("/admin/teaching-assignments/{$teachingAssignment->id}", [
+                'academic_year_id' => $academicYear->id,
+                'semester_id'      => $semester->id,
+                'class_group_id'   => $classGroup->id,
+                'subject_id'       => $subject->id,
+                'teacher_user_id'  => $newTeacher->id,
+                'weekly_hours'     => 5,
+                'notes'            => 'Catatan diperbarui',
+            ]);
+
+        $response->assertRedirect();
+
+        $this->assertDatabaseHas('teaching_assignments', [
+            'id'               => $teachingAssignment->id,
+            'teacher_user_id'  => $newTeacher->id,
+            'weekly_hours'     => 5,
+            'notes'            => 'Catatan diperbarui',
+        ]);
+    }
+
+    public function test_update_does_not_reject_saving_unchanged_data(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'teaching_assignments.update');
+
+        $academicYear = $this->createAcademicYear();
+        $semester = $this->createSemester($academicYear);
+        $classGroup = $this->createClassGroup($academicYear);
+        $subject = $this->createSubject();
+        $teacher = $this->createTeacher();
+
+        $teachingAssignment = TeachingAssignment::create([
+            'academic_year_id' => $academicYear->id,
+            'semester_id'      => $semester->id,
+            'class_group_id'   => $classGroup->id,
+            'subject_id'       => $subject->id,
+            'teacher_user_id'  => $teacher->id,
+            'weekly_hours'     => 3,
+            'status'           => 'active',
+            'is_active'        => true,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->put("/admin/teaching-assignments/{$teachingAssignment->id}", [
+                'academic_year_id' => $academicYear->id,
+                'semester_id'      => $semester->id,
+                'class_group_id'   => $classGroup->id,
+                'subject_id'       => $subject->id,
+                'teacher_user_id'  => $teacher->id,
+                'weekly_hours'     => 6,
+            ]);
+
+        $response->assertSessionDoesntHaveErrors();
+
+        $this->assertSame(
+            6,
+            $teachingAssignment->fresh()->weekly_hours
+        );
+    }
+
+    public function test_update_rejects_duplicate_with_other_teaching_assignment(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'teaching_assignments.update');
+
+        $academicYear = $this->createAcademicYear();
+        $semester = $this->createSemester($academicYear);
+        $classGroup = $this->createClassGroup($academicYear);
+        $subject = $this->createSubject();
+        $teacherA = $this->createTeacher();
+        $teacherB = $this->createTeacher();
+
+        TeachingAssignment::create([
+            'academic_year_id' => $academicYear->id,
+            'semester_id'      => $semester->id,
+            'class_group_id'   => $classGroup->id,
+            'subject_id'       => $subject->id,
+            'teacher_user_id'  => $teacherA->id,
+            'weekly_hours'     => 3,
+            'status'           => 'active',
+            'is_active'        => true,
+        ]);
+
+        $teachingAssignmentB = TeachingAssignment::create([
+            'academic_year_id' => $academicYear->id,
+            'semester_id'      => $semester->id,
+            'class_group_id'   => $classGroup->id,
+            'subject_id'       => $subject->id,
+            'teacher_user_id'  => $teacherB->id,
+            'weekly_hours'     => 4,
+            'status'           => 'active',
+            'is_active'        => true,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->put("/admin/teaching-assignments/{$teachingAssignmentB->id}", [
+                'academic_year_id' => $academicYear->id,
+                'semester_id'      => $semester->id,
+                'class_group_id'   => $classGroup->id,
+                'subject_id'       => $subject->id,
+                'teacher_user_id'  => $teacherA->id,
+                'weekly_hours'     => 4,
+            ]);
+
+        $response->assertSessionHasErrors('teacher_user_id');
+
+        $this->assertSame(
+            $teacherB->id,
+            $teachingAssignmentB->fresh()->teacher_user_id
+        );
+    }
+
+    public function test_update_rejects_invalid_data(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'teaching_assignments.update');
+
+        $academicYear = $this->createAcademicYear();
+        $semester = $this->createSemester($academicYear);
+        $classGroup = $this->createClassGroup($academicYear);
+        $subject = $this->createSubject();
+        $teacher = $this->createTeacher();
+
+        $teachingAssignment = TeachingAssignment::create([
+            'academic_year_id' => $academicYear->id,
+            'semester_id'      => $semester->id,
+            'class_group_id'   => $classGroup->id,
+            'subject_id'       => $subject->id,
+            'teacher_user_id'  => $teacher->id,
+            'weekly_hours'     => 3,
+            'status'           => 'active',
+            'is_active'        => true,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->put("/admin/teaching-assignments/{$teachingAssignment->id}", [
+                'academic_year_id' => null,
+                'semester_id'      => null,
+                'class_group_id'   => null,
+                'subject_id'       => null,
+                'teacher_user_id'  => null,
+                'weekly_hours'     => null,
+            ]);
+
+        $response->assertSessionHasErrors([
+            'academic_year_id',
+            'semester_id',
+            'class_group_id',
+            'subject_id',
+            'teacher_user_id',
+            'weekly_hours',
+        ]);
+    }
+
     private function createAcademicYear(string $name = '2026/2027'): AcademicYear
     {
         return AcademicYear::create([

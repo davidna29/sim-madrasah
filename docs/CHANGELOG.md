@@ -3,6 +3,44 @@
 Format mengikuti gaya sederhana: tanggal, tahap/commit, perubahan.
 
 ---
+
+## 19 Agustus 2026 — Tahap 12.34F-3
+
+### Added
+
+- Menambahkan route `PUT /admin/teaching-assignments/{id}/toggle-active`.
+- Menambahkan route `GET /admin/teaching-assignments/{id}/edit`.
+- Menambahkan route `PUT /admin/teaching-assignments/{id}`.
+- Menambahkan method `toggleActive()`, `edit()`, dan `update()` di `TeachingAssignmentController`.
+- Menambahkan view `admin/teaching-assignments/edit.blade.php` (form edit plotting, prefilled dari data yang ada).
+- Menambahkan tombol Aktifkan/Nonaktifkan per baris di halaman index.
+- Menambahkan link Edit per baris di halaman index.
+- Menambahkan 8 test baru: toggle berhasil, toggle ditolak tanpa permission, lihat form edit (dengan/tanpa permission), update berhasil, update tidak menolak data yang tidak berubah, update menolak duplikat dengan record lain, update menolak data tidak valid.
+
+### Changed
+
+- Merapikan logic pengambilan daftar guru (dibatasi role `guru_mata_pelajaran`, `wali_kelas`, `guru_bk`, status `active`) jadi satu method privat `teachers()`, dipakai bersama oleh `create()` dan `edit()`.
+- Memperbarui dokumentasi handoff, progress, next steps, dan changelog.
+
+### Fixed
+
+- Memperbaiki label semester di form tambah plotting (`create.blade.php`) yang sebelumnya selalu menampilkan "Genap" untuk semua pilihan — penyebabnya salah membandingkan `semester_type` dengan `'odd'`, padahal nilai yang tersimpan adalah `'ganjil'`/`'genap'`.
+
+### Validation
+
+- Validasi duplikasi kombinasi guru + mapel + rombel + semester saat update tetap dicek di controller, mengecualikan record yang sedang diedit sendiri (`where('id', '!=', $teachingAssignment->id)`).
+
+### Notes
+
+- Tidak ada perubahan struktur database pada tahap ini.
+- Tidak ada permission baru pada tahap ini (permission `.update` sudah didaftarkan di Tahap 12.34F-1).
+- Daftar guru di form edit tetap dibatasi ke role guru berstatus `active` — sama seperti form tambah. Kalau guru yang sedang diplot dinonaktifkan akunnya, dia tidak akan muncul di dropdown edit (belum ditangani, kasus langka untuk tahap ini).
+- Belum ada rekap beban guru, ketersediaan guru, atau jadwal aktual pelajaran.
+- Ada 6 usulan fitur baru dari developer dicatat sebagai backlog di `docs/NEXT-STEPS.md` (modal edit slot jadwal, copy jadwal antar hari, generate dummy slot, template Excel untuk master data, copy penugasan dari semester sebelumnya, prinsip umum shortcut untuk input berulang) — belum dikerjakan.
+- Test penuh berhasil: 197 passed (663 assertions).
+- Build frontend berhasil.
+
+---
 ## 19 Agustus 2026 — Tahap 12.34F-2
 
 ### Added

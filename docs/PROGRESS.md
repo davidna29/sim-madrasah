@@ -24,7 +24,7 @@ Terakhir diperbarui: 19 Agustus 2026.
 | Akun pegawai | Selesai awal | Create akun dari data pegawai |
 | Siswa | Stabil tahap 12.25 | CRUD, filter rombel, pencarian, filter status, filter tahun masuk, export CSV, review akhir |
 | Riwayat kelas siswa | Selesai tahap 12.32 | Tambah histori, edit histori, bulk rombel, default semester aktif, auto tanggal |
-| Jadwal Pelajaran | Selesai tahap 12.34F-2 | Fondasi jadwal, template, slot, assignment rombel, database plotting beban mengajar, halaman daftar, dan form tambah plotting sudah tersedia |
+| Jadwal Pelajaran | Selesai tahap 12.34F-3 | Fondasi jadwal, template, slot, assignment rombel; CRUD Plotting Beban Mengajar lengkap (daftar, tambah, edit, toggle aktif/nonaktif) |
 | Akun siswa | Selesai awal | Create akun dari data siswa |
 | Wali siswa | Selesai awal | CRUD wali per siswa |
 | Akun wali siswa | Selesai awal | Create akun wali |
@@ -67,6 +67,27 @@ addfd94 feat: add madrasah identity module
 ---
 
 ## Fitur Terakhir yang Sudah Tampak di Kode
+
+### Form Edit dan Toggle Aktif/Nonaktif Plotting Beban Mengajar (Tahap 12.34F-3)
+
+Status: selesai tahap 12.34F-3.
+
+Fitur:
+
+- route `PUT /admin/teaching-assignments/{id}/toggle-active`, `GET /admin/teaching-assignments/{id}/edit`, dan `PUT /admin/teaching-assignments/{id}`;
+- tombol Aktifkan/Nonaktifkan per baris di halaman index;
+- form edit plotting, prefilled dari data yang ada;
+- validasi duplikasi kombinasi guru + mapel + rombel + semester saat update, mengecualikan record yang sedang diedit sendiri;
+- daftar guru di form tambah dan edit sekarang memakai satu method privat bersama (`teachers()`);
+- bug fix: label semester di form tambah yang sebelumnya selalu tertulis "Genap" (salah bandingkan `'odd'` alih-alih `'ganjil'`) — sekarang menampilkan Ganjil/Genap dengan benar.
+
+Validasi teknis:
+
+- `TeachingAssignmentTest` 16 test berhasil (57 assertions);
+- `php artisan test` berhasil: 197 passed (663 assertions);
+- `npm run build` berhasil.
+
+---
 
 ### Form Tambah Plotting Beban Mengajar (Tahap 12.34F-2)
 

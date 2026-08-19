@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                Tambah Plotting Beban Mengajar
+                Edit Plotting Beban Mengajar
             </h2>
             <a href="{{ route('admin.teaching-assignments.index') }}"
                class="text-sm text-gray-600 hover:text-gray-900">
@@ -26,8 +26,9 @@
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('admin.teaching-assignments.store') }}">
+                <form method="POST" action="{{ route('admin.teaching-assignments.update', $teachingAssignment) }}">
                     @csrf
+                    @method('PUT')
 
                     {{-- Tahun Ajaran --}}
                     <div class="mb-4">
@@ -39,7 +40,7 @@
                             <option value="">— Pilih Tahun Ajaran —</option>
                             @foreach ($academicYears as $ay)
                                 <option value="{{ $ay->id }}"
-                                    {{ old('academic_year_id', $selectedAcademicYearId) == $ay->id ? 'selected' : '' }}>
+                                    {{ old('academic_year_id', $teachingAssignment->academic_year_id) == $ay->id ? 'selected' : '' }}>
                                     {{ $ay->name }}
                                 </option>
                             @endforeach
@@ -60,7 +61,7 @@
                             @foreach ($semesters as $sem)
                                 <option value="{{ $sem->id }}"
                                     data-academic-year="{{ $sem->academic_year_id }}"
-                                    {{ old('semester_id', $selectedSemesterId) == $sem->id ? 'selected' : '' }}>
+                                    {{ old('semester_id', $teachingAssignment->semester_id) == $sem->id ? 'selected' : '' }}>
                                     {{ $sem->academicYear->name }} — {{ $sem->semester_type === 'ganjil' ? 'Ganjil' : 'Genap' }}
                                 </option>
                             @endforeach
@@ -80,7 +81,7 @@
                             <option value="">— Pilih Rombel —</option>
                             @foreach ($classGroups as $cg)
                                 <option value="{{ $cg->id }}"
-                                    {{ old('class_group_id') == $cg->id ? 'selected' : '' }}>
+                                    {{ old('class_group_id', $teachingAssignment->class_group_id) == $cg->id ? 'selected' : '' }}>
                                     {{ $cg->name }}
                                 </option>
                             @endforeach
@@ -100,7 +101,7 @@
                             <option value="">— Pilih Mata Pelajaran —</option>
                             @foreach ($subjects as $subject)
                                 <option value="{{ $subject->id }}"
-                                    {{ old('subject_id') == $subject->id ? 'selected' : '' }}>
+                                    {{ old('subject_id', $teachingAssignment->subject_id) == $subject->id ? 'selected' : '' }}>
                                     {{ $subject->name }}
                                 </option>
                             @endforeach
@@ -120,7 +121,7 @@
                             <option value="">— Pilih Guru —</option>
                             @foreach ($teachers as $teacher)
                                 <option value="{{ $teacher->id }}"
-                                    {{ old('teacher_user_id') == $teacher->id ? 'selected' : '' }}>
+                                    {{ old('teacher_user_id', $teachingAssignment->teacher_user_id) == $teacher->id ? 'selected' : '' }}>
                                     {{ $teacher->name }}
                                 </option>
                             @endforeach
@@ -140,7 +141,7 @@
                         </label>
                         <input type="number" id="weekly_hours" name="weekly_hours"
                                min="1" max="40"
-                               value="{{ old('weekly_hours') }}"
+                               value="{{ old('weekly_hours', $teachingAssignment->weekly_hours) }}"
                                class="w-full rounded border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500 @error('weekly_hours') border-red-500 @enderror"
                                placeholder="Contoh: 2">
                         @error('weekly_hours')
@@ -155,7 +156,7 @@
                         </label>
                         <textarea id="notes" name="notes" rows="3"
                                   class="w-full rounded border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500 @error('notes') border-red-500 @enderror"
-                                  placeholder="Catatan tambahan jika ada...">{{ old('notes') }}</textarea>
+                                  placeholder="Catatan tambahan jika ada...">{{ old('notes', $teachingAssignment->notes) }}</textarea>
                         @error('notes')
                             <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                         @enderror
@@ -169,7 +170,7 @@
                         </a>
                         <button type="submit"
                                 class="rounded bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                            Simpan
+                            Simpan Perubahan
                         </button>
                     </div>
 

@@ -303,6 +303,18 @@ Route::middleware([
         ->middleware('permission:teaching_assignments.create')
         ->name('teaching-assignments.store');
 
+    Route::put('/teaching-assignments/{teachingAssignment}/toggle-active', [TeachingAssignmentController::class, 'toggleActive'])
+        ->middleware('permission:teaching_assignments.update')
+        ->name('teaching-assignments.toggle-active');
+
+    Route::get('/teaching-assignments/{teachingAssignment}/edit', [TeachingAssignmentController::class, 'edit'])
+        ->middleware('permission:teaching_assignments.update')
+        ->name('teaching-assignments.edit');
+
+    Route::put('/teaching-assignments/{teachingAssignment}', [TeachingAssignmentController::class, 'update'])
+        ->middleware('permission:teaching_assignments.update')
+        ->name('teaching-assignments.update');
+
     // Tambahkan route untuk manajemen pegawai (employees)
     Route::get('/employees', [EmployeeController::class, 'index'])
         ->middleware('permission:employees.view')
