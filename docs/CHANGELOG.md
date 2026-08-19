@@ -3,6 +3,10 @@
 Format mengikuti gaya sederhana: tanggal, tahap/commit, perubahan.
 
 ---
+## 19 Agustus 2026 — 12.34F-1
+permission baru + route + Controller kosong + halaman daftar (index) — bisa lihat data yang sudah ada dari seeder demo.
+catatan> changelog ini belum sempat terupdate secara lengkap
+
 ## 19 Agustus 2026 — Tahap 12.34E
 
 ### Added
