@@ -101,7 +101,6 @@ class SubjectTest extends TestCase
         ]);
     }
 
-
     public function test_user_can_toggle_subject_active_status(): void
     {
         $user = User::factory()->create();
@@ -139,7 +138,7 @@ class SubjectTest extends TestCase
             'is_active' => true,
         ]);
     }
-    
+
     private function grantPermissionToUser(
         User $user,
         string $permissionName

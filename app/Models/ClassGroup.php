@@ -60,4 +60,9 @@ class ClassGroup extends Model
     {
         return $this->hasMany(StudentClassHistory::class);
     }
+
+    public function scheduleTemplateAssignments(): HasMany
+    {
+        return $this->hasMany(ClassGroupScheduleTemplate::class);
+    }
 }

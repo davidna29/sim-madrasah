@@ -467,3 +467,33 @@ Alasan:
 - Modul dengan field status ganda (Rombongan Belajar/Siswa/Pegawai) butuh keputusan bisnis tersendiri: apakah nonaktifkan mengubah `is_active` saja atau `status` juga — supaya tidak buru-buru salah desain.
 - Gap edit Tahun Ajaran/Semester ditemukan lewat pengecekan langsung ke seluruh controller admin sebelum tahap ini dimulai.
 - Prinsip "jangan ubah data terkunci" (lihat semester lock di Tahap 12.30) diterapkan konsisten ke fitur edit baru ini.
+
+---
+## ADR-010 — Modul Jadwal Pelajaran Dibangun Bertahap dari Fondasi Database
+
+Status: diterima.
+
+Keputusan:
+
+- Modul Jadwal Pelajaran dibangun bertahap, tidak langsung membuat auto-generate dan drag-and-drop.
+- Tahap 12.34A dibatasi pada fondasi database:
+  - `schedule_templates`;
+  - `schedule_template_slots`;
+  - `class_group_schedule_templates`.
+- CRUD Template Jadwal, CRUD Slot Template, Assignment Rombel, Jadwal Manual, Lock/Pin Slot, Auto-Generate, Unassigned Pool, dan Drag-and-Drop dikerjakan pada tahap lanjutan.
+- Slot non-KBM tetap disimpan dalam template, tetapi ditandai dengan `is_teaching_slot = false`.
+- Satu rombel hanya boleh memiliki satu assignment template pada kombinasi tahun ajaran dan semester yang sama.
+
+Alasan:
+
+- Modul Jadwal Pelajaran akan menjadi modul besar dan berisiko tinggi jika langsung dibuat penuh.
+- Kebutuhan pengguna mengarah pada sistem hybrid yang robust: auto-generate, manual finishing, validasi konflik, dan lock/pin slot.
+- Fondasi database harus stabil dulu sebelum UI dan algoritma dibuat.
+- Pemisahan template, slot, dan assignment rombel membuat jadwal lebih fleksibel untuk kebijakan khusus madrasah.
+
+Konsekuensi:
+
+- Tahap awal belum menghasilkan halaman yang bisa dipakai langsung oleh admin.
+- Tahap lanjutan harus mengikuti urutan kecil agar mudah diuji.
+- Auto-generate nanti wajib menghormati slot non-KBM dan slot yang dikunci.
+- Jika auto-generate gagal menempatkan jam tertentu, desain lanjutan harus menyediakan unassigned pool agar sistem tidak error atau infinite loop.

@@ -5,6 +5,34 @@ Format mengikuti gaya sederhana: tanggal, tahap/commit, perubahan.
 ---
 ## 2026-08-19
 
+### Tahap 12.34A
+
+### Added
+
+- Menambahkan fondasi database Modul Jadwal Pelajaran.
+- Menambahkan model `ScheduleTemplate`.
+- Menambahkan model `ScheduleTemplateSlot`.
+- Menambahkan model `ClassGroupScheduleTemplate`.
+- Menambahkan tabel `schedule_templates`.
+- Menambahkan tabel `schedule_template_slots`.
+- Menambahkan tabel `class_group_schedule_templates`.
+- Menambahkan test `ScheduleTemplateFoundationTest`.
+
+### Changed
+
+- Menambahkan relasi awal jadwal pada model `AcademicYear`.
+- Menambahkan relasi awal jadwal pada model `Semester`.
+- Menambahkan relasi awal jadwal pada model `ClassGroup`.
+- Memperbarui dokumentasi handoff, progress, next steps, database, dan keputusan teknis.
+
+### Notes
+
+- Belum ada UI, route, controller, permission, auto-generate, drag-and-drop, atau jadwal aktual pelajaran.
+- Tidak ada perubahan RBAC.
+- Test penuh berhasil: 150 passed.
+- Build frontend berhasil.
+
+
 ### `feat: add active toggle and master data correction`
 
 - Menambahkan tombol Nonaktifkan/Aktifkan per baris untuk Ruangan, Mata Pelajaran, Tingkat Kelas.

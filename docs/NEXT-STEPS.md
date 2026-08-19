@@ -6,27 +6,35 @@ Dokumen ini berisi urutan kerja kecil yang direkomendasikan.
 
 ## Prioritas Terdekat
 
-### Tahap 12.31 — Integrasi Semester Aktif ke Riwayat Kelas dan Bulk Rombel
+### Tahap 12.34A — Fondasi Database Modul Jadwal Pelajaran
 
 Status: selesai.
 
-Tujuan (tercapai):
+Tujuan yang tercapai:
 
-- Mengarahkan form Tambah Riwayat Kelas agar memakai semester aktif sebagai nilai awal. ✓
-- Mengarahkan form Bulk Rombel agar memakai semester aktif sebagai nilai awal. ✓
-- Menampilkan informasi semester aktif pada form akademik. ✓
-- Tetap mengizinkan validasi tahun ajaran, semester, rombel, dan tanggal. ✓
-- Tanggal mulai pada bulk rombel otomatis mengikuti semester aktif. ✓
+- Membuat tabel template jadwal. ✓
+- Membuat tabel slot template jadwal. ✓
+- Membuat tabel assignment rombel ke template jadwal. ✓
+- Menyiapkan relasi model dasar. ✓
+- Menambahkan test fondasi database jadwal. ✓
 
 Catatan:
 
-- Semester aktif sistem sudah tersedia dari Tahap 12.30.
-- Kelas aktif siswa tetap dibaca dari `student_class_histories.is_current`.
-- Integrasi dilakukan bertahap agar tidak merusak flow yang sudah berjalan.
-- Sub-tahap 12.31K menambahkan sinkronisasi tanggal mulai saat semester diganti.
+- Tahap ini belum membuat UI.
+- Tahap ini belum membuat route/controller.
+- Tahap ini belum menambah permission.
+- Tahap ini belum membuat fitur auto-generate atau drag-and-drop.
+- Slot non-KBM sudah disiapkan lewat `slot_type` dan `is_teaching_slot`.
 
-Setelah tahap ini stabil:
+Tahap berikutnya:
 
+- Tahap 12.34B — CRUD Template Jadwal.
+- Setelah itu: CRUD Slot Template, Assignment Rombel ke Template, lalu Jadwal Manual Basic.
+
+---
+
+### Tahap 12.31 — Integrasi Semester Aktif ke Riwayat Kelas dan Bulk Rombel
+Status: selesai.
 - Tahap 12.32 — Koreksi dan Edit Riwayat Kelas Siswa. Status: selesai.
 - Tahap 12.33 — Kebijakan Nonaktif dan Koreksi Data Master. Selesai (cakupan disesuaikan — lihat `docs/DECISIONS.md`).
 - Tahap 12.34 — Awal Modul Jadwal Pelajaran.
@@ -51,13 +59,15 @@ Perhatian:
 
 ---
 
-### Tahap 12.29 — Awal Modul Jadwal Pelajaran
+### Tahap 12.29 / 12.34 — Awal Modul Jadwal Pelajaran
 
-Tujuan:
+Status: mulai dikerjakan melalui Tahap 12.34A.
 
-- Memulai modul Jadwal Pelajaran setelah modul Data Siswa dan histori kelas stabil.
-- Modul ini membutuhkan guru, mata pelajaran, rombel, tahun ajaran, dan semester.
-- Tahap awal harus dimulai dari desain database dan relasi, bukan langsung UI.
+Catatan:
+
+- Penomoran terbaru mengikuti handoff terakhir, yaitu Tahap 12.34.
+- Fondasi database awal sudah selesai pada Tahap 12.34A.
+- Pengembangan berikutnya dilanjutkan ke CRUD Template Jadwal.
 
 ---
 
@@ -101,7 +111,7 @@ Catatan penting sebelum dikerjakan:
 Lanjutkan project SIM Madrasah.
 Baca dulu README.md, AI-INSTRUCTIONS.md, docs/AI-HANDOFF.md, docs/PROGRESS.md, docs/NEXT-STEPS.md, docs/ARCHITECTURE.md, docs/DATABASE.md, dan docs/RBAC.md.
 
-Kerjakan Tahap 12.21 — Filter Siswa Berdasarkan Status.
+Kerjakan Tahap xx.xx — keterangan detail projek.
 Jangan melompat tahap.
 Jelaskan konsep dulu, lalu beri perubahan kode per file.
 Setelah selesai, berikan update dokumentasi untuk docs/AI-HANDOFF.md, docs/PROGRESS.md, docs/NEXT-STEPS.md, dan docs/CHANGELOG.md.

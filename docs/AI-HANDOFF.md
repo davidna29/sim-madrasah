@@ -10,54 +10,65 @@ saya mengembangkannya sekarang di macbook air m2 dengan laravel herd
 
 ## Tahap Terakhir Selesai
 
-### Tahap 12.33 — Kebijakan Nonaktif dan Koreksi Data Master
+### Tahap 12.34A — Fondasi Database Modul Jadwal Pelajaran
 
 Status: selesai.
 
 Ringkasan:
 
-- Menambahkan tombol Nonaktifkan/Aktifkan per baris (toggle `is_active`) untuk: Ruangan, Mata Pelajaran, Tingkat Kelas.
-- Tombol memakai permission `*.update` yang sudah ada, tidak ada permission baru untuk toggle ini.
-- Menambahkan Edit untuk Tahun Ajaran (kode, nama, tanggal mulai/selesai).
-- Menambahkan Edit untuk Semester (kode, nama, jenis semester, tanggal mulai/selesai).
-- Tahun Ajaran/Semester yang sudah `is_locked = true` tidak bisa diedit — tombol Edit disembunyikan di view, dan diblokir juga di controller.
-- Menambahkan banner pesan error umum di halaman Tahun Ajaran (`$errors->any()`).
-- Ditemukan dan diperbaiki bug terpisah: urutan seeder membuat akun superadmin baru tidak dapat role (lihat `docs/DECISIONS.md`, sudah di-commit terpisah sebelum tahap ini).
-- Fitur buka kunci (unlock) semester/tahun ajaran sengaja TIDAK dibuat — dicatat sebagai usulan di `docs/NEXT-STEPS.md`.
-- Soft delete (`deleted_at`) untuk data master: ditunda, tidak dikerjakan di tahap ini.
+- Menambahkan fondasi database awal untuk Modul Jadwal Pelajaran.
+- Menambahkan tabel `schedule_templates` untuk menyimpan model/template jadwal.
+- Menambahkan tabel `schedule_template_slots` untuk menyimpan slot per hari dan jam pada template.
+- Menambahkan tabel `class_group_schedule_templates` untuk assignment rombel ke template jadwal.
+- Slot template sudah membedakan slot KBM dan non-KBM melalui `slot_type` dan `is_teaching_slot`.
+- Template jadwal sudah mendukung hari aktif, hari libur, maksimal slot per hari, dan durasi standar slot.
+- Assignment rombel dibatasi satu record per kombinasi tahun ajaran, semester, dan rombel.
+- Belum membuat UI CRUD.
+- Belum membuat menu Jadwal Pelajaran.
+- Belum membuat route/controller.
+- Belum membuat permission baru.
+- Belum membuat auto-generate.
+- Belum membuat drag-and-drop.
+- Belum membuat jadwal aktual pelajaran.
+- Belum membuat unassigned pool.
 
 File berubah:
 
-- `app/Http/Controllers/Admin/RoomController.php`
-- `app/Http/Controllers/Admin/SubjectController.php`
-- `app/Http/Controllers/Admin/GradeLevelController.php`
-- `app/Http/Controllers/Admin/AcademicYearController.php`
-- `routes/web.php`
-- `resources/views/admin/rooms/index.blade.php`
-- `resources/views/admin/subjects/index.blade.php`
-- `resources/views/admin/grade-levels/index.blade.php`
-- `resources/views/admin/academic-years/index.blade.php`
-- `resources/views/admin/academic-years/edit.blade.php`
-- `resources/views/admin/academic-years/semesters/edit.blade.php`
-- `tests/Feature/Admin/GradeLevelRoomCrudTest.php`
-- `tests/Feature/Admin/SubjectTest.php`
-- `tests/Feature/Admin/AcademicYearTest.php`
+- `app/Models/ScheduleTemplate.php`
+- `app/Models/ScheduleTemplateSlot.php`
+- `app/Models/ClassGroupScheduleTemplate.php`
+- `app/Models/AcademicYear.php`
+- `app/Models/Semester.php`
+- `app/Models/ClassGroup.php`
+- `database/migrations/2026_08_19_003802_create_schedule_templates_table.php`
+- `database/migrations/2026_08_19_003803_create_schedule_template_slots_table.php`
+- `database/migrations/2026_08_19_003804_create_class_group_schedule_templates_table.php`
+- `tests/Feature/Admin/ScheduleTemplateFoundationTest.php`
 - `docs/AI-HANDOFF.md`
 - `docs/PROGRESS.md`
 - `docs/NEXT-STEPS.md`
 - `docs/CHANGELOG.md`
-- `docs/RBAC.md`
+- `docs/DATABASE.md`
+- `docs/DECISIONS.md`
+
+Validasi:
+
+- `php artisan test --filter=ScheduleTemplateFoundationTest` berhasil.
+- `./vendor/bin/pint` berhasil.
+- `./vendor/bin/pint --test` berhasil.
+- `php artisan test` berhasil: 150 passed.
+- `npm run build` berhasil.
 
 Catatan:
 
-- Tidak ada perubahan struktur database.
-- Tidak ada permission baru (toggle dan edit memakai permission `*.update` yang sudah ada sebelumnya tapi belum dipakai).
-- Rombongan Belajar, Siswa, dan Pegawai sengaja TIDAK dapat tombol nonaktif cepat di tahap ini — field status mereka lebih kompleks (ada `status`/`employment_status` terpisah dari `is_active`), butuh tahap sendiri.
+- Tidak ada permission baru pada tahap ini.
+- Tidak ada perubahan RBAC.
+- Tahap ini sengaja dibatasi sebagai fondasi database agar Modul Jadwal Pelajaran tidak langsung terlalu besar.
+- Modul ini akan dikembangkan bertahap dengan arah hybrid: template, slot, assignment rombel, jadwal manual, lock/pin slot, validasi konflik, auto-generate, unassigned pool, lalu drag-and-drop finishing.
 
 Tahap berikutnya:
 
-- Tahap 12.34 — Awal Modul Jadwal Pelajaran.
-- Usulan (belum prioritas): Buka Kunci (Unlock) Semester dan Tahun Ajaran — lihat `docs/NEXT-STEPS.md`.
+- Tahap 12.34B — CRUD Template Jadwal.
 
 ---
 
@@ -139,6 +150,7 @@ Lihat ADR-008 di `docs/DECISIONS.md` untuk latar belakang lengkap.
 24. Filter rombel berdasarkan tahun ajaran.
 25. Filter siswa berdasarkan rombel aktif.
 26. Pencarian siswa berdasarkan nama, NIS, NISN, dan nomor registrasi.
+27. Fondasi database Modul Jadwal Pelajaran.
 
 ---
 
@@ -178,19 +190,6 @@ Catatan hasil cek di environment AI: `php artisan test` tidak bisa dijalankan ka
 ---
 
 ## 7. Tugas Berikutnya yang Direkomendasikan
-
-Rekomendasi tahap kecil berikutnya:
-
-1. Tahap 12.27 — Guard Histori Kelas Aktif.
-2. Tahap 12.28 — Bulk Assignment Siswa ke Rombel.
-3. Tahap 12.29 — Awal Modul Jadwal Pelajaran.
-
-Alasan urutan:
-
-- Modul Data Siswa sudah stabil pada Tahap 12.25.
-- Guard histori kelas aktif perlu dibuat sebelum bulk assignment.
-- Bulk assignment akan membuat banyak record `student_class_histories`.
-- Modul Jadwal Pelajaran sebaiknya dimulai setelah data siswa dan histori kelas lebih aman.
 
 Lihat detail di `docs/NEXT-STEPS.md`.
 

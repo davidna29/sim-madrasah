@@ -24,6 +24,7 @@ Terakhir diperbarui: 13 Agustus 2026.
 | Akun pegawai | Selesai awal | Create akun dari data pegawai |
 | Siswa | Stabil tahap 12.25 | CRUD, filter rombel, pencarian, filter status, filter tahun masuk, export CSV, review akhir |
 | Riwayat kelas siswa | Selesai tahap 12.32 | Tambah histori, edit histori, bulk rombel, default semester aktif, auto tanggal |
+| Jadwal Pelajaran | Fondasi tahap 12.34A | Database template jadwal, slot template, dan assignment rombel ke template |
 | Akun siswa | Selesai awal | Create akun dari data siswa |
 | Wali siswa | Selesai awal | CRUD wali per siswa |
 | Akun wali siswa | Selesai awal | Create akun wali |
@@ -127,6 +128,39 @@ Validasi:
 
 - `GradeLevelRoomCrudTest`, `SubjectTest`, `AcademicYearTest` berhasil;
 - `php artisan test` berhasil (147 passed);
+- `npm run build` berhasil.
+
+### Fondasi Database Modul Jadwal Pelajaran
+
+Status: selesai tahap 12.34A.
+
+Fitur:
+
+- tabel `schedule_templates` untuk model/template jadwal;
+- tabel `schedule_template_slots` untuk slot harian template;
+- tabel `class_group_schedule_templates` untuk assignment rombel ke template;
+- dukungan hari aktif dan hari libur pada template;
+- dukungan maksimal slot per hari dan durasi standar slot;
+- dukungan slot KBM dan non-KBM;
+- batas satu assignment template untuk satu rombel dalam satu semester;
+- relasi model awal ke `AcademicYear`, `Semester`, dan `ClassGroup`.
+
+Cakupan yang belum dibuat:
+
+- CRUD template jadwal;
+- CRUD slot template;
+- assignment rombel melalui UI;
+- jadwal aktual pelajaran;
+- validasi konflik guru;
+- lock/pin slot;
+- auto-generate;
+- unassigned pool;
+- drag-and-drop.
+
+Validasi:
+
+- `ScheduleTemplateFoundationTest` berhasil;
+- `php artisan test` berhasil: 150 passed;
 - `npm run build` berhasil.
 
 ---

@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
             // Administrator awal. Otomatis memblokir diri sendiri
             // kecuali APP_ENV=local, jadi aman dipanggil di sini.
             InitialAdminSeeder::class,
-            
+
             // Wajib supaya aplikasi bisa dipakai sama sekali
             // (role/permission, dan identitas madrasah untuk /admin/madrasah).
             RbacSeeder::class,

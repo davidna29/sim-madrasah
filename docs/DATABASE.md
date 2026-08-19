@@ -326,8 +326,128 @@ Unique penting:
 - `student_id + person_id`
 
 ---
+## 12. Tabel Fondasi Jadwal Pelajaran
 
-## 12. Relasi Utama
+### `schedule_templates`
+
+Fungsi:
+
+- Menyimpan model/template jadwal pelajaran.
+- Satu template dapat dipakai oleh banyak rombel.
+- Template berisi pola hari aktif, hari libur, maksimal slot, dan durasi standar slot.
+
+Kolom utama:
+
+- `code`
+- `name`
+- `description`
+- `active_days`
+- `holiday_days`
+- `max_slots_per_day`
+- `standard_slot_duration_minutes`
+- `status`
+- `is_active`
+- `created_by`
+
+Unique penting:
+
+- `code`
+
+Index penting:
+
+- `status`
+- `is_active`
+- `created_by`
+
+Catatan:
+
+- `active_days` dan `holiday_days` disimpan dalam bentuk JSON array.
+- Contoh nilai hari:
+  - `1` = Senin
+  - `2` = Selasa
+  - `3` = Rabu
+  - `4` = Kamis
+  - `5` = Jumat
+  - `6` = Sabtu
+  - `7` = Minggu
+
+### `schedule_template_slots`
+
+Fungsi:
+
+- Menyimpan slot jam pada template jadwal.
+- Slot dapat berupa KBM atau non-KBM.
+- Modul jadwal lanjutan hanya boleh memasukkan mata pelajaran ke slot KBM.
+
+Kolom utama:
+
+- `schedule_template_id`
+- `day_of_week`
+- `sort_order`
+- `starts_at`
+- `ends_at`
+- `slot_type`
+- `label`
+- `is_teaching_slot`
+- `notes`
+
+Unique penting:
+
+- `schedule_template_id + day_of_week + sort_order`
+
+Index penting:
+
+- `day_of_week`
+- `slot_type`
+- `is_teaching_slot`
+
+Nilai awal `slot_type` yang direncanakan:
+
+```txt
+kbm
+istirahat
+upacara
+kegiatan_rutin
+```
+Catatan:
+
+is_teaching_slot = true berarti slot boleh diisi mata pelajaran.
+is_teaching_slot = false berarti slot hanya tampil sebagai kegiatan non-KBM.
+Jam mulai dan selesai disimpan per slot agar template tetap fleksibel untuk kasus khusus seperti hari Jumat.
+class_group_schedule_templates
+
+Fungsi:
+
+Menghubungkan rombel dengan template jadwal tertentu.
+Menjaga agar satu rombel hanya memiliki satu assignment template untuk satu tahun ajaran dan semester.
+
+Kolom utama:
+
+academic_year_id
+semester_id
+class_group_id
+schedule_template_id
+is_active
+assigned_at
+assigned_by
+notes
+
+Unique penting:
+
+academic_year_id + semester_id + class_group_id
+
+Index penting:
+
+schedule_template_id
+is_active
+assigned_by
+
+Catatan:
+
+Jika rombel ingin dipindahkan ke template lain pada semester yang sama, record assignment yang ada harus diperbarui, bukan dibuat dobel.
+---
+
+## 13. Relasi Utama
 
 ```txt
 people 1--1 users
@@ -347,11 +467,19 @@ students 1--N student_class_histories
 students 1--N student_guardians
 class_groups 1--N student_class_histories
 semesters 1--N student_class_histories
+
+schedule_templates 1--N schedule_template_slots
+schedule_templates 1--N class_group_schedule_templates
+academic_years 1--N class_group_schedule_templates
+semesters 1--N class_group_schedule_templates
+class_groups 1--N class_group_schedule_templates
+users 1--N schedule_templates as creator
+users 1--N class_group_schedule_templates as assigner
 ```
 
 ---
 
-## 13. Catatan Perubahan Database Berikutnya
+## 14. Catatan Perubahan Database Berikutnya
 
 Jika membuat modul baru, selalu tambahkan:
 

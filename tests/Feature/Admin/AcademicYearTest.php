@@ -335,7 +335,6 @@ class AcademicYearTest extends TestCase
         ]);
     }
 
-
     public function test_user_can_update_academic_year(): void
     {
         $user = User::factory()->create();
@@ -365,7 +364,7 @@ class AcademicYearTest extends TestCase
             ->assertRedirect(route('admin.academic-years.index'))
             ->assertSessionHas('success');
 
-       $this->assertDatabaseHas('academic_years', [
+        $this->assertDatabaseHas('academic_years', [
             'id' => $academicYear->id,
             'name' => '2026/2027 Edit Revisi',
         ]);
@@ -565,7 +564,7 @@ class AcademicYearTest extends TestCase
 
         $response->assertSessionDoesntHaveErrors(['code', 'semester_type']);
 
-$this->assertSame(
+        $this->assertSame(
             '2026-08-01',
             $ganjil->fresh()->start_date->format('Y-m-d')
         );
