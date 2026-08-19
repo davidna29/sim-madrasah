@@ -3,6 +3,42 @@
 Format mengikuti gaya sederhana: tanggal, tahap/commit, perubahan.
 
 ---
+## 19 Agustus 2026 — Tahap 12.34G-1
+
+### Added
+
+- Menambahkan fondasi database Ketersediaan Guru.
+- Menambahkan model `TeacherAvailability`.
+- Menambahkan tabel `teacher_availabilities`.
+- Menambahkan relasi `teacherAvailabilities()` pada model `AcademicYear`.
+- Menambahkan relasi `teacherAvailabilities()` pada model `Semester`.
+- Menambahkan relasi `teacherAvailabilities()` dan `createdTeacherAvailabilities()` pada model `User`.
+- Menambahkan test `TeacherAvailabilityFoundationTest`.
+
+### Database
+
+- Menambahkan tabel `teacher_availabilities`.
+- Menambahkan foreign key ke `academic_years`, `semesters`, dan `users`.
+- Menambahkan kolom `day_of_week`, `starts_at`, `ends_at`, `availability_type`, `reason`, `notes`, `status`, dan `is_active`.
+- Menambahkan kolom `created_by` untuk mencatat pembuat data.
+- Menambahkan unique constraint untuk konteks ketersediaan guru aktif berdasarkan tahun ajaran, semester, guru, hari, jam mulai, jam selesai, tipe ketersediaan, dan status aktif.
+
+### Notes
+
+- Tidak ada UI pada tahap ini.
+- Tidak ada route pada tahap ini.
+- Tidak ada controller pada tahap ini.
+- Tidak ada sidebar pada tahap ini.
+- Tidak ada permission baru pada tahap ini.
+- Belum ada CRUD Ketersediaan Guru.
+- Belum ada validasi bentrok jam ketersediaan di level aplikasi.
+- Belum ada jadwal aktual pelajaran.
+- Belum ada auto-generate.
+- Test fondasi berhasil: 3 passed (14 assertions).
+- Test penuh berhasil: isi sesuai hasil test penuh terakhir.
+- Build frontend berhasil.
+
+---
 
 ## 19 Agustus 2026 — Tahap 12.34F-4
 

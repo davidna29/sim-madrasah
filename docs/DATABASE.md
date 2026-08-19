@@ -499,6 +499,68 @@ Catatan:
 - Jadwal aktual nanti harus mengambil sumber dari plotting ini.
 - Satu guru dapat mengajar lebih dari satu mapel atau lebih dari satu rombel.
 - Satu mapel pada rombel yang sama dapat diajar lebih dari satu guru jika memang kebijakan madrasah membutuhkan pembagian guru.
+
+---
+## teacher_availabilities
+
+Tabel fondasi Ketersediaan Guru.
+
+Ditambahkan pada: Tahap 12.34G-1.
+
+Tujuan:
+
+- Menyimpan informasi kapan guru tidak tersedia atau punya aturan ketersediaan tertentu dalam konteks tahun ajaran dan semester.
+- Menjadi fondasi sebelum jadwal aktual pelajaran dan auto-generate jadwal.
+
+Kolom utama:
+
+| Kolom | Keterangan |
+| --- | --- |
+| `id` | Primary key. |
+| `academic_year_id` | Relasi ke `academic_years`. |
+| `semester_id` | Relasi ke `semesters`. |
+| `teacher_user_id` | Relasi ke `users`, guru yang diberi aturan ketersediaan. |
+| `day_of_week` | Hari dalam minggu. 1 = Senin, 2 = Selasa, 3 = Rabu, 4 = Kamis, 5 = Jumat, 6 = Sabtu, 7 = Minggu. |
+| `starts_at` | Jam mulai aturan ketersediaan. |
+| `ends_at` | Jam selesai aturan ketersediaan. |
+| `availability_type` | Tipe ketersediaan. Default saat ini `unavailable`. |
+| `reason` | Alasan singkat, nullable. |
+| `notes` | Catatan tambahan, nullable. |
+| `status` | Status data, default `active`. |
+| `is_active` | Penanda aktif/nonaktif. |
+| `created_by` | User yang membuat data, nullable. |
+| `created_at`, `updated_at` | Timestamp Laravel. |
+
+Constraint dan index:
+
+- Foreign key `academic_year_id` ke `academic_years.id` dengan `restrictOnDelete()`.
+- Foreign key `semester_id` ke `semesters.id` dengan `restrictOnDelete()`.
+- Foreign key `teacher_user_id` ke `users.id` dengan `restrictOnDelete()`.
+- Foreign key `created_by` ke `users.id` dengan `nullOnDelete()`.
+- Unique constraint `teacher_availabilities_unique_active_context` pada kombinasi:
+  - `academic_year_id`
+  - `semester_id`
+  - `teacher_user_id`
+  - `day_of_week`
+  - `starts_at`
+  - `ends_at`
+  - `availability_type`
+  - `is_active`
+- Index pada:
+  - `academic_year_id`
+  - `semester_id`
+  - `teacher_user_id`
+  - `day_of_week`
+  - `availability_type`
+  - `status`
+  - `is_active`
+  - `created_by`
+
+Catatan:
+
+- Tahap ini belum membuat validasi bentrok jam di level aplikasi.
+- Tahap ini belum membuat UI CRUD.
+- Tahap ini belum menghubungkan ketersediaan guru ke jadwal aktual.
 ---
 
 ## 14. Relasi Utama

@@ -709,3 +709,39 @@ Konsekuensi:
 - Jika nanti dibuat batas maksimal beban guru, perlu tahap lanjutan dengan aturan yang jelas.
 - Jika nanti jadwal aktual sudah ada, rekap dari plotting dan rekap dari jadwal aktual bisa berbeda fungsi dan perlu dibedakan.
 - Ketersediaan guru tetap perlu dibuat sebagai modul terpisah sebelum auto-generate jadwal.
+---
+---
+
+## ADR-018 — Ketersediaan Guru Disimpan Per Tahun Ajaran dan Semester
+
+Status: diterima.
+
+Keputusan:
+
+- Ketersediaan guru disimpan di tabel `teacher_availabilities`.
+- Setiap data ketersediaan terikat ke `academic_year_id` dan `semester_id`.
+- Guru yang dimaksud disimpan sebagai `teacher_user_id`, mengarah ke tabel `users`.
+- Hari disimpan sebagai angka `day_of_week`:
+  - 1 = Senin
+  - 2 = Selasa
+  - 3 = Rabu
+  - 4 = Kamis
+  - 5 = Jumat
+  - 6 = Sabtu
+  - 7 = Minggu
+- Rentang waktu disimpan dengan `starts_at` dan `ends_at`.
+- Tipe default saat ini adalah `unavailable`.
+- Tahap 12.34G-1 belum menambahkan UI, route, controller, sidebar, atau permission.
+
+Alasan:
+
+- Jadwal pelajaran berjalan dalam konteks tahun ajaran dan semester, sehingga ketersediaan guru juga harus mengikuti konteks akademik yang sama.
+- Menyimpan guru sebagai `teacher_user_id` konsisten dengan `teaching_assignments`.
+- Format angka untuk hari lebih mudah dipakai untuk query dan validasi jadwal.
+- Memulai dari tipe `unavailable` menjaga cakupan tetap kecil dan aman.
+
+Konsekuensi:
+
+- Kalau nanti dibutuhkan tipe lain seperti `preferred` atau `available`, nilai `availability_type` sudah bisa menampungnya tanpa perubahan struktur awal.
+- Validasi bentrok jam perlu dibuat di level aplikasi pada tahap CRUD.
+- Integrasi ke jadwal aktual perlu tahap tersendiri.

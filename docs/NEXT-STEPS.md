@@ -3,48 +3,43 @@
 Dokumen ini berisi urutan kerja kecil yang direkomendasikan.
 
 ---
-
 ## Prioritas Terdekat
 
-Tahap terakhir selesai: **Tahap 12.34F-4 — Rekap Beban Guru**.
+Tahap terakhir selesai: **Tahap 12.34G-1 — Fondasi Database Ketersediaan Guru**.
 
-Belum ada tahap berikutnya yang dipilih. Kandidat terdekat:
+Tahap berikutnya yang direkomendasikan:
 
-1. Copy penugasan dari semester sebelumnya.
-2. Ketersediaan guru.
-3. Validasi batas maksimal beban guru.
-4. Fondasi jadwal aktual pelajaran.
+### Tahap 12.34G-2 — CRUD Ketersediaan Guru: Permission, Route, dan Halaman Daftar
 
-Rekomendasi teknis: lanjut ke **Ketersediaan Guru** sebelum jadwal aktual atau auto-generate, karena jadwal membutuhkan informasi kapan guru bisa/tidak bisa mengajar.
+Tujuan kecil:
 
-### Tahap 12.34F-4 — Rekap Beban Guru
+1. Menambahkan permission ketersediaan guru di `RbacSeeder`.
+2. Menambahkan route admin untuk daftar ketersediaan guru.
+3. Menambahkan controller `TeacherAvailabilityController`.
+4. Menambahkan halaman daftar ketersediaan guru.
+5. Menambahkan menu sidebar jika permission tersedia.
+6. Menambahkan test akses halaman daftar.
 
-Status: selesai.
+Catatan batasan:
 
-Tujuan yang tercapai:
+- Jangan langsung membuat form tambah/edit dalam tahap yang sama kalau terlalu besar.
+- Jangan langsung membuat auto-generate jadwal.
+- Jangan membuat fitur unlock semester/tahun ajaran.
+- Validasi bentrok jam ketersediaan bisa dikerjakan setelah form tambah tersedia.
 
-- Route rekap beban guru dengan middleware permission `teaching_assignments.view`. ✓
-- Halaman rekap beban guru. ✓
-- Filter Tahun Ajaran dan Semester. ✓
-- Rekap hanya menghitung plotting aktif (`is_active = true`). ✓
-- Total jam/minggu dihitung dari `SUM(weekly_hours)` per guru. ✓
-- Tombol "Rekap Beban Guru" dari halaman daftar plotting. ✓
-- Test rekap beban guru. ✓
-
----
-
-### Tahap 12.34F-3 — Form Edit dan Toggle Aktif/Nonaktif Plotting Beban Mengajar
+### Tahap 12.34G-1 — Fondasi Database Ketersediaan Guru
 
 Status: selesai.
 
 Tujuan yang tercapai:
 
-- Route edit, update, dan toggle-active dengan middleware permission. ✓
-- Form edit plotting (guru, mapel, rombel, jam per minggu, catatan), prefilled. ✓
-- Tombol toggle Aktifkan/Nonaktifkan per baris di halaman index. ✓
-- Validasi duplikasi saat edit (exclude record yang sedang diedit). ✓
-- Test form edit dan toggle (8 test baru). ✓
-- Bonus: bug fix label semester di form tambah yang sebelumnya selalu tertulis "Genap".
+- Model `TeacherAvailability`. ✓
+- Tabel `teacher_availabilities`. ✓
+- Relasi ke `AcademicYear`. ✓
+- Relasi ke `Semester`. ✓
+- Relasi ke `User` sebagai guru. ✓
+- Relasi ke `User` sebagai pembuat data. ✓
+- Test fondasi database. ✓
 
 ---
 

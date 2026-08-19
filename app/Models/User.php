@@ -167,4 +167,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(TeachingAssignment::class, 'created_by');
     }
+
+    public function teacherAvailabilities(): HasMany
+    {
+        return $this->hasMany(TeacherAvailability::class, 'teacher_user_id');
+    }
+
+    public function createdTeacherAvailabilities(): HasMany
+    {
+        return $this->hasMany(TeacherAvailability::class, 'created_by');
+    }
 }

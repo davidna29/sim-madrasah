@@ -10,63 +10,57 @@ Developer berpindah-pindah device (Windows dan macOS), memakai Laravel Herd di k
 
 ## Tahap Terakhir Selesai
 
-### Tahap 12.34F-4 — Rekap Beban Guru
+### Tahap 12.34G-1 — Fondasi Database Ketersediaan Guru
 
 Status: selesai.
 
 Ringkasan:
 
-- Menambahkan halaman rekap beban guru di `/admin/teaching-assignments/teacher-workload`.
-- Menambahkan route `GET /admin/teaching-assignments/teacher-workload`, dilindungi permission `teaching_assignments.view`.
-- Menambahkan method `teacherWorkload()` di `TeachingAssignmentController`.
-- Rekap menghitung hanya plotting beban mengajar yang masih aktif (`is_active = true`).
-- Rekap dikelompokkan per guru, lalu menampilkan jumlah plotting aktif dan total jam/minggu (`SUM(weekly_hours)`).
-- Menambahkan filter Tahun Ajaran dan Semester pada halaman rekap.
-- Menambahkan tombol "Rekap Beban Guru" dari halaman daftar Plotting Beban Mengajar.
-- Menambahkan view `admin/teaching-assignments/teacher-workload.blade.php`.
-- Menambahkan test baru `TeachingAssignmentWorkloadTest`.
-- Merapikan guard Blade di halaman index agar memakai pola `@can('permission', '...')`.
+- Menambahkan fondasi database Ketersediaan Guru.
+- Menambahkan model `TeacherAvailability`.
+- Menambahkan tabel `teacher_availabilities`.
+- Menambahkan relasi ketersediaan guru pada model `AcademicYear`.
+- Menambahkan relasi ketersediaan guru pada model `Semester`.
+- Menambahkan relasi ketersediaan guru pada model `User`.
+- Menambahkan test `TeacherAvailabilityFoundationTest`.
 
 File berubah:
 
-- `routes/web.php`
-- `app/Http/Controllers/Admin/TeachingAssignmentController.php`
-- `resources/views/admin/teaching-assignments/index.blade.php`
-- `resources/views/admin/teaching-assignments/teacher-workload.blade.php` (baru)
-- `tests/Feature/Admin/TeachingAssignmentWorkloadTest.php` (baru)
-- `tests/Feature/Admin/TeachingAssignmentTest.php` (formatting Pint jika hanya berubah format)
+- `app/Models/TeacherAvailability.php` (baru)
+- `database/migrations/xxxx_xx_xx_xxxxxx_create_teacher_availabilities_table.php` (baru)
+- `app/Models/AcademicYear.php`
+- `app/Models/Semester.php`
+- `app/Models/User.php`
+- `tests/Feature/Admin/TeacherAvailabilityFoundationTest.php` (baru)
 - `docs/AI-HANDOFF.md`
 - `docs/PROGRESS.md`
 - `docs/NEXT-STEPS.md`
 - `docs/CHANGELOG.md`
-- `docs/RBAC.md`
+- `docs/DATABASE.md`
 - `docs/DECISIONS.md`
 
-Validasi (dijalankan di macOS/Herd):
+Validasi:
 
-- `TeachingAssignmentWorkloadTest`: 3 passed.
-- `TeachingAssignmentTest`: ikut valid dalam test penuh.
-- `php artisan test`: 200 passed (673 assertions).
-- `npm run build` berhasil.
+- `php artisan test --filter=TeacherAvailabilityFoundationTest`: 3 passed (14 assertions).
+- `php artisan test`: isi sesuai hasil test penuh terakhir.
+- `npm run build`: isi sesuai hasil build terakhir.
 
 Catatan:
 
-- Tahap ini tidak mengubah struktur database.
-- Tahap ini tidak menambah permission baru.
-- Halaman rekap memakai permission lama `teaching_assignments.view`.
-- Rekap hanya membaca data aktif (`is_active = true`), jadi plotting nonaktif tidak masuk total.
-- Tahap ini belum membuat validasi beban maksimal guru.
-- Tahap ini belum membuat ketersediaan guru.
-- Tahap ini belum membuat jadwal aktual pelajaran.
+- Tahap ini hanya fondasi database.
+- Belum ada UI.
+- Belum ada route.
+- Belum ada controller.
+- Belum ada sidebar.
+- Belum ada permission baru.
+- Belum ada validasi bentrok jam ketersediaan di level aplikasi.
+- Belum ada integrasi ke jadwal aktual pelajaran.
+- Nilai `day_of_week`: 1 = Senin, 2 = Selasa, 3 = Rabu, 4 = Kamis, 5 = Jumat, 6 = Sabtu, 7 = Minggu.
+- `availability_type` default saat ini adalah `unavailable`.
 
 Tahap berikutnya:
 
-- Belum ditentukan.
-- Kandidat terdekat:
-  - Copy penugasan dari semester sebelumnya.
-  - Ketersediaan guru.
-  - Validasi batas maksimal beban guru.
-  - Lanjut ke fondasi jadwal aktual pelajaran.
+- Tahap 12.34G-2 — CRUD Ketersediaan Guru, dimulai dari permission + route + halaman daftar.
 
 ---
 
@@ -155,6 +149,7 @@ Lihat ADR-008 di `docs/DECISIONS.md` untuk latar belakang lengkap.
 31. Fondasi database Plotting Beban Mengajar.
 32. CRUD Plotting Beban Mengajar (daftar, tambah, edit, toggle aktif/nonaktif).
 33. Rekap Beban Guru dari Plotting Beban Mengajar.
+34. Fondasi Database Ketersediaan Guru.
 
 ---
 

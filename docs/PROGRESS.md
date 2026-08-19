@@ -24,7 +24,7 @@ Terakhir diperbarui: 19 Agustus 2026.
 | Akun pegawai | Selesai awal | Create akun dari data pegawai |
 | Siswa | Stabil tahap 12.25 | CRUD, filter rombel, pencarian, filter status, filter tahun masuk, export CSV, review akhir |
 | Riwayat kelas siswa | Selesai tahap 12.32 | Tambah histori, edit histori, bulk rombel, default semester aktif, auto tanggal |
-| Jadwal Pelajaran | Selesai tahap 12.34F-4 | Fondasi jadwal, template, slot, assignment rombel; CRUD Plotting Beban Mengajar lengkap; Rekap Beban Guru tersedia |
+| Jadwal Pelajaran | Selesai tahap 12.34G-1 | Fondasi jadwal, template, slot, assignment rombel; CRUD Plotting Beban Mengajar lengkap; Rekap Beban Guru tersedia; fondasi database Ketersediaan Guru tersedia |
 | Akun siswa | Selesai awal | Create akun dari data siswa |
 | Wali siswa | Selesai awal | CRUD wali per siswa |
 | Akun wali siswa | Selesai awal | Create akun wali |
@@ -67,6 +67,51 @@ addfd94 feat: add madrasah identity module
 ---
 
 ## Fitur Terakhir yang Sudah Tampak di Kode
+
+### Fondasi Database Ketersediaan Guru (Tahap 12.34G-1)
+
+Status: selesai tahap 12.34G-1.
+
+Fitur fondasi:
+
+- tabel `teacher_availabilities`;
+- model `TeacherAvailability`;
+- relasi dari `AcademicYear` ke ketersediaan guru;
+- relasi dari `Semester` ke ketersediaan guru;
+- relasi dari `User` ke ketersediaan guru;
+- test fondasi `TeacherAvailabilityFoundationTest`.
+
+Kolom utama:
+
+- `academic_year_id`;
+- `semester_id`;
+- `teacher_user_id`;
+- `day_of_week`;
+- `starts_at`;
+- `ends_at`;
+- `availability_type`;
+- `reason`;
+- `notes`;
+- `status`;
+- `is_active`;
+- `created_by`.
+
+Validasi teknis:
+
+- `php artisan test --filter=TeacherAvailabilityFoundationTest` berhasil: 3 passed (14 assertions).
+- `php artisan test` berhasil: isi sesuai hasil test penuh terakhir.
+- `npm run build` berhasil.
+
+Cakupan yang belum dibuat:
+
+- halaman daftar ketersediaan guru;
+- form tambah/edit ketersediaan guru;
+- permission ketersediaan guru;
+- validasi bentrok jam di level aplikasi;
+- integrasi dengan jadwal aktual pelajaran;
+- auto-generate jadwal.
+
+---
 
 ### Rekap Beban Guru (Tahap 12.34F-4)
 
