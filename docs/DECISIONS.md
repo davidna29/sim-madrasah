@@ -654,3 +654,23 @@ Konsekuensi:
 ## Catatan Dokumentasi — docs/CHANGELOG.md Tidak Ditemukan
 
 Saat Tahap 12.34F-1 dikerjakan, `docs/CHANGELOG.md` dirujuk oleh `README.md` dan riwayat `docs/AI-HANDOFF.md` (tercatat sebagai salah satu "file berubah" pada tahap-tahap sebelumnya), tetapi file ini **tidak ada** di repo hasil unggahan. Belum diketahui apakah file ini sempat ada lalu terlewat saat commit/export, atau memang belum pernah benar-benar dibuat. Developer/AI berikutnya sebaiknya memeriksa histori git (`git log --all --full-history -- docs/CHANGELOG.md`) sebelum memutuskan untuk membuat file baru dari nol, supaya tidak kehilangan riwayat perubahan yang mungkin sudah pernah dicatat di sana.
+
+---
+## ADR-016 — Validasi Duplikat Plotting Dilakukan di Controller, Bukan Hanya di Database
+
+Status: diterima.
+
+Keputusan:
+
+- Validasi duplikasi kombinasi `academic_year_id + semester_id + class_group_id + subject_id + teacher_user_id` dilakukan secara eksplisit di method `store()` controller sebelum `create()`, bukan hanya mengandalkan unique constraint database.
+
+Alasan:
+
+- Pesan error dari unique constraint database tidak ramah pengguna (exception mentah).
+- Validasi di controller memungkinkan pesan error yang jelas dan spesifik ditampilkan di form.
+- Pola ini konsisten dengan modul lain di project ini yang juga melakukan cek duplikat di controller.
+
+Konsekuensi:
+
+- Unique constraint di database tetap dipertahankan sebagai lapisan keamanan kedua.
+- Method `store()` perlu mempertahankan cek duplikat ini saat diedit di tahap berikutnya (edit plotting).

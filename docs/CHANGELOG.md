@@ -3,6 +3,42 @@
 Format mengikuti gaya sederhana: tanggal, tahap/commit, perubahan.
 
 ---
+## 19 Agustus 2026 — Tahap 12.34F-2
+
+### Added
+
+- Menambahkan route `GET /admin/teaching-assignments/create` dan `POST /admin/teaching-assignments`.
+- Menambahkan method `create()` dan `store()` di `TeachingAssignmentController`.
+- Menambahkan view `admin/teaching-assignments/create.blade.php` (form tambah plotting).
+- Menambahkan tombol "+ Tambah Plotting" di halaman index (hanya muncul jika punya permission).
+- Menambahkan helper `createTeacher()` di `TeachingAssignmentTest`.
+- Menambahkan 5 test baru: lihat form (dengan/tanpa permission), simpan berhasil, tolak duplikat, tolak data tidak valid.
+
+### Changed
+
+- Memperbarui `TeachingAssignmentController` — menambahkan method `create()` dan `store()`.
+- Memperbarui `resources/views/admin/teaching-assignments/index.blade.php` — menambahkan tombol "+ Tambah Plotting".
+- Memperbarui dokumentasi handoff, progress, next steps, changelog, dan decisions.
+
+### Validation
+
+- Semua field wajib diisi (tahun ajaran, semester, rombel, mapel, guru, jam per minggu).
+- Kombinasi guru + mapel + rombel + semester tidak boleh duplikat.
+- Pilihan guru dibatasi hanya akun aktif dengan role `guru_mata_pelajaran`, `wali_kelas`, atau `guru_bk`.
+- Field `status` diisi otomatis `'active'`; `is_active` diisi otomatis `true`.
+
+### Notes
+
+- Tidak ada perubahan struktur database pada tahap ini.
+- Tidak ada permission baru pada tahap ini (permission `.create` sudah didaftarkan di Tahap 12.34F-1).
+- Belum ada form edit dan toggle aktif/nonaktif.
+- Belum ada rekap beban guru.
+- Belum ada ketersediaan guru.
+- Test penuh berhasil: 189 passed (641 assertions).
+- Build frontend berhasil.
+
+---
+
 ## 19 Agustus 2026 — 12.34F-1
 permission baru + route + Controller kosong + halaman daftar (index) — bisa lihat data yang sudah ada dari seeder demo.
 catatan> changelog ini belum sempat terupdate secara lengkap

@@ -10,54 +10,50 @@ Developer berpindah-pindah device (Windows dan macOS), memakai Laravel Herd di k
 
 ## Tahap Terakhir Selesai
 
-### Tahap 12.34F-1 — Permission, Route, dan Halaman Daftar Plotting Beban Mengajar
+### Tahap 12.34F-2 — Form Tambah (Create) Plotting Beban Mengajar
 
 Status: selesai.
 
 Ringkasan:
 
-- Menambahkan permission baru untuk modul `teaching_assignments`: `.view`, `.create`, `.update`.
-- Menambahkan route `GET /admin/teaching-assignments` (halaman daftar), dilindungi `permission:teaching_assignments.view`.
-- Menambahkan `TeachingAssignmentController@index` dengan filter tahun ajaran dan semester (pola sama seperti `ScheduleTemplateAssignmentController`).
-- Menambahkan view `admin/teaching-assignments/index.blade.php`.
-- Menambahkan menu sidebar "Plotting Beban Mengajar".
-- Permission `.create` dan `.update` sudah didaftarkan di seeder tapi **belum dipasang ke route manapun** — akan dipakai pada Tahap 12.34F-2 (form tambah) dan 12.34F-3 (form edit + toggle aktif/nonaktif).
-- Field `status` pada tabel `teaching_assignments` tetap diisi otomatis `'active'` oleh sistem (tidak ada input manual di form); aktif/nonaktif dikelola lewat `is_active` saja, mengikuti pola modul lain (Mata Pelajaran, Template Jadwal).
-- Pilihan "guru" pada tahap CRUD berikutnya direncanakan mencakup role `guru_mata_pelajaran`, `wali_kelas`, dan `guru_bk` (belum diimplementasikan di tahap ini karena tahap ini baru index, belum ada form).
+- Menambahkan route `GET /admin/teaching-assignments/create` dan `POST /admin/teaching-assignments`, dilindungi `permission:teaching_assignments.create`.
+- Menambahkan method `create()` dan `store()` di `TeachingAssignmentController`.
+- Menambahkan view `admin/teaching-assignments/create.blade.php` dengan form pilih guru (dibatasi role `guru_mata_pelajaran`, `wali_kelas`, `guru_bk`), mata pelajaran, rombel, jam per minggu, dan catatan.
+- Menambahkan tombol "+ Tambah Plotting" di halaman index, hanya muncul jika user punya permission `teaching_assignments.create`.
+- Validasi duplikasi kombinasi academic_year + semester + class_group + subject + teacher ditangani di controller (bukan hanya di database).
+- Field `status` diisi otomatis `'active'` dan `is_active` diisi `true` oleh sistem.
+- Menambahkan helper `createTeacher()` di file test.
+- Menambahkan 5 test baru: lihat form (dengan/tanpa permission), simpan berhasil, tolak duplikat, tolak data tidak valid.
 
 File berubah:
 
-- `database/seeders/RbacSeeder.php`
 - `routes/web.php`
-- `app/Http/Controllers/Admin/TeachingAssignmentController.php` (baru)
-- `resources/views/admin/teaching-assignments/index.blade.php` (baru)
-- `resources/views/layouts/sidebar.blade.php`
-- `tests/Feature/Admin/TeachingAssignmentTest.php` (baru)
+- `app/Http/Controllers/Admin/TeachingAssignmentController.php`
+- `resources/views/admin/teaching-assignments/create.blade.php` (baru)
+- `resources/views/admin/teaching-assignments/index.blade.php`
+- `tests/Feature/Admin/TeachingAssignmentTest.php`
 - `docs/AI-HANDOFF.md`
 - `docs/PROGRESS.md`
 - `docs/NEXT-STEPS.md`
-- `docs/RBAC.md`
-- `docs/DECISIONS.md`
 
-Validasi (dilaporkan developer, dijalankan di macOS/Herd):
+Validasi (dijalankan di macOS/Herd):
 
-- `php artisan test`: 184 passed (626 assertions).
+- `php artisan test --filter=TeachingAssignmentTest`: 8 passed (24 assertions).
+- `php artisan test`: 189 passed (641 assertions).
 - `npm run build` berhasil.
-- `git status` menunjukkan perubahan sesuai daftar file di atas.
 
 Catatan:
 
-- Tahap ini belum membuat form tambah (create) plotting.
 - Tahap ini belum membuat form edit dan toggle aktif/nonaktif.
-- Tahap ini belum membatasi pilihan guru berdasarkan role (karena belum ada form).
 - Tahap ini belum membuat rekap beban guru.
 - Tahap ini belum membuat ketersediaan guru.
 - Tahap ini belum membuat jadwal aktual pelajaran.
-- `docs/CHANGELOG.md` dirujuk oleh `AI-INSTRUCTIONS.md`/`README.md` tapi **tidak ditemukan di repo saat tahap ini dikerjakan** — belum dibuat ulang, perlu diperiksa apakah pernah ada dan hilang saat export/zip, atau memang belum pernah dibuat. Lihat catatan di `docs/DECISIONS.md`.
+- Pilihan guru di form sudah dibatasi berdasarkan role (`guru_mata_pelajaran`, `wali_kelas`, `guru_bk`) dan status `active`.
 
 Tahap berikutnya:
 
-- Tahap 12.34F-2 — Form Tambah (Create) Plotting Beban Mengajar.
+- Tahap 12.34F-3 — Form Edit dan Toggle Aktif/Nonaktif Plotting Beban Mengajar.
+
 ---
 
 ## 2. Teknologi

@@ -295,6 +295,14 @@ Route::middleware([
         ->middleware('permission:teaching_assignments.view')
         ->name('teaching-assignments.index');
 
+    Route::get('/teaching-assignments/create', [TeachingAssignmentController::class, 'create'])
+        ->middleware('permission:teaching_assignments.create')
+        ->name('teaching-assignments.create');
+
+    Route::post('/teaching-assignments', [TeachingAssignmentController::class, 'store'])
+        ->middleware('permission:teaching_assignments.create')
+        ->name('teaching-assignments.store');
+
     // Tambahkan route untuk manajemen pegawai (employees)
     Route::get('/employees', [EmployeeController::class, 'index'])
         ->middleware('permission:employees.view')

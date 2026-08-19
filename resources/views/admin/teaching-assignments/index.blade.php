@@ -10,6 +10,13 @@
                     Daftar guru, mata pelajaran, rombel, dan jumlah jam per minggu.
                 </p>
             </div>
+
+            @can('teaching_assignments.create')
+                <a href="{{ route('admin.teaching-assignments.create') }}"
+                   class="rounded-md bg-green-700 px-4 py-2 text-sm font-medium text-white hover:bg-green-800">
+                    + Tambah Plotting
+                </a>
+            @endcan
         </div>
     </x-slot>
 

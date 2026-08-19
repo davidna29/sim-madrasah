@@ -119,6 +119,139 @@ class TeachingAssignmentTest extends TestCase
             ->assertDontSee($secondClassGroup->name);
     }
 
+        public function test_user_with_permission_can_view_create_form(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'teaching_assignments.create');
+
+        $response = $this
+            ->actingAs($user)
+            ->get('/admin/teaching-assignments/create');
+
+        $response
+            ->assertStatus(200)
+            ->assertSee('Tambah Plotting Beban Mengajar');
+    }
+
+    public function test_user_without_permission_cannot_view_create_form(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->get('/admin/teaching-assignments/create');
+
+        $response->assertStatus(403);
+    }
+
+    public function test_user_with_permission_can_store_teaching_assignment(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'teaching_assignments.create');
+
+        $academicYear = $this->createAcademicYear();
+        $semester = $this->createSemester($academicYear);
+        $classGroup = $this->createClassGroup($academicYear);
+        $subject = $this->createSubject();
+        $teacher = $this->createTeacher();
+
+        $response = $this
+            ->actingAs($user)
+            ->post('/admin/teaching-assignments', [
+                'academic_year_id' => $academicYear->id,
+                'semester_id'      => $semester->id,
+                'class_group_id'   => $classGroup->id,
+                'subject_id'       => $subject->id,
+                'teacher_user_id'  => $teacher->id,
+                'weekly_hours'     => 3,
+                'notes'            => 'Catatan test',
+            ]);
+
+        $response->assertRedirect();
+
+        $this->assertDatabaseHas('teaching_assignments', [
+            'academic_year_id' => $academicYear->id,
+            'semester_id'      => $semester->id,
+            'class_group_id'   => $classGroup->id,
+            'subject_id'       => $subject->id,
+            'teacher_user_id'  => $teacher->id,
+            'weekly_hours'     => 3,
+            'status'           => 'active',
+            'is_active'        => true,
+        ]);
+    }
+
+    public function test_store_rejects_duplicate_teaching_assignment(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'teaching_assignments.create');
+
+        $academicYear = $this->createAcademicYear();
+        $semester = $this->createSemester($academicYear);
+        $classGroup = $this->createClassGroup($academicYear);
+        $subject = $this->createSubject();
+        $teacher = $this->createTeacher();
+
+        TeachingAssignment::create([
+            'academic_year_id' => $academicYear->id,
+            'semester_id'      => $semester->id,
+            'class_group_id'   => $classGroup->id,
+            'subject_id'       => $subject->id,
+            'teacher_user_id'  => $teacher->id,
+            'weekly_hours'     => 3,
+            'status'           => 'active',
+            'is_active'        => true,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->post('/admin/teaching-assignments', [
+                'academic_year_id' => $academicYear->id,
+                'semester_id'      => $semester->id,
+                'class_group_id'   => $classGroup->id,
+                'subject_id'       => $subject->id,
+                'teacher_user_id'  => $teacher->id,
+                'weekly_hours'     => 3,
+            ]);
+
+        $response->assertSessionHasErrors('teacher_user_id');
+
+        $this->assertSame(
+            1,
+            TeachingAssignment::count()
+        );
+    }
+
+    public function test_store_rejects_invalid_data(): void
+    {
+        $user = User::factory()->create();
+
+        $this->grantPermissionToUser($user, 'teaching_assignments.create');
+
+        $response = $this
+            ->actingAs($user)
+            ->post('/admin/teaching-assignments', [
+                'academic_year_id' => null,
+                'semester_id'      => null,
+                'class_group_id'   => null,
+                'subject_id'       => null,
+                'teacher_user_id'  => null,
+                'weekly_hours'     => null,
+            ]);
+
+        $response->assertSessionHasErrors([
+            'academic_year_id',
+            'semester_id',
+            'class_group_id',
+            'subject_id',
+            'teacher_user_id',
+            'weekly_hours',
+        ]);
+    }
+
     private function createAcademicYear(string $name = '2026/2027'): AcademicYear
     {
         return AcademicYear::create([
@@ -185,6 +318,29 @@ class TeachingAssignmentTest extends TestCase
                 'description' => 'Mata pelajaran Matematika.',
             ]
         );
+    }
+
+    private function createTeacher(): User
+    {
+        $role = Role::firstOrCreate(
+            ['name' => 'guru_mata_pelajaran'],
+            [
+                'display_name' => 'Guru Mata Pelajaran',
+                'is_system'    => false,
+                'is_active'    => true,
+            ]
+        );
+
+        $teacher = User::factory()->create([
+            'name'   => 'Pak Guru Test',
+            'status' => 'active',
+        ]);
+
+        $teacher->roles()->syncWithoutDetaching([
+            $role->id => ['assigned_at' => now()],
+        ]);
+
+        return $teacher;
     }
 
     private function grantPermissionToUser(

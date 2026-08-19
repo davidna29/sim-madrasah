@@ -24,7 +24,7 @@ Terakhir diperbarui: 19 Agustus 2026.
 | Akun pegawai | Selesai awal | Create akun dari data pegawai |
 | Siswa | Stabil tahap 12.25 | CRUD, filter rombel, pencarian, filter status, filter tahun masuk, export CSV, review akhir |
 | Riwayat kelas siswa | Selesai tahap 12.32 | Tambah histori, edit histori, bulk rombel, default semester aktif, auto tanggal |
-| Jadwal Pelajaran | Selesai tahap 12.34F-1 | Fondasi jadwal, template, slot, assignment rombel, database plotting beban mengajar, dan halaman daftar plotting sudah tersedia |
+| Jadwal Pelajaran | Selesai tahap 12.34F-2 | Fondasi jadwal, template, slot, assignment rombel, database plotting beban mengajar, halaman daftar, dan form tambah plotting sudah tersedia |
 | Akun siswa | Selesai awal | Create akun dari data siswa |
 | Wali siswa | Selesai awal | CRUD wali per siswa |
 | Akun wali siswa | Selesai awal | Create akun wali |
@@ -67,6 +67,26 @@ addfd94 feat: add madrasah identity module
 ---
 
 ## Fitur Terakhir yang Sudah Tampak di Kode
+
+### Form Tambah Plotting Beban Mengajar (Tahap 12.34F-2)
+
+Status: selesai tahap 12.34F-2.
+
+Fitur:
+
+- route `GET /admin/teaching-assignments/create` dan `POST /admin/teaching-assignments`;
+- form tambah plotting dengan pilihan guru (dibatasi role guru), mata pelajaran, rombel, jam per minggu, dan catatan;
+- tombol "+ Tambah Plotting" di halaman index (hanya muncul jika punya permission);
+- validasi duplikasi kombinasi guru + mapel + rombel + semester di controller;
+- field `status` dan `is_active` diisi otomatis oleh sistem.
+
+Validasi teknis:
+
+- `TeachingAssignmentTest` 8 test berhasil (24 assertions);
+- `php artisan test` berhasil: 189 passed (641 assertions);
+- `npm run build` berhasil.
+
+---
 
 ### Halaman Daftar Plotting Beban Mengajar (Tahap 12.34F-1)
 

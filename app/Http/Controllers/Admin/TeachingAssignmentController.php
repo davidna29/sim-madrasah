@@ -4,10 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\AcademicYear;
+use App\Models\ClassGroup;
+use App\Models\Role;
 use App\Models\Semester;
+use App\Models\Subject;
 use App\Models\TeachingAssignment;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TeachingAssignmentController extends Controller
 {
@@ -39,12 +44,79 @@ class TeachingAssignmentController extends Controller
             ->withQueryString();
 
         return view('admin.teaching-assignments.index', [
-            'teachingAssignments' => $teachingAssignments,
-            'academicYears' => $this->academicYears(),
-            'semesters' => $this->semesters(),
+            'teachingAssignments'    => $teachingAssignments,
+            'academicYears'          => $this->academicYears(),
+            'semesters'              => $this->semesters(),
             'selectedAcademicYearId' => $selectedAcademicYearId,
-            'selectedSemesterId' => $selectedSemesterId,
+            'selectedSemesterId'     => $selectedSemesterId,
         ]);
+    }
+
+    public function create(Request $request): View
+    {
+        $selectedAcademicYearId = $request->integer('academic_year_id') ?: null;
+        $selectedSemesterId = $request->integer('semester_id') ?: null;
+
+        $teacherRoleNames = ['guru_mata_pelajaran', 'wali_kelas', 'guru_bk'];
+        $teacherRoleIds = Role::whereIn('name', $teacherRoleNames)->pluck('id');
+
+        $teachers = \App\Models\User::query()
+            ->whereHas('roles', fn ($q) => $q->whereIn('roles.id', $teacherRoleIds))
+            ->where('status', 'active')
+            ->with('person')
+            ->orderBy('name')
+            ->get();
+
+        return view('admin.teaching-assignments.create', [
+            'academicYears'          => $this->academicYears(),
+            'semesters'              => $this->semesters(),
+            'classGroups'            => ClassGroup::orderBy('name')->get(),
+            'subjects'               => Subject::where('is_active', true)->orderBy('name')->get(),
+            'teachers'               => $teachers,
+            'selectedAcademicYearId' => $selectedAcademicYearId,
+            'selectedSemesterId'     => $selectedSemesterId,
+        ]);
+    }
+
+    public function store(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'academic_year_id' => ['required', 'exists:academic_years,id'],
+            'semester_id'      => ['required', 'exists:semesters,id'],
+            'class_group_id'   => ['required', 'exists:class_groups,id'],
+            'subject_id'       => ['required', 'exists:subjects,id'],
+            'teacher_user_id'  => ['required', 'exists:users,id'],
+            'weekly_hours'     => ['required', 'integer', 'min:1', 'max:40'],
+            'notes'            => ['nullable', 'string', 'max:500'],
+        ]);
+
+        $duplicate = TeachingAssignment::where([
+            'academic_year_id' => $validated['academic_year_id'],
+            'semester_id'      => $validated['semester_id'],
+            'class_group_id'   => $validated['class_group_id'],
+            'subject_id'       => $validated['subject_id'],
+            'teacher_user_id'  => $validated['teacher_user_id'],
+        ])->exists();
+
+        if ($duplicate) {
+            return back()
+                ->withInput()
+                ->withErrors(['teacher_user_id' => 'Kombinasi guru, mata pelajaran, rombel, dan semester ini sudah ada.']);
+        }
+
+        TeachingAssignment::create([
+            ...$validated,
+            'status'     => 'active',
+            'is_active'  => true,
+            'created_by' => Auth::id(),
+        ]);
+
+        return redirect()
+            ->route('admin.teaching-assignments.index', [
+                'academic_year_id' => $validated['academic_year_id'],
+                'semester_id'      => $validated['semester_id'],
+            ])
+            ->with('success', 'Plotting beban mengajar berhasil ditambahkan.');
     }
 
     private function academicYears()

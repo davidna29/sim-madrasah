@@ -6,77 +6,35 @@ Dokumen ini berisi urutan kerja kecil yang direkomendasikan.
 
 ## Prioritas Terdekat
 
-### Tahap 12.34F-1 — Permission, Route, dan Halaman Daftar Plotting Beban Mengajar
+### Tahap 12.34F-2 — Form Tambah (Create) Plotting Beban Mengajar
 
 Status: selesai.
 
 Tujuan yang tercapai:
 
-- Menambahkan permission `teaching_assignments.view`, `.create`, `.update`. ✓
-- Menambahkan route dan halaman daftar (`index`) plotting beban mengajar. ✓
-- Menambahkan filter tahun ajaran dan semester di halaman daftar. ✓
-- Menambahkan menu sidebar Plotting Beban Mengajar. ✓
-- Menambahkan test halaman daftar (izin, tanpa izin, filter). ✓
-
-Catatan:
-
-- Permission `.create` dan `.update` sudah ada tapi belum dipasang ke route manapun — akan dipakai di tahap berikutnya.
-- Field `status` diisi otomatis `'active'`; aktif/nonaktif dikelola lewat `is_active`.
-
-Belum dikerjakan:
-
-- Form tambah (create) plotting.
-- Form edit dan toggle aktif/nonaktif.
-- Pembatasan pilihan guru berdasarkan role (guru mapel, wali kelas, guru BK).
-- Rekap beban guru.
-- Ketersediaan Guru.
-- Jadwal Aktual Pelajaran.
-- Validasi konflik guru.
-- Auto-Generate.
-- Unassigned Pool.
-- Drag-and-Drop.
+- Route create dan store dengan middleware permission. ✓
+- Form tambah dengan pilihan guru dibatasi berdasarkan role. ✓
+- Validasi duplikasi kombinasi di controller. ✓
+- Tombol "+ Tambah Plotting" di halaman index. ✓
+- Test form create (5 test baru). ✓
 
 Tahap berikutnya:
 
-- Tahap 12.34F-2 — Form Tambah (Create) Plotting Beban Mengajar.
+- Tahap 12.34F-3 — Form Edit dan Toggle Aktif/Nonaktif Plotting Beban Mengajar.
 
 ---
 
-### Tahap 12.31 — Integrasi Semester Aktif ke Riwayat Kelas dan Bulk Rombel
-Status: selesai.
-- Tahap 12.32 — Koreksi dan Edit Riwayat Kelas Siswa. Status: selesai.
-- Tahap 12.33 — Kebijakan Nonaktif dan Koreksi Data Master. Selesai (cakupan disesuaikan — lihat `docs/DECISIONS.md`).
-- Tahap 12.34 — Awal Modul Jadwal Pelajaran.
+### Tahap 12.34F-3 — Form Edit dan Toggle Aktif/Nonaktif Plotting Beban Mengajar
 
----
-
-### Tahap 12.28 — Bulk Assignment Siswa ke Rombel
+Status: belum dikerjakan.
 
 Tujuan:
 
-- Memilih banyak siswa.
-- Menempatkan siswa ke rombel tertentu pada tahun ajaran dan semester tertentu.
-- Membuat record `student_class_histories`.
-- Mengikuti guard histori kelas dari Tahap 12.27.
-- Menolak assignment jika siswa sudah memiliki histori kelas pada semester yang sama.
-
-Perhatian:
-
-- Jangan hapus histori lama.
-- Wajib validasi satu siswa tidak boleh punya dua record aktif untuk semester yang sama.
-- Fitur ini dikerjakan setelah guard histori kelas aktif aman.
-
----
-
-### Tahap 12.29 / 12.34 — Awal Modul Jadwal Pelajaran
-
-Status: mulai dikerjakan melalui Tahap 12.34A.
-
-Catatan:
-
-- Penomoran terbaru mengikuti handoff terakhir, yaitu Tahap 12.34.
-- Fondasi database awal sudah selesai pada Tahap 12.34A.
-- Pengembangan berikutnya dilanjutkan ke CRUD Template Jadwal.
+- Route `GET /admin/teaching-assignments/{id}/edit` dan `PUT /admin/teaching-assignments/{id}`, dilindungi `permission:teaching_assignments.update`.
+- Form edit plotting (guru, mapel, rombel, jam per minggu, catatan).
+- Tombol toggle Aktifkan/Nonaktifkan per baris di halaman index.
+- Validasi duplikasi saat edit (exclude record yang sedang diedit).
+- Test form edit dan toggle.
 
 ---
 

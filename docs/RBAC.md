@@ -160,6 +160,17 @@ php artisan db:seed --class=RbacSeeder
 5. Update dokumen ini.
 
 ---
+### teaching_assignments.create
+
+- Dipasang ke route: `GET /admin/teaching-assignments/create`, `POST /admin/teaching-assignments`.
+- Ditambahkan ke route pada: Tahap 12.34F-2.
+- Catatan: permission ini sudah didaftarkan di seeder sejak Tahap 12.34F-1, baru dipasang ke route di Tahap 12.34F-2.
+
+### teaching_assignments.update
+
+- Dipasang ke route: belum (akan dipakai di Tahap 12.34F-3).
+- Catatan: sudah didaftarkan di seeder sejak Tahap 12.34F-1, menganggur sampai Tahap 12.34F-3.
+---
 
 ## 6. Catatan untuk AI
 
