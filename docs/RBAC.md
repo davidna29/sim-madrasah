@@ -110,7 +110,7 @@ Role sistem yang terdaftar pada `RbacSeeder`:
 | `teaching_assignments.update` | teaching_assignments | update |
 > Catatan: permission `academic_years.update`, `rooms.update`, `subjects.update`, dan `grade_levels.update` sebelumnya sudah terdaftar tapi belum dipakai di route manapun. Sejak Tahap 12.33, permission ini dipakai untuk fitur toggle Nonaktifkan/Aktifkan dan Edit Tahun Ajaran/Semester.
 > Catatan Tahap 12.34B: permission `schedule_templates.view`, `schedule_templates.create`, `schedule_templates.update`, dan `schedule_templates.delete` ditambahkan untuk CRUD Template Jadwal. Route admin Template Jadwal wajib memakai permission ini.
-> Catatan Tahap 12.34F-1: permission `teaching_assignments.view`, `teaching_assignments.create`, dan `teaching_assignments.update` ditambahkan untuk modul Plotting Beban Mengajar. Baru `teaching_assignments.view` yang dipakai di route (halaman daftar); `.create` dan `.update` akan dipasang pada tahap form tambah/edit berikutnya — jangan menganggap ini permission menganggur yang perlu "dibersihkan".
+> Catatan Tahap 12.34F-4: permission `teaching_assignments.view`, `teaching_assignments.create`, dan `teaching_assignments.update` sudah dipakai di route. `teaching_assignments.view` dipakai untuk halaman daftar dan Rekap Beban Guru; `.create` dipakai untuk form tambah/store; `.update` dipakai untuk edit/update dan toggle aktif/nonaktif. Tidak ada permission baru pada Tahap 12.34F-4.
 
 ---
 
@@ -160,6 +160,12 @@ php artisan db:seed --class=RbacSeeder
 5. Update dokumen ini.
 
 ---
+### teaching_assignments.view
+
+- Dipasang ke route: `GET /admin/teaching-assignments`, `GET /admin/teaching-assignments/teacher-workload`.
+- Dipakai untuk: halaman daftar Plotting Beban Mengajar dan halaman Rekap Beban Guru.
+- Catatan: route Rekap Beban Guru ditambahkan pada Tahap 12.34F-4 tanpa permission baru.
+
 ### teaching_assignments.create
 
 - Dipasang ke route: `GET /admin/teaching-assignments/create`, `POST /admin/teaching-assignments`.
@@ -168,8 +174,9 @@ php artisan db:seed --class=RbacSeeder
 
 ### teaching_assignments.update
 
-- Dipasang ke route: belum (akan dipakai di Tahap 12.34F-3).
-- Catatan: sudah didaftarkan di seeder sejak Tahap 12.34F-1, menganggur sampai Tahap 12.34F-3.
+- Dipasang ke route: `GET /admin/teaching-assignments/{teachingAssignment}/edit`, `PUT /admin/teaching-assignments/{teachingAssignment}`, `PUT /admin/teaching-assignments/{teachingAssignment}/toggle-active`.
+- Ditambahkan ke route pada: Tahap 12.34F-3.
+- Catatan: permission ini sudah didaftarkan di seeder sejak Tahap 12.34F-1, baru dipasang ke route di Tahap 12.34F-3.
 ---
 
 ## 6. Catatan untuk AI

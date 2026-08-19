@@ -303,6 +303,10 @@ Route::middleware([
         ->middleware('permission:teaching_assignments.create')
         ->name('teaching-assignments.store');
 
+    Route::get('/teaching-assignments/teacher-workload', [TeachingAssignmentController::class, 'teacherWorkload'])
+        ->middleware('permission:teaching_assignments.view')
+        ->name('teaching-assignments.teacher-workload');
+
     Route::put('/teaching-assignments/{teachingAssignment}/toggle-active', [TeachingAssignmentController::class, 'toggleActive'])
         ->middleware('permission:teaching_assignments.update')
         ->name('teaching-assignments.toggle-active');

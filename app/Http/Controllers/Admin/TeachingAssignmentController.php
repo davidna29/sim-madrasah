@@ -9,6 +9,7 @@ use App\Models\Role;
 use App\Models\Semester;
 use App\Models\Subject;
 use App\Models\TeachingAssignment;
+use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -44,11 +45,44 @@ class TeachingAssignmentController extends Controller
             ->withQueryString();
 
         return view('admin.teaching-assignments.index', [
-            'teachingAssignments'    => $teachingAssignments,
-            'academicYears'          => $this->academicYears(),
-            'semesters'              => $this->semesters(),
+            'teachingAssignments' => $teachingAssignments,
+            'academicYears' => $this->academicYears(),
+            'semesters' => $this->semesters(),
             'selectedAcademicYearId' => $selectedAcademicYearId,
-            'selectedSemesterId'     => $selectedSemesterId,
+            'selectedSemesterId' => $selectedSemesterId,
+        ]);
+    }
+
+    public function teacherWorkload(Request $request): View
+    {
+        $selectedAcademicYearId = $request->integer('academic_year_id') ?: null;
+        $selectedSemesterId = $request->integer('semester_id') ?: null;
+
+        $teacherWorkloads = TeachingAssignment::query()
+            ->select('teacher_user_id')
+            ->selectRaw('COUNT(*) as assignment_count')
+            ->selectRaw('SUM(weekly_hours) as total_weekly_hours')
+            ->with('teacher')
+            ->where('is_active', true)
+            ->when(
+                $selectedAcademicYearId,
+                fn ($query) => $query->where('academic_year_id', $selectedAcademicYearId)
+            )
+            ->when(
+                $selectedSemesterId,
+                fn ($query) => $query->where('semester_id', $selectedSemesterId)
+            )
+            ->groupBy('teacher_user_id')
+            ->orderByDesc('total_weekly_hours')
+            ->orderBy('teacher_user_id')
+            ->get();
+
+        return view('admin.teaching-assignments.teacher-workload', [
+            'teacherWorkloads' => $teacherWorkloads,
+            'academicYears' => $this->academicYears(),
+            'semesters' => $this->semesters(),
+            'selectedAcademicYearId' => $selectedAcademicYearId,
+            'selectedSemesterId' => $selectedSemesterId,
         ]);
     }
 
@@ -58,13 +92,13 @@ class TeachingAssignmentController extends Controller
         $selectedSemesterId = $request->integer('semester_id') ?: null;
 
         return view('admin.teaching-assignments.create', [
-            'academicYears'          => $this->academicYears(),
-            'semesters'              => $this->semesters(),
-            'classGroups'            => ClassGroup::orderBy('name')->get(),
-            'subjects'               => Subject::where('is_active', true)->orderBy('name')->get(),
-            'teachers'               => $this->teachers(),
+            'academicYears' => $this->academicYears(),
+            'semesters' => $this->semesters(),
+            'classGroups' => ClassGroup::orderBy('name')->get(),
+            'subjects' => Subject::where('is_active', true)->orderBy('name')->get(),
+            'teachers' => $this->teachers(),
             'selectedAcademicYearId' => $selectedAcademicYearId,
-            'selectedSemesterId'     => $selectedSemesterId,
+            'selectedSemesterId' => $selectedSemesterId,
         ]);
     }
 
@@ -72,20 +106,20 @@ class TeachingAssignmentController extends Controller
     {
         $validated = $request->validate([
             'academic_year_id' => ['required', 'exists:academic_years,id'],
-            'semester_id'      => ['required', 'exists:semesters,id'],
-            'class_group_id'   => ['required', 'exists:class_groups,id'],
-            'subject_id'       => ['required', 'exists:subjects,id'],
-            'teacher_user_id'  => ['required', 'exists:users,id'],
-            'weekly_hours'     => ['required', 'integer', 'min:1', 'max:40'],
-            'notes'            => ['nullable', 'string', 'max:500'],
+            'semester_id' => ['required', 'exists:semesters,id'],
+            'class_group_id' => ['required', 'exists:class_groups,id'],
+            'subject_id' => ['required', 'exists:subjects,id'],
+            'teacher_user_id' => ['required', 'exists:users,id'],
+            'weekly_hours' => ['required', 'integer', 'min:1', 'max:40'],
+            'notes' => ['nullable', 'string', 'max:500'],
         ]);
 
         $duplicate = TeachingAssignment::where([
             'academic_year_id' => $validated['academic_year_id'],
-            'semester_id'      => $validated['semester_id'],
-            'class_group_id'   => $validated['class_group_id'],
-            'subject_id'       => $validated['subject_id'],
-            'teacher_user_id'  => $validated['teacher_user_id'],
+            'semester_id' => $validated['semester_id'],
+            'class_group_id' => $validated['class_group_id'],
+            'subject_id' => $validated['subject_id'],
+            'teacher_user_id' => $validated['teacher_user_id'],
         ])->exists();
 
         if ($duplicate) {
@@ -96,15 +130,15 @@ class TeachingAssignmentController extends Controller
 
         TeachingAssignment::create([
             ...$validated,
-            'status'     => 'active',
-            'is_active'  => true,
+            'status' => 'active',
+            'is_active' => true,
             'created_by' => Auth::id(),
         ]);
 
         return redirect()
             ->route('admin.teaching-assignments.index', [
                 'academic_year_id' => $validated['academic_year_id'],
-                'semester_id'      => $validated['semester_id'],
+                'semester_id' => $validated['semester_id'],
             ])
             ->with('success', 'Plotting beban mengajar berhasil ditambahkan.');
     }
@@ -126,11 +160,11 @@ class TeachingAssignmentController extends Controller
     {
         return view('admin.teaching-assignments.edit', [
             'teachingAssignment' => $teachingAssignment,
-            'academicYears'      => $this->academicYears(),
-            'semesters'          => $this->semesters(),
-            'classGroups'        => ClassGroup::orderBy('name')->get(),
-            'subjects'           => Subject::where('is_active', true)->orderBy('name')->get(),
-            'teachers'           => $this->teachers(),
+            'academicYears' => $this->academicYears(),
+            'semesters' => $this->semesters(),
+            'classGroups' => ClassGroup::orderBy('name')->get(),
+            'subjects' => Subject::where('is_active', true)->orderBy('name')->get(),
+            'teachers' => $this->teachers(),
         ]);
     }
 
@@ -140,20 +174,20 @@ class TeachingAssignmentController extends Controller
     ): RedirectResponse {
         $validated = $request->validate([
             'academic_year_id' => ['required', 'exists:academic_years,id'],
-            'semester_id'      => ['required', 'exists:semesters,id'],
-            'class_group_id'   => ['required', 'exists:class_groups,id'],
-            'subject_id'       => ['required', 'exists:subjects,id'],
-            'teacher_user_id'  => ['required', 'exists:users,id'],
-            'weekly_hours'     => ['required', 'integer', 'min:1', 'max:40'],
-            'notes'            => ['nullable', 'string', 'max:500'],
+            'semester_id' => ['required', 'exists:semesters,id'],
+            'class_group_id' => ['required', 'exists:class_groups,id'],
+            'subject_id' => ['required', 'exists:subjects,id'],
+            'teacher_user_id' => ['required', 'exists:users,id'],
+            'weekly_hours' => ['required', 'integer', 'min:1', 'max:40'],
+            'notes' => ['nullable', 'string', 'max:500'],
         ]);
 
         $duplicate = TeachingAssignment::where([
             'academic_year_id' => $validated['academic_year_id'],
-            'semester_id'      => $validated['semester_id'],
-            'class_group_id'   => $validated['class_group_id'],
-            'subject_id'       => $validated['subject_id'],
-            'teacher_user_id'  => $validated['teacher_user_id'],
+            'semester_id' => $validated['semester_id'],
+            'class_group_id' => $validated['class_group_id'],
+            'subject_id' => $validated['subject_id'],
+            'teacher_user_id' => $validated['teacher_user_id'],
         ])
             ->where('id', '!=', $teachingAssignment->id)
             ->exists();
@@ -169,7 +203,7 @@ class TeachingAssignmentController extends Controller
         return redirect()
             ->route('admin.teaching-assignments.index', [
                 'academic_year_id' => $validated['academic_year_id'],
-                'semester_id'      => $validated['semester_id'],
+                'semester_id' => $validated['semester_id'],
             ])
             ->with('success', 'Plotting beban mengajar berhasil diperbarui.');
     }
@@ -179,7 +213,7 @@ class TeachingAssignmentController extends Controller
         $teacherRoleNames = ['guru_mata_pelajaran', 'wali_kelas', 'guru_bk'];
         $teacherRoleIds = Role::whereIn('name', $teacherRoleNames)->pluck('id');
 
-        return \App\Models\User::query()
+        return User::query()
             ->whereHas('roles', fn ($q) => $q->whereIn('roles.id', $teacherRoleIds))
             ->where('status', 'active')
             ->with('person')

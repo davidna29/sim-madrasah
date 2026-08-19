@@ -11,12 +11,21 @@
                 </p>
             </div>
 
-            @can('teaching_assignments.create')
-                <a href="{{ route('admin.teaching-assignments.create') }}"
-                   class="rounded-md bg-green-700 px-4 py-2 text-sm font-medium text-white hover:bg-green-800">
-                    + Tambah Plotting
-                </a>
-            @endcan
+            <div class="flex flex-wrap items-center gap-2">
+                @can('permission', 'teaching_assignments.view')
+                    <a href="{{ route('admin.teaching-assignments.teacher-workload') }}"
+                       class="rounded-md border border-green-700 px-4 py-2 text-sm font-medium text-green-700 hover:bg-green-50">
+                        Rekap Beban Guru
+                    </a>
+                @endcan
+
+                @can('permission', 'teaching_assignments.create')
+                    <a href="{{ route('admin.teaching-assignments.create') }}"
+                       class="rounded-md bg-green-700 px-4 py-2 text-sm font-medium text-white hover:bg-green-800">
+                        + Tambah Plotting
+                    </a>
+                @endcan
+            </div>
         </div>
     </x-slot>
 
@@ -172,7 +181,7 @@
                                         </td>
 
                                         <td class="px-4 py-3">
-                                            @can('teaching_assignments.update')
+                                            @can('permission', 'teaching_assignments.update')
                                                 <div class="flex flex-wrap items-center gap-3">
                                                     <a
                                                         href="{{ route('admin.teaching-assignments.edit', $teachingAssignment) }}"

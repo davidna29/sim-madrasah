@@ -119,7 +119,7 @@ class TeachingAssignmentTest extends TestCase
             ->assertDontSee($secondClassGroup->name);
     }
 
-        public function test_user_with_permission_can_view_create_form(): void
+    public function test_user_with_permission_can_view_create_form(): void
     {
         $user = User::factory()->create();
 
@@ -161,25 +161,25 @@ class TeachingAssignmentTest extends TestCase
             ->actingAs($user)
             ->post('/admin/teaching-assignments', [
                 'academic_year_id' => $academicYear->id,
-                'semester_id'      => $semester->id,
-                'class_group_id'   => $classGroup->id,
-                'subject_id'       => $subject->id,
-                'teacher_user_id'  => $teacher->id,
-                'weekly_hours'     => 3,
-                'notes'            => 'Catatan test',
+                'semester_id' => $semester->id,
+                'class_group_id' => $classGroup->id,
+                'subject_id' => $subject->id,
+                'teacher_user_id' => $teacher->id,
+                'weekly_hours' => 3,
+                'notes' => 'Catatan test',
             ]);
 
         $response->assertRedirect();
 
         $this->assertDatabaseHas('teaching_assignments', [
             'academic_year_id' => $academicYear->id,
-            'semester_id'      => $semester->id,
-            'class_group_id'   => $classGroup->id,
-            'subject_id'       => $subject->id,
-            'teacher_user_id'  => $teacher->id,
-            'weekly_hours'     => 3,
-            'status'           => 'active',
-            'is_active'        => true,
+            'semester_id' => $semester->id,
+            'class_group_id' => $classGroup->id,
+            'subject_id' => $subject->id,
+            'teacher_user_id' => $teacher->id,
+            'weekly_hours' => 3,
+            'status' => 'active',
+            'is_active' => true,
         ]);
     }
 
@@ -197,24 +197,24 @@ class TeachingAssignmentTest extends TestCase
 
         TeachingAssignment::create([
             'academic_year_id' => $academicYear->id,
-            'semester_id'      => $semester->id,
-            'class_group_id'   => $classGroup->id,
-            'subject_id'       => $subject->id,
-            'teacher_user_id'  => $teacher->id,
-            'weekly_hours'     => 3,
-            'status'           => 'active',
-            'is_active'        => true,
+            'semester_id' => $semester->id,
+            'class_group_id' => $classGroup->id,
+            'subject_id' => $subject->id,
+            'teacher_user_id' => $teacher->id,
+            'weekly_hours' => 3,
+            'status' => 'active',
+            'is_active' => true,
         ]);
 
         $response = $this
             ->actingAs($user)
             ->post('/admin/teaching-assignments', [
                 'academic_year_id' => $academicYear->id,
-                'semester_id'      => $semester->id,
-                'class_group_id'   => $classGroup->id,
-                'subject_id'       => $subject->id,
-                'teacher_user_id'  => $teacher->id,
-                'weekly_hours'     => 3,
+                'semester_id' => $semester->id,
+                'class_group_id' => $classGroup->id,
+                'subject_id' => $subject->id,
+                'teacher_user_id' => $teacher->id,
+                'weekly_hours' => 3,
             ]);
 
         $response->assertSessionHasErrors('teacher_user_id');
@@ -235,11 +235,11 @@ class TeachingAssignmentTest extends TestCase
             ->actingAs($user)
             ->post('/admin/teaching-assignments', [
                 'academic_year_id' => null,
-                'semester_id'      => null,
-                'class_group_id'   => null,
-                'subject_id'       => null,
-                'teacher_user_id'  => null,
-                'weekly_hours'     => null,
+                'semester_id' => null,
+                'class_group_id' => null,
+                'subject_id' => null,
+                'teacher_user_id' => null,
+                'weekly_hours' => null,
             ]);
 
         $response->assertSessionHasErrors([
@@ -266,13 +266,13 @@ class TeachingAssignmentTest extends TestCase
 
         $teachingAssignment = TeachingAssignment::create([
             'academic_year_id' => $academicYear->id,
-            'semester_id'      => $semester->id,
-            'class_group_id'   => $classGroup->id,
-            'subject_id'       => $subject->id,
-            'teacher_user_id'  => $teacher->id,
-            'weekly_hours'     => 4,
-            'status'           => 'active',
-            'is_active'        => true,
+            'semester_id' => $semester->id,
+            'class_group_id' => $classGroup->id,
+            'subject_id' => $subject->id,
+            'teacher_user_id' => $teacher->id,
+            'weekly_hours' => 4,
+            'status' => 'active',
+            'is_active' => true,
         ]);
 
         $response = $this
@@ -298,13 +298,13 @@ class TeachingAssignmentTest extends TestCase
 
         $teachingAssignment = TeachingAssignment::create([
             'academic_year_id' => $academicYear->id,
-            'semester_id'      => $semester->id,
-            'class_group_id'   => $classGroup->id,
-            'subject_id'       => $subject->id,
-            'teacher_user_id'  => $teacher->id,
-            'weekly_hours'     => 4,
-            'status'           => 'active',
-            'is_active'        => true,
+            'semester_id' => $semester->id,
+            'class_group_id' => $classGroup->id,
+            'subject_id' => $subject->id,
+            'teacher_user_id' => $teacher->id,
+            'weekly_hours' => 4,
+            'status' => 'active',
+            'is_active' => true,
         ]);
 
         $response = $this
@@ -332,13 +332,13 @@ class TeachingAssignmentTest extends TestCase
 
         $teachingAssignment = TeachingAssignment::create([
             'academic_year_id' => $academicYear->id,
-            'semester_id'      => $semester->id,
-            'class_group_id'   => $classGroup->id,
-            'subject_id'       => $subject->id,
-            'teacher_user_id'  => $teacher->id,
-            'weekly_hours'     => 3,
-            'status'           => 'active',
-            'is_active'        => true,
+            'semester_id' => $semester->id,
+            'class_group_id' => $classGroup->id,
+            'subject_id' => $subject->id,
+            'teacher_user_id' => $teacher->id,
+            'weekly_hours' => 3,
+            'status' => 'active',
+            'is_active' => true,
         ]);
 
         $response = $this
@@ -362,13 +362,13 @@ class TeachingAssignmentTest extends TestCase
 
         $teachingAssignment = TeachingAssignment::create([
             'academic_year_id' => $academicYear->id,
-            'semester_id'      => $semester->id,
-            'class_group_id'   => $classGroup->id,
-            'subject_id'       => $subject->id,
-            'teacher_user_id'  => $teacher->id,
-            'weekly_hours'     => 3,
-            'status'           => 'active',
-            'is_active'        => true,
+            'semester_id' => $semester->id,
+            'class_group_id' => $classGroup->id,
+            'subject_id' => $subject->id,
+            'teacher_user_id' => $teacher->id,
+            'weekly_hours' => 3,
+            'status' => 'active',
+            'is_active' => true,
         ]);
 
         $response = $this
@@ -393,34 +393,34 @@ class TeachingAssignmentTest extends TestCase
 
         $teachingAssignment = TeachingAssignment::create([
             'academic_year_id' => $academicYear->id,
-            'semester_id'      => $semester->id,
-            'class_group_id'   => $classGroup->id,
-            'subject_id'       => $subject->id,
-            'teacher_user_id'  => $teacher->id,
-            'weekly_hours'     => 3,
-            'status'           => 'active',
-            'is_active'        => true,
+            'semester_id' => $semester->id,
+            'class_group_id' => $classGroup->id,
+            'subject_id' => $subject->id,
+            'teacher_user_id' => $teacher->id,
+            'weekly_hours' => 3,
+            'status' => 'active',
+            'is_active' => true,
         ]);
 
         $response = $this
             ->actingAs($user)
             ->put("/admin/teaching-assignments/{$teachingAssignment->id}", [
                 'academic_year_id' => $academicYear->id,
-                'semester_id'      => $semester->id,
-                'class_group_id'   => $classGroup->id,
-                'subject_id'       => $subject->id,
-                'teacher_user_id'  => $newTeacher->id,
-                'weekly_hours'     => 5,
-                'notes'            => 'Catatan diperbarui',
+                'semester_id' => $semester->id,
+                'class_group_id' => $classGroup->id,
+                'subject_id' => $subject->id,
+                'teacher_user_id' => $newTeacher->id,
+                'weekly_hours' => 5,
+                'notes' => 'Catatan diperbarui',
             ]);
 
         $response->assertRedirect();
 
         $this->assertDatabaseHas('teaching_assignments', [
-            'id'               => $teachingAssignment->id,
-            'teacher_user_id'  => $newTeacher->id,
-            'weekly_hours'     => 5,
-            'notes'            => 'Catatan diperbarui',
+            'id' => $teachingAssignment->id,
+            'teacher_user_id' => $newTeacher->id,
+            'weekly_hours' => 5,
+            'notes' => 'Catatan diperbarui',
         ]);
     }
 
@@ -438,24 +438,24 @@ class TeachingAssignmentTest extends TestCase
 
         $teachingAssignment = TeachingAssignment::create([
             'academic_year_id' => $academicYear->id,
-            'semester_id'      => $semester->id,
-            'class_group_id'   => $classGroup->id,
-            'subject_id'       => $subject->id,
-            'teacher_user_id'  => $teacher->id,
-            'weekly_hours'     => 3,
-            'status'           => 'active',
-            'is_active'        => true,
+            'semester_id' => $semester->id,
+            'class_group_id' => $classGroup->id,
+            'subject_id' => $subject->id,
+            'teacher_user_id' => $teacher->id,
+            'weekly_hours' => 3,
+            'status' => 'active',
+            'is_active' => true,
         ]);
 
         $response = $this
             ->actingAs($user)
             ->put("/admin/teaching-assignments/{$teachingAssignment->id}", [
                 'academic_year_id' => $academicYear->id,
-                'semester_id'      => $semester->id,
-                'class_group_id'   => $classGroup->id,
-                'subject_id'       => $subject->id,
-                'teacher_user_id'  => $teacher->id,
-                'weekly_hours'     => 6,
+                'semester_id' => $semester->id,
+                'class_group_id' => $classGroup->id,
+                'subject_id' => $subject->id,
+                'teacher_user_id' => $teacher->id,
+                'weekly_hours' => 6,
             ]);
 
         $response->assertSessionDoesntHaveErrors();
@@ -481,35 +481,35 @@ class TeachingAssignmentTest extends TestCase
 
         TeachingAssignment::create([
             'academic_year_id' => $academicYear->id,
-            'semester_id'      => $semester->id,
-            'class_group_id'   => $classGroup->id,
-            'subject_id'       => $subject->id,
-            'teacher_user_id'  => $teacherA->id,
-            'weekly_hours'     => 3,
-            'status'           => 'active',
-            'is_active'        => true,
+            'semester_id' => $semester->id,
+            'class_group_id' => $classGroup->id,
+            'subject_id' => $subject->id,
+            'teacher_user_id' => $teacherA->id,
+            'weekly_hours' => 3,
+            'status' => 'active',
+            'is_active' => true,
         ]);
 
         $teachingAssignmentB = TeachingAssignment::create([
             'academic_year_id' => $academicYear->id,
-            'semester_id'      => $semester->id,
-            'class_group_id'   => $classGroup->id,
-            'subject_id'       => $subject->id,
-            'teacher_user_id'  => $teacherB->id,
-            'weekly_hours'     => 4,
-            'status'           => 'active',
-            'is_active'        => true,
+            'semester_id' => $semester->id,
+            'class_group_id' => $classGroup->id,
+            'subject_id' => $subject->id,
+            'teacher_user_id' => $teacherB->id,
+            'weekly_hours' => 4,
+            'status' => 'active',
+            'is_active' => true,
         ]);
 
         $response = $this
             ->actingAs($user)
             ->put("/admin/teaching-assignments/{$teachingAssignmentB->id}", [
                 'academic_year_id' => $academicYear->id,
-                'semester_id'      => $semester->id,
-                'class_group_id'   => $classGroup->id,
-                'subject_id'       => $subject->id,
-                'teacher_user_id'  => $teacherA->id,
-                'weekly_hours'     => 4,
+                'semester_id' => $semester->id,
+                'class_group_id' => $classGroup->id,
+                'subject_id' => $subject->id,
+                'teacher_user_id' => $teacherA->id,
+                'weekly_hours' => 4,
             ]);
 
         $response->assertSessionHasErrors('teacher_user_id');
@@ -534,24 +534,24 @@ class TeachingAssignmentTest extends TestCase
 
         $teachingAssignment = TeachingAssignment::create([
             'academic_year_id' => $academicYear->id,
-            'semester_id'      => $semester->id,
-            'class_group_id'   => $classGroup->id,
-            'subject_id'       => $subject->id,
-            'teacher_user_id'  => $teacher->id,
-            'weekly_hours'     => 3,
-            'status'           => 'active',
-            'is_active'        => true,
+            'semester_id' => $semester->id,
+            'class_group_id' => $classGroup->id,
+            'subject_id' => $subject->id,
+            'teacher_user_id' => $teacher->id,
+            'weekly_hours' => 3,
+            'status' => 'active',
+            'is_active' => true,
         ]);
 
         $response = $this
             ->actingAs($user)
             ->put("/admin/teaching-assignments/{$teachingAssignment->id}", [
                 'academic_year_id' => null,
-                'semester_id'      => null,
-                'class_group_id'   => null,
-                'subject_id'       => null,
-                'teacher_user_id'  => null,
-                'weekly_hours'     => null,
+                'semester_id' => null,
+                'class_group_id' => null,
+                'subject_id' => null,
+                'teacher_user_id' => null,
+                'weekly_hours' => null,
             ]);
 
         $response->assertSessionHasErrors([
@@ -638,13 +638,13 @@ class TeachingAssignmentTest extends TestCase
             ['name' => 'guru_mata_pelajaran'],
             [
                 'display_name' => 'Guru Mata Pelajaran',
-                'is_system'    => false,
-                'is_active'    => true,
+                'is_system' => false,
+                'is_active' => true,
             ]
         );
 
         $teacher = User::factory()->create([
-            'name'   => 'Pak Guru Test',
+            'name' => 'Pak Guru Test',
             'status' => 'active',
         ]);
 

@@ -10,66 +10,63 @@ Developer berpindah-pindah device (Windows dan macOS), memakai Laravel Herd di k
 
 ## Tahap Terakhir Selesai
 
-### Bug Fix — Label Semester Salah di Form Tambah Plotting Beban Mengajar
-
-Status: selesai (di luar penomoran tahap, ditemukan saat kerja Tahap 12.34F-3).
-
-Ringkasan:
-
-- Di `create.blade.php`, label semester membandingkan `semester_type` dengan `'odd'`, padahal nilai yang tersimpan di database adalah `'ganjil'`/`'genap'`. Akibatnya semua pilihan semester di dropdown selalu tertulis "Genap", walau datanya benar (ada Ganjil dan Genap).
-- Diperbaiki jadi membandingkan dengan `'ganjil'`.
-
-File berubah:
-
-- `resources/views/admin/teaching-assignments/create.blade.php`
-
----
-
-### Tahap 12.34F-3 — Form Edit dan Toggle Aktif/Nonaktif Plotting Beban Mengajar
+### Tahap 12.34F-4 — Rekap Beban Guru
 
 Status: selesai.
 
 Ringkasan:
 
-- Menambahkan route `PUT /admin/teaching-assignments/{id}/toggle-active`, `GET /admin/teaching-assignments/{id}/edit`, dan `PUT /admin/teaching-assignments/{id}`, semuanya dilindungi `permission:teaching_assignments.update`.
-- Menambahkan method `toggleActive()`, `edit()`, dan `update()` di `TeachingAssignmentController`.
-- Menambahkan tombol Aktifkan/Nonaktifkan per baris di halaman index (pola sama seperti modul Mata Pelajaran).
-- Menambahkan view `admin/teaching-assignments/edit.blade.php`, salinan form tambah dengan data terisi (prefilled) dan memakai `@method('PUT')`.
-- Menambahkan link "Edit" per baris di halaman index, satu grup dengan tombol toggle.
-- Validasi duplikasi kombinasi academic_year + semester + class_group + subject + teacher tetap dicek di controller saat update, tapi mengecualikan record yang sedang diedit sendiri (`where('id', '!=', ...)`) — supaya data tidak dianggap "bentrok" dengan dirinya sendiri.
-- Merapikan logic pengambilan daftar guru (dibatasi role `guru_mata_pelajaran`, `wali_kelas`, `guru_bk`, status `active`) jadi satu method privat `teachers()`, dipakai bersama oleh `create()` dan `edit()`.
-- Menambahkan 8 test baru: toggle berhasil/ditolak tanpa permission, lihat form edit dengan/tanpa permission, update berhasil, update tidak menolak data yang tidak berubah (memastikan pengecualian diri sendiri berfungsi), update menolak duplikat dengan record lain, update menolak data tidak valid.
+- Menambahkan halaman rekap beban guru di `/admin/teaching-assignments/teacher-workload`.
+- Menambahkan route `GET /admin/teaching-assignments/teacher-workload`, dilindungi permission `teaching_assignments.view`.
+- Menambahkan method `teacherWorkload()` di `TeachingAssignmentController`.
+- Rekap menghitung hanya plotting beban mengajar yang masih aktif (`is_active = true`).
+- Rekap dikelompokkan per guru, lalu menampilkan jumlah plotting aktif dan total jam/minggu (`SUM(weekly_hours)`).
+- Menambahkan filter Tahun Ajaran dan Semester pada halaman rekap.
+- Menambahkan tombol "Rekap Beban Guru" dari halaman daftar Plotting Beban Mengajar.
+- Menambahkan view `admin/teaching-assignments/teacher-workload.blade.php`.
+- Menambahkan test baru `TeachingAssignmentWorkloadTest`.
+- Merapikan guard Blade di halaman index agar memakai pola `@can('permission', '...')`.
 
 File berubah:
 
 - `routes/web.php`
 - `app/Http/Controllers/Admin/TeachingAssignmentController.php`
-- `resources/views/admin/teaching-assignments/edit.blade.php` (baru)
 - `resources/views/admin/teaching-assignments/index.blade.php`
-- `resources/views/admin/teaching-assignments/create.blade.php` (bug fix label semester)
-- `tests/Feature/Admin/TeachingAssignmentTest.php`
+- `resources/views/admin/teaching-assignments/teacher-workload.blade.php` (baru)
+- `tests/Feature/Admin/TeachingAssignmentWorkloadTest.php` (baru)
+- `tests/Feature/Admin/TeachingAssignmentTest.php` (formatting Pint jika hanya berubah format)
 - `docs/AI-HANDOFF.md`
 - `docs/PROGRESS.md`
 - `docs/NEXT-STEPS.md`
 - `docs/CHANGELOG.md`
+- `docs/RBAC.md`
+- `docs/DECISIONS.md`
 
 Validasi (dijalankan di macOS/Herd):
 
-- `php artisan test --filter=TeachingAssignmentTest`: 16 passed (57 assertions).
-- `php artisan test`: 197 passed (663 assertions).
+- `TeachingAssignmentWorkloadTest`: 3 passed.
+- `TeachingAssignmentTest`: ikut valid dalam test penuh.
+- `php artisan test`: 200 passed (673 assertions).
 - `npm run build` berhasil.
 
 Catatan:
 
-- Daftar guru di form edit tetap dibatasi ke role guru berstatus `active` — sama seperti form tambah. Kalau guru yang sedang diplot ternyata dinonaktifkan akunnya, dia tidak akan muncul di dropdown edit (belum ditangani, dianggap kasus langka untuk tahap ini).
-- Tahap ini belum membuat rekap beban guru.
+- Tahap ini tidak mengubah struktur database.
+- Tahap ini tidak menambah permission baru.
+- Halaman rekap memakai permission lama `teaching_assignments.view`.
+- Rekap hanya membaca data aktif (`is_active = true`), jadi plotting nonaktif tidak masuk total.
+- Tahap ini belum membuat validasi beban maksimal guru.
 - Tahap ini belum membuat ketersediaan guru.
 - Tahap ini belum membuat jadwal aktual pelajaran.
-- Ada beberapa catatan keinginan fitur baru dari developer (modal edit slot jadwal, copy jadwal antar hari, generate dummy slot, template Excel untuk master data, copy penugasan dari semester sebelumnya, prinsip umum shortcut input berulang) — dicatat sebagai backlog di `docs/NEXT-STEPS.md`, belum dikerjakan.
 
 Tahap berikutnya:
 
-- Belum ditentukan — lihat daftar backlog di `docs/NEXT-STEPS.md` untuk pilihan prioritas berikutnya.
+- Belum ditentukan.
+- Kandidat terdekat:
+  - Copy penugasan dari semester sebelumnya.
+  - Ketersediaan guru.
+  - Validasi batas maksimal beban guru.
+  - Lanjut ke fondasi jadwal aktual pelajaran.
 
 ---
 
@@ -157,6 +154,7 @@ Lihat ADR-008 di `docs/DECISIONS.md` untuk latar belakang lengkap.
 30. Assignment Rombel ke Template Jadwal.
 31. Fondasi database Plotting Beban Mengajar.
 32. CRUD Plotting Beban Mengajar (daftar, tambah, edit, toggle aktif/nonaktif).
+33. Rekap Beban Guru dari Plotting Beban Mengajar.
 
 ---
 

@@ -632,7 +632,7 @@ Status: diterima.
 
 Keputusan:
 
-- Tahap 12.34F (CRUD Plotting Beban Mengajar) dipecah menjadi sub-tahap kecil: 12.34F-1 (permission + route + halaman daftar), 12.34F-2 (form tambah), 12.34F-3 (form edit + toggle aktif/nonaktif).
+- Tahap 12.34F (CRUD Plotting Beban Mengajar) dipecah menjadi sub-tahap kecil: 12.34F-1 (permission + route + halaman daftar), 12.34F-2 (form tambah), 12.34F-3 (form edit + toggle aktif/nonaktif), 12.34F-4 (rekap beban guru).
 - Permission `teaching_assignments.view`, `.create`, dan `.update` didaftarkan sekaligus di Tahap 12.34F-1, meskipun `.create` dan `.update` baru dipasang ke route pada sub-tahap berikutnya — mengikuti pola yang sama seperti modul `schedule_templates`.
 - Kolom `status` pada `teaching_assignments` tidak diberi input manual di form; nilainya otomatis `'active'` saat data dibuat. Aktif/nonaktif dikelola lewat kolom `is_active`, konsisten dengan pola modul lain (Mata Pelajaran, Template Jadwal).
 - Guru yang bisa dipilih pada form plotting (direncanakan untuk 12.34F-2) mencakup role `guru_mata_pelajaran`, `wali_kelas`, dan `guru_bk` — bukan hanya `guru_mata_pelajaran` — karena di praktik banyak madrasah, wali kelas dan guru BK juga mengajar mapel tertentu.
@@ -651,9 +651,17 @@ Konsekuensi:
 - `.create` dan `.update` yang belum dipasang ke route tidak boleh dianggap permission menganggur yang perlu dihapus — lihat catatan di `docs/RBAC.md`.
 
 ---
-## Catatan Dokumentasi — docs/CHANGELOG.md Tidak Ditemukan
+## Catatan Dokumentasi — docs/CHANGELOG.md Ada di GitHub, Tetapi Pernah Tidak Terbawa di ZIP
 
-Saat Tahap 12.34F-1 dikerjakan, `docs/CHANGELOG.md` dirujuk oleh `README.md` dan riwayat `docs/AI-HANDOFF.md` (tercatat sebagai salah satu "file berubah" pada tahap-tahap sebelumnya), tetapi file ini **tidak ada** di repo hasil unggahan. Belum diketahui apakah file ini sempat ada lalu terlewat saat commit/export, atau memang belum pernah benar-benar dibuat. Developer/AI berikutnya sebaiknya memeriksa histori git (`git log --all --full-history -- docs/CHANGELOG.md`) sebelum memutuskan untuk membuat file baru dari nol, supaya tidak kehilangan riwayat perubahan yang mungkin sudah pernah dicatat di sana.
+Saat Tahap 12.34F-1 dikerjakan, `docs/CHANGELOG.md` dirujuk oleh `README.md` dan riwayat `docs/AI-HANDOFF.md`, tetapi file ini tidak ada di repo hasil unggahan ZIP pada sesi tersebut.
+
+Pada sesi Tahap 12.34F-4, developer mengonfirmasi bahwa file `docs/CHANGELOG.md` ada di GitHub dan mengunggah salinannya. Mulai tahap ini, changelog tetap diperlakukan sebagai dokumentasi wajib yang harus diperbarui sebelum commit.
+
+Catatan untuk AI/developer berikutnya:
+
+- Jika bekerja dari ZIP dan `docs/CHANGELOG.md` tidak ada, cek GitHub atau histori git dulu.
+- Jangan membuat changelog baru dari nol kalau file aslinya masih ada di remote.
+- Jika file hilang karena hasil download/export ZIP, pulihkan dari GitHub sebelum melanjutkan dokumentasi tahap.
 
 ---
 ## ADR-016 — Validasi Duplikat Plotting Dilakukan di Controller, Bukan Hanya di Database
@@ -674,3 +682,30 @@ Konsekuensi:
 
 - Unique constraint di database tetap dipertahankan sebagai lapisan keamanan kedua.
 - Method `store()` perlu mempertahankan cek duplikat ini saat diedit di tahap berikutnya (edit plotting).
+---
+---
+
+## ADR-017 — Rekap Beban Guru Menghitung Plotting Aktif Saja
+
+Status: diterima.
+
+Keputusan:
+
+- Rekap Beban Guru dibuat dari tabel `teaching_assignments`, bukan dari tabel jadwal aktual.
+- Rekap hanya menghitung data dengan `is_active = true`.
+- Total beban guru dihitung dari penjumlahan `weekly_hours` per guru.
+- Halaman rekap memakai permission `teaching_assignments.view`, bukan permission baru.
+- Tahap ini tidak menambahkan validasi maksimal jam mengajar guru.
+
+Alasan:
+
+- Rekap ini adalah ringkasan administratif dari plotting yang sudah ada, belum jadwal harian.
+- Plotting nonaktif dianggap tidak berlaku, sehingga tidak boleh ikut total beban.
+- Permission `teaching_assignments.view` sudah cukup karena halaman rekap hanya membaca data, tidak mengubah data.
+- Validasi maksimal jam guru membutuhkan aturan kebijakan madrasah yang belum ditentukan, jadi tidak ditebak pada tahap ini.
+
+Konsekuensi:
+
+- Jika nanti dibuat batas maksimal beban guru, perlu tahap lanjutan dengan aturan yang jelas.
+- Jika nanti jadwal aktual sudah ada, rekap dari plotting dan rekap dari jadwal aktual bisa berbeda fungsi dan perlu dibedakan.
+- Ketersediaan guru tetap perlu dibuat sebagai modul terpisah sebelum auto-generate jadwal.

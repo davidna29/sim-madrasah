@@ -4,6 +4,41 @@ Format mengikuti gaya sederhana: tanggal, tahap/commit, perubahan.
 
 ---
 
+## 19 Agustus 2026 — Tahap 12.34F-4
+
+### Added
+
+- Menambahkan halaman Rekap Beban Guru di `/admin/teaching-assignments/teacher-workload`.
+- Menambahkan route `GET /admin/teaching-assignments/teacher-workload`.
+- Menambahkan method `teacherWorkload()` di `TeachingAssignmentController`.
+- Menambahkan view `admin/teaching-assignments/teacher-workload.blade.php`.
+- Menambahkan tombol "Rekap Beban Guru" di halaman daftar Plotting Beban Mengajar.
+- Menambahkan test `TeachingAssignmentWorkloadTest`.
+
+### Changed
+
+- Halaman daftar Plotting Beban Mengajar sekarang menyediakan akses cepat ke rekap beban guru.
+- Merapikan guard Blade di halaman daftar agar memakai pola `@can('permission', '...')`.
+
+### Validation
+
+- Rekap hanya menghitung plotting aktif (`is_active = true`).
+- Rekap dapat difilter berdasarkan tahun ajaran dan semester.
+- Total jam/minggu dihitung dari `SUM(weekly_hours)` per guru.
+
+### Notes
+
+- Tidak ada perubahan struktur database pada tahap ini.
+- Tidak ada permission baru pada tahap ini.
+- Halaman rekap memakai permission lama `teaching_assignments.view`.
+- Belum ada validasi batas maksimal beban guru.
+- Belum ada ketersediaan guru.
+- Belum ada jadwal aktual pelajaran.
+- Test penuh berhasil: 200 passed (673 assertions).
+- Build frontend berhasil.
+
+---
+
 ## 19 Agustus 2026 — Tahap 12.34F-3
 
 ### Added

@@ -24,7 +24,7 @@ Terakhir diperbarui: 19 Agustus 2026.
 | Akun pegawai | Selesai awal | Create akun dari data pegawai |
 | Siswa | Stabil tahap 12.25 | CRUD, filter rombel, pencarian, filter status, filter tahun masuk, export CSV, review akhir |
 | Riwayat kelas siswa | Selesai tahap 12.32 | Tambah histori, edit histori, bulk rombel, default semester aktif, auto tanggal |
-| Jadwal Pelajaran | Selesai tahap 12.34F-3 | Fondasi jadwal, template, slot, assignment rombel; CRUD Plotting Beban Mengajar lengkap (daftar, tambah, edit, toggle aktif/nonaktif) |
+| Jadwal Pelajaran | Selesai tahap 12.34F-4 | Fondasi jadwal, template, slot, assignment rombel; CRUD Plotting Beban Mengajar lengkap; Rekap Beban Guru tersedia |
 | Akun siswa | Selesai awal | Create akun dari data siswa |
 | Wali siswa | Selesai awal | CRUD wali per siswa |
 | Akun wali siswa | Selesai awal | Create akun wali |
@@ -68,6 +68,37 @@ addfd94 feat: add madrasah identity module
 
 ## Fitur Terakhir yang Sudah Tampak di Kode
 
+### Rekap Beban Guru (Tahap 12.34F-4)
+
+Status: selesai tahap 12.34F-4.
+
+Fitur:
+
+- halaman rekap beban guru di `/admin/teaching-assignments/teacher-workload`;
+- route rekap dilindungi permission `teaching_assignments.view`;
+- tombol "Rekap Beban Guru" dari halaman daftar Plotting Beban Mengajar;
+- filter berdasarkan Tahun Ajaran dan Semester;
+- rekap hanya menghitung plotting aktif (`is_active = true`);
+- data dikelompokkan per guru;
+- tabel menampilkan guru, jumlah plotting aktif, dan total jam/minggu;
+- test baru `TeachingAssignmentWorkloadTest`.
+
+Validasi teknis:
+
+- `TeachingAssignmentWorkloadTest` berhasil;
+- `php artisan test` berhasil: 200 passed (673 assertions);
+- `npm run build` berhasil.
+
+Cakupan yang belum dibuat:
+
+- validasi batas maksimal beban guru;
+- ketersediaan guru;
+- jadwal aktual pelajaran;
+- auto-generate jadwal;
+- copy penugasan dari semester sebelumnya.
+
+---
+
 ### Form Edit dan Toggle Aktif/Nonaktif Plotting Beban Mengajar (Tahap 12.34F-3)
 
 Status: selesai tahap 12.34F-3.
@@ -86,6 +117,7 @@ Validasi teknis:
 - `TeachingAssignmentTest` 16 test berhasil (57 assertions);
 - `php artisan test` berhasil: 197 passed (663 assertions);
 - `npm run build` berhasil.
+
 
 ---
 

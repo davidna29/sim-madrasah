@@ -6,19 +6,30 @@ Dokumen ini berisi urutan kerja kecil yang direkomendasikan.
 
 ## Prioritas Terdekat
 
-Belum ada tahap berikutnya yang dipilih. Lihat backlog di bawah untuk kandidat.
+Tahap terakhir selesai: **Tahap 12.34F-4 — Rekap Beban Guru**.
 
-### Tahap 12.34F-2 — Form Tambah (Create) Plotting Beban Mengajar
+Belum ada tahap berikutnya yang dipilih. Kandidat terdekat:
+
+1. Copy penugasan dari semester sebelumnya.
+2. Ketersediaan guru.
+3. Validasi batas maksimal beban guru.
+4. Fondasi jadwal aktual pelajaran.
+
+Rekomendasi teknis: lanjut ke **Ketersediaan Guru** sebelum jadwal aktual atau auto-generate, karena jadwal membutuhkan informasi kapan guru bisa/tidak bisa mengajar.
+
+### Tahap 12.34F-4 — Rekap Beban Guru
 
 Status: selesai.
 
 Tujuan yang tercapai:
 
-- Route create dan store dengan middleware permission. ✓
-- Form tambah dengan pilihan guru dibatasi berdasarkan role. ✓
-- Validasi duplikasi kombinasi di controller. ✓
-- Tombol "+ Tambah Plotting" di halaman index. ✓
-- Test form create (5 test baru). ✓
+- Route rekap beban guru dengan middleware permission `teaching_assignments.view`. ✓
+- Halaman rekap beban guru. ✓
+- Filter Tahun Ajaran dan Semester. ✓
+- Rekap hanya menghitung plotting aktif (`is_active = true`). ✓
+- Total jam/minggu dihitung dari `SUM(weekly_hours)` per guru. ✓
+- Tombol "Rekap Beban Guru" dari halaman daftar plotting. ✓
+- Test rekap beban guru. ✓
 
 ---
 
