@@ -6,6 +6,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -154,5 +155,16 @@ class User extends Authenticatable
                     ->where('permissions.is_active', true);
             })
             ->exists();
+    }
+
+    // Relasi dengan model TeachingAssignment
+    public function teachingAssignmentsAsTeacher(): HasMany
+    {
+        return $this->hasMany(TeachingAssignment::class, 'teacher_user_id');
+    }
+
+    public function createdTeachingAssignments(): HasMany
+    {
+        return $this->hasMany(TeachingAssignment::class, 'created_by');
     }
 }

@@ -24,7 +24,7 @@ Terakhir diperbarui: 13 Agustus 2026.
 | Akun pegawai | Selesai awal | Create akun dari data pegawai |
 | Siswa | Stabil tahap 12.25 | CRUD, filter rombel, pencarian, filter status, filter tahun masuk, export CSV, review akhir |
 | Riwayat kelas siswa | Selesai tahap 12.32 | Tambah histori, edit histori, bulk rombel, default semester aktif, auto tanggal |
-| Jadwal Pelajaran | Selesai tahap 12.34D | Fondasi database, CRUD Template Jadwal, CRUD Slot Template, dan Assignment Rombel ke Template sudah tersedia |
+| Jadwal Pelajaran | Selesai tahap 12.34E | Fondasi jadwal, template, slot, assignment rombel, dan database plotting beban mengajar sudah tersedia |
 | Akun siswa | Selesai awal | Create akun dari data siswa |
 | Wali siswa | Selesai awal | CRUD wali per siswa |
 | Akun wali siswa | Selesai awal | Create akun wali |
@@ -67,6 +67,55 @@ addfd94 feat: add madrasah identity module
 ---
 
 ## Fitur Terakhir yang Sudah Tampak di Kode
+
+### Fondasi Database Plotting Beban Mengajar
+
+Status: selesai tahap 12.34E.
+
+Fitur:
+
+- tabel `teaching_assignments`;
+- model `TeachingAssignment`;
+- relasi plotting beban mengajar pada `AcademicYear`;
+- relasi plotting beban mengajar pada `Semester`;
+- relasi plotting beban mengajar pada `ClassGroup`;
+- relasi plotting beban mengajar pada `Subject`;
+- relasi plotting beban mengajar pada `User`;
+- test fondasi database Plotting Beban Mengajar.
+
+Fungsi data:
+
+- menyimpan guru yang mengajar mata pelajaran tertentu;
+- menyimpan rombel tujuan;
+- menyimpan tahun ajaran dan semester;
+- menyimpan jumlah jam per minggu;
+- menjadi bahan dasar jadwal manual dan auto-generate.
+
+Validasi database:
+
+- kombinasi `academic_year_id`, `semester_id`, `class_group_id`, `subject_id`, dan `teacher_user_id` tidak boleh dobel;
+- relasi ke tahun ajaran, semester, rombel, mapel, dan guru sudah tersedia;
+- `weekly_hours` disimpan sebagai integer;
+- `is_active` disimpan sebagai boolean.
+
+Cakupan yang belum dibuat:
+
+- CRUD Plotting Beban Mengajar;
+- filter plotting;
+- rekap beban mengajar guru;
+- validasi beban maksimal guru;
+- ketersediaan guru;
+- jadwal aktual pelajaran;
+- validasi konflik guru;
+- auto-generate;
+- unassigned pool;
+- drag-and-drop.
+
+Validasi teknis:
+
+- `TeachingAssignmentFoundationTest` berhasil;
+- `php artisan test` berhasil: 181 passed;
+- `npm run build` berhasil.
 
 ### Assignment Rombel ke Template Jadwal
 

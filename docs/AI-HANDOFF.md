@@ -10,74 +10,90 @@ saya mengembangkannya sekarang di macbook air m2 dengan laravel herd
 
 ## Tahap Terakhir Selesai
 
-## Tahap Terakhir Selesai
-
-### Tahap 12.34D — Assignment Rombel ke Template Jadwal
+### Tahap 12.34E — Fondasi Database Plotting Beban Mengajar
 
 Status: selesai.
 
 Ringkasan:
 
-- Menambahkan halaman daftar Assignment Template Jadwal.
-- Menambahkan halaman tambah Assignment Template Jadwal.
-- Menambahkan fitur filter assignment berdasarkan tahun ajaran dan semester.
-- Menambahkan fitur assign rombel ke template jadwal.
-- Menambahkan fitur release/lepas assignment rombel dari template jadwal.
-- Menambahkan validasi konflik assignment.
-- Satu rombel hanya boleh memiliki satu template jadwal pada kombinasi tahun ajaran dan semester yang sama.
-- Jika rombel sudah memiliki assignment, sistem menolak assignment baru secara default.
-- Admin dapat mengganti assignment lama dengan mencentang opsi `replace_existing`.
-- Template yang bisa dipilih harus aktif.
-- Template yang bisa dipilih harus sudah memiliki slot.
-- Semester harus sesuai dengan tahun ajaran yang dipilih.
-- Rombel harus sesuai dengan tahun ajaran yang dipilih.
-- Menambahkan menu sidebar Assignment Jadwal.
+- Menambahkan fondasi database untuk Modul Plotting Beban Mengajar.
+- Menambahkan tabel `teaching_assignments`.
+- Menambahkan model `TeachingAssignment`.
+- Menambahkan relasi awal plotting beban mengajar pada model:
+  - `AcademicYear`
+  - `Semester`
+  - `ClassGroup`
+  - `Subject`
+  - `User`
+- Plotting beban mengajar menyimpan data guru, mata pelajaran, rombel, tahun ajaran, semester, dan jumlah jam per minggu.
+- Plotting beban mengajar belum menjadi jadwal harian.
+- Data ini disiapkan sebagai prasyarat untuk jadwal manual, validasi konflik guru, auto-generate, dan unassigned pool.
+- Tidak menambah UI.
+- Tidak menambah route.
+- Tidak menambah sidebar.
 - Tidak menambah permission baru.
 
-Permission yang dipakai:
+Tabel baru:
 
-- `schedule_templates.view` untuk melihat daftar assignment.
-- `schedule_templates.update` untuk tambah, replace, dan lepas assignment.
+- `teaching_assignments`
+
+Kolom utama:
+
+- `academic_year_id`
+- `semester_id`
+- `class_group_id`
+- `subject_id`
+- `teacher_user_id`
+- `weekly_hours`
+- `status`
+- `is_active`
+- `notes`
+- `created_by`
+
+Unique penting:
+
+- `academic_year_id + semester_id + class_group_id + subject_id + teacher_user_id`
 
 File berubah:
 
-- `app/Http/Controllers/Admin/ScheduleTemplateAssignmentController.php`
-- `resources/views/layouts/sidebar.blade.php`
-- `resources/views/admin/schedule-template-assignments/index.blade.php`
-- `resources/views/admin/schedule-template-assignments/create.blade.php`
-- `resources/views/admin/schedule-template-assignments/partials/form.blade.php`
-- `routes/web.php`
-- `tests/Feature/Admin/ScheduleTemplateAssignmentTest.php`
+- `app/Models/TeachingAssignment.php`
+- `app/Models/AcademicYear.php`
+- `app/Models/Semester.php`
+- `app/Models/ClassGroup.php`
+- `app/Models/Subject.php`
+- `app/Models/User.php`
+- `database/migrations/2026_08_19_021005_create_teaching_assignments_table.php`
+- `tests/Feature/Admin/TeachingAssignmentFoundationTest.php`
 - `docs/AI-HANDOFF.md`
 - `docs/PROGRESS.md`
 - `docs/NEXT-STEPS.md`
 - `docs/CHANGELOG.md`
+- `docs/DATABASE.md`
 - `docs/DECISIONS.md`
 
 Validasi:
 
-- `php artisan test --filter=ScheduleTemplateAssignmentTest` berhasil.
+- `php artisan migrate` berhasil.
+- `php artisan test --filter=TeachingAssignmentFoundationTest` berhasil.
 - `./vendor/bin/pint` berhasil.
 - `./vendor/bin/pint --test` berhasil.
-- `php artisan test` berhasil: 177 passed.
+- `php artisan test` berhasil: 181 passed.
 - `npm run build` berhasil.
 
 Catatan:
 
-- Tahap ini belum membuat jadwal aktual pelajaran.
-- Tahap ini belum membuat plotting beban mengajar.
+- Tahap ini belum membuat CRUD Plotting Beban Mengajar.
+- Tahap ini belum membuat validasi form UI.
+- Tahap ini belum membuat rekap beban guru.
 - Tahap ini belum membuat ketersediaan guru.
-- Tahap ini belum membuat validasi konflik guru mengajar di dua rombel.
-- Tahap ini belum membuat lock/pin slot jadwal aktual.
+- Tahap ini belum membuat jadwal aktual pelajaran.
 - Tahap ini belum membuat auto-generate.
-- Tahap ini belum membuat unassigned pool.
 - Tahap ini belum membuat drag-and-drop.
-- Tahap ini tidak mengubah struktur database.
 - Tahap ini tidak menambah permission baru.
 
 Tahap berikutnya:
 
-- Tahap 12.34E — Fondasi Jadwal Pelajaran Aktual atau Modul Prasyarat Plotting Beban Mengajar.
+- Tahap 12.34F — CRUD Plotting Beban Mengajar.
 ---
 
 ## 2. Teknologi
@@ -162,6 +178,7 @@ Lihat ADR-008 di `docs/DECISIONS.md` untuk latar belakang lengkap.
 28. CRUD Template Jadwal Pelajaran.
 29. CRUD Slot Template Jadwal.
 30. Assignment Rombel ke Template Jadwal.
+31. Fondasi database Plotting Beban Mengajar.
 
 ---
 

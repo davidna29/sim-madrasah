@@ -42,4 +42,9 @@ class AcademicYear extends Model
     {
         return $this->hasMany(ClassGroupScheduleTemplate::class);
     }
+
+    public function teachingAssignments(): HasMany
+    {
+        return $this->hasMany(TeachingAssignment::class);
+    }
 }

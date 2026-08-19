@@ -586,3 +586,32 @@ Konsekuensi:
 - Jika ingin mengganti template rombel, admin harus memilih opsi replace.
 - Slot template akan terkunci setelah template dipakai rombel karena perubahan slot dapat memengaruhi jadwal rombel.
 - Tahap berikutnya perlu menentukan apakah melanjutkan ke jadwal aktual manual atau membuat modul prasyarat seperti Plotting Beban Mengajar dan Ketersediaan Guru.
+---
+---
+## ADR-014 — Plotting Beban Mengajar Dibuat Sebelum Jadwal Aktual
+
+Status: diterima.
+
+Keputusan:
+
+- Modul Plotting Beban Mengajar dibuat sebelum Jadwal Aktual Pelajaran.
+- Tahap 12.34E dibatasi pada fondasi database dan model relasi.
+- Plotting beban mengajar disimpan pada tabel `teaching_assignments`.
+- Data plotting menyimpan guru, mapel, rombel, tahun ajaran, semester, dan jumlah jam per minggu.
+- Satu kombinasi tahun ajaran, semester, rombel, mapel, dan guru tidak boleh dobel.
+- Plotting beban mengajar belum menjadi jadwal harian.
+
+Alasan:
+
+- Jadwal aktual membutuhkan sumber data yang jelas.
+- Auto-generate tidak bisa berjalan benar tanpa data guru mengajar mapel apa di rombel mana.
+- Validasi konflik guru juga membutuhkan daftar beban mengajar sebagai sumber.
+- Pemisahan plotting dan jadwal aktual membuat sistem lebih fleksibel untuk kebijakan madrasah.
+- Satu mapel pada rombel yang sama tetap dapat dibagi ke lebih dari satu guru jika guru berbeda.
+
+Konsekuensi:
+
+- Tahap berikutnya perlu membuat CRUD Plotting Beban Mengajar.
+- Jadwal manual dan auto-generate harus mengambil data dari `teaching_assignments`.
+- Ketersediaan guru tetap perlu dibuat sebagai modul terpisah sebelum auto-generate penuh.
+- Rekap beban guru dapat dibuat dari tabel ini pada tahap lanjutan.

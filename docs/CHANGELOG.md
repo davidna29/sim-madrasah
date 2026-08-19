@@ -3,6 +3,39 @@
 Format mengikuti gaya sederhana: tanggal, tahap/commit, perubahan.
 
 ---
+## 19 Agustus 2026 — Tahap 12.34E
+
+### Added
+
+- Menambahkan fondasi database Plotting Beban Mengajar.
+- Menambahkan model `TeachingAssignment`.
+- Menambahkan tabel `teaching_assignments`.
+- Menambahkan relasi plotting beban mengajar pada model `AcademicYear`.
+- Menambahkan relasi plotting beban mengajar pada model `Semester`.
+- Menambahkan relasi plotting beban mengajar pada model `ClassGroup`.
+- Menambahkan relasi plotting beban mengajar pada model `Subject`.
+- Menambahkan relasi plotting beban mengajar pada model `User`.
+- Menambahkan test `TeachingAssignmentFoundationTest`.
+
+### Database
+
+- Menambahkan tabel `teaching_assignments`.
+- Menambahkan unique constraint untuk kombinasi tahun ajaran, semester, rombel, mapel, dan guru.
+- Menambahkan foreign key ke tahun ajaran, semester, rombel, mapel, dan user guru.
+
+### Notes
+
+- Tidak ada UI pada tahap ini.
+- Tidak ada route pada tahap ini.
+- Tidak ada sidebar pada tahap ini.
+- Tidak ada permission baru pada tahap ini.
+- Belum ada CRUD Plotting Beban Mengajar.
+- Belum ada ketersediaan guru.
+- Belum ada jadwal aktual pelajaran.
+- Belum ada auto-generate.
+- Test penuh berhasil: 181 passed.
+- Build frontend berhasil.
+
 ## 19 Agustus 2026 — Tahap 12.34D
 
 ### Added

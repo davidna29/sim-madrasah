@@ -445,9 +445,63 @@ assigned_by
 Catatan:
 
 Jika rombel ingin dipindahkan ke template lain pada semester yang sama, record assignment yang ada harus diperbarui, bukan dibuat dobel.
+
+## 13. Tabel Plotting Beban Mengajar
+
+### `teaching_assignments`
+
+Fungsi:
+
+- Menyimpan plotting beban mengajar guru.
+- Menjawab pertanyaan guru siapa mengajar mata pelajaran apa, di rombel mana, pada semester apa, dan berapa jam per minggu.
+- Menjadi sumber data untuk jadwal manual, validasi konflik guru, auto-generate, dan unassigned pool.
+
+Kolom utama:
+
+- `academic_year_id`
+- `semester_id`
+- `class_group_id`
+- `subject_id`
+- `teacher_user_id`
+- `weekly_hours`
+- `status`
+- `is_active`
+- `notes`
+- `created_by`
+
+Foreign key:
+
+- `academic_year_id` ke `academic_years.id`
+- `semester_id` ke `semesters.id`
+- `class_group_id` ke `class_groups.id`
+- `subject_id` ke `subjects.id`
+- `teacher_user_id` ke `users.id`
+- `created_by` ke `users.id`
+
+Unique penting:
+
+- `academic_year_id + semester_id + class_group_id + subject_id + teacher_user_id`
+
+Index penting:
+
+- `academic_year_id`
+- `semester_id`
+- `class_group_id`
+- `subject_id`
+- `teacher_user_id`
+- `status`
+- `is_active`
+
+Catatan:
+
+- `weekly_hours` menyimpan jumlah jam pelajaran per minggu.
+- Data ini bukan jadwal harian.
+- Jadwal aktual nanti harus mengambil sumber dari plotting ini.
+- Satu guru dapat mengajar lebih dari satu mapel atau lebih dari satu rombel.
+- Satu mapel pada rombel yang sama dapat diajar lebih dari satu guru jika memang kebijakan madrasah membutuhkan pembagian guru.
 ---
 
-## 13. Relasi Utama
+## 14. Relasi Utama
 
 ```txt
 people 1--1 users
@@ -475,11 +529,18 @@ semesters 1--N class_group_schedule_templates
 class_groups 1--N class_group_schedule_templates
 users 1--N schedule_templates as creator
 users 1--N class_group_schedule_templates as assigner
+
+academic_years 1--N teaching_assignments
+semesters 1--N teaching_assignments
+class_groups 1--N teaching_assignments
+subjects 1--N teaching_assignments
+users 1--N teaching_assignments as teacher
+users 1--N teaching_assignments as creator
 ```
 
 ---
 
-## 14. Catatan Perubahan Database Berikutnya
+## 15. Catatan Perubahan Database Berikutnya
 
 Jika membuat modul baru, selalu tambahkan:
 
