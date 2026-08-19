@@ -105,8 +105,12 @@ Role sistem yang terdaftar pada `RbacSeeder`:
 | `student_guardians.account.create` | student_guardians | account_create |
 | `student_portfolios.view` | student_portfolios | view |
 | `student_portfolios.print` | student_portfolios | print |
+| `teaching_assignments.view` | teaching_assignments | view |
+| `teaching_assignments.create` | teaching_assignments | create |
+| `teaching_assignments.update` | teaching_assignments | update |
 > Catatan: permission `academic_years.update`, `rooms.update`, `subjects.update`, dan `grade_levels.update` sebelumnya sudah terdaftar tapi belum dipakai di route manapun. Sejak Tahap 12.33, permission ini dipakai untuk fitur toggle Nonaktifkan/Aktifkan dan Edit Tahun Ajaran/Semester.
 > Catatan Tahap 12.34B: permission `schedule_templates.view`, `schedule_templates.create`, `schedule_templates.update`, dan `schedule_templates.delete` ditambahkan untuk CRUD Template Jadwal. Route admin Template Jadwal wajib memakai permission ini.
+> Catatan Tahap 12.34F-1: permission `teaching_assignments.view`, `teaching_assignments.create`, dan `teaching_assignments.update` ditambahkan untuk modul Plotting Beban Mengajar. Baru `teaching_assignments.view` yang dipakai di route (halaman daftar); `.create` dan `.update` akan dipasang pada tahap form tambah/edit berikutnya — jangan menganggap ini permission menganggur yang perlu "dibersihkan".
 
 ---
 

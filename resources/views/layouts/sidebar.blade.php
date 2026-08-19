@@ -30,6 +30,7 @@
                     auth()->user()?->can('permission', 'class_groups.view') ||
                     auth()->user()?->can('permission', 'subjects.view') ||
                     auth()->user()?->can('permission', 'schedule_templates.view') ||
+                    auth()->user()?->can('permission', 'teaching_assignments.view') ||
                     auth()->user()?->can('permission', 'employees.view') ||
                     auth()->user()?->can('permission', 'students.view') ||
                     auth()->user()?->can('permission', 'roles.view') ||
@@ -113,6 +114,16 @@
                             Assignment Jadwal
                         </x-ui.sidebar-link>
                     @endcan
+                    <!-- Plotting Beban Mengajar -->
+                    @can('permission', 'teaching_assignments.view')
+                        <x-ui.sidebar-link
+                            :href="route('admin.teaching-assignments.index')"
+                            :active="request()->routeIs('admin.teaching-assignments.*')"
+                        >
+                            Plotting Beban Mengajar
+                        </x-ui.sidebar-link>
+                    @endcan
+
                     <!-- Guru dan Pegawai -->
                     @can('permission', 'employees.view')
                         <x-ui.sidebar-link

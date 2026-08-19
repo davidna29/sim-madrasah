@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\StudentGuardianAccountController;
 use App\Http\Controllers\Admin\StudentGuardianController;
 use App\Http\Controllers\Admin\StudentPortfolioController;
 use App\Http\Controllers\Admin\SubjectController;
+use App\Http\Controllers\Admin\TeachingAssignmentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -288,6 +289,11 @@ Route::middleware([
     Route::delete('/schedule-template-assignments/{classGroupScheduleTemplate}', [ScheduleTemplateAssignmentController::class, 'destroy'])
         ->middleware('permission:schedule_templates.update')
         ->name('schedule-template-assignments.destroy');
+
+    // Tambahkan route untuk plotting beban mengajar (teaching assignments)
+    Route::get('/teaching-assignments', [TeachingAssignmentController::class, 'index'])
+        ->middleware('permission:teaching_assignments.view')
+        ->name('teaching-assignments.index');
 
     // Tambahkan route untuk manajemen pegawai (employees)
     Route::get('/employees', [EmployeeController::class, 'index'])

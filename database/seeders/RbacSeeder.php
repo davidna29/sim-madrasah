@@ -412,6 +412,29 @@ class RbacSeeder extends Seeder
                     'display_name' => 'Menghapus Template Jadwal',
                     'description' => 'Menghapus template jadwal yang tidak aktif dan belum dipakai rombel.',
                 ],
+
+                // Tambahkan permission untuk modul teaching_assignments plotting beban mengajar
+                [
+                    'name' => 'teaching_assignments.view',
+                    'module' => 'teaching_assignments',
+                    'action' => 'view',
+                    'display_name' => 'Melihat Plotting Beban Mengajar',
+                    'description' => 'Melihat daftar plotting beban mengajar guru.',
+                ],
+                [
+                    'name' => 'teaching_assignments.create',
+                    'module' => 'teaching_assignments',
+                    'action' => 'create',
+                    'display_name' => 'Membuat Plotting Beban Mengajar',
+                    'description' => 'Menambahkan plotting beban mengajar guru.',
+                ],
+                [
+                    'name' => 'teaching_assignments.update',
+                    'module' => 'teaching_assignments',
+                    'action' => 'update',
+                    'display_name' => 'Mengubah Plotting Beban Mengajar',
+                    'description' => 'Mengubah data plotting beban mengajar, termasuk aktif/nonaktifkan.',
+                ],
                 // Tambahkan permission untuk modul employees guru dan pegawai
                 [
                     'name' => 'employees.view',

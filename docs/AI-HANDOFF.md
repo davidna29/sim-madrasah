@@ -1,99 +1,63 @@
 # AI Handoff — SIM Madrasah
 
-Terakhir diperbarui: 12 Agustus 2026, 12:29 WIB.
+Terakhir diperbarui: 19 Agustus 2026.
 
 Dokumen ini adalah pegangan utama untuk AI/developer berikutnya. Jangan membaca seluruh `SIM-MADRASAH-AI-HISTORY.md` kecuali ada konteks yang benar-benar hilang.
 
-saya mengembangkannya sekarang di macbook air m2 dengan laravel herd 
+Developer berpindah-pindah device (Windows dan macOS), memakai Laravel Herd di kedua device.
 
 ---
 
 ## Tahap Terakhir Selesai
 
-### Tahap 12.34E — Fondasi Database Plotting Beban Mengajar
+### Tahap 12.34F-1 — Permission, Route, dan Halaman Daftar Plotting Beban Mengajar
 
 Status: selesai.
 
 Ringkasan:
 
-- Menambahkan fondasi database untuk Modul Plotting Beban Mengajar.
-- Menambahkan tabel `teaching_assignments`.
-- Menambahkan model `TeachingAssignment`.
-- Menambahkan relasi awal plotting beban mengajar pada model:
-  - `AcademicYear`
-  - `Semester`
-  - `ClassGroup`
-  - `Subject`
-  - `User`
-- Plotting beban mengajar menyimpan data guru, mata pelajaran, rombel, tahun ajaran, semester, dan jumlah jam per minggu.
-- Plotting beban mengajar belum menjadi jadwal harian.
-- Data ini disiapkan sebagai prasyarat untuk jadwal manual, validasi konflik guru, auto-generate, dan unassigned pool.
-- Tidak menambah UI.
-- Tidak menambah route.
-- Tidak menambah sidebar.
-- Tidak menambah permission baru.
-
-Tabel baru:
-
-- `teaching_assignments`
-
-Kolom utama:
-
-- `academic_year_id`
-- `semester_id`
-- `class_group_id`
-- `subject_id`
-- `teacher_user_id`
-- `weekly_hours`
-- `status`
-- `is_active`
-- `notes`
-- `created_by`
-
-Unique penting:
-
-- `academic_year_id + semester_id + class_group_id + subject_id + teacher_user_id`
+- Menambahkan permission baru untuk modul `teaching_assignments`: `.view`, `.create`, `.update`.
+- Menambahkan route `GET /admin/teaching-assignments` (halaman daftar), dilindungi `permission:teaching_assignments.view`.
+- Menambahkan `TeachingAssignmentController@index` dengan filter tahun ajaran dan semester (pola sama seperti `ScheduleTemplateAssignmentController`).
+- Menambahkan view `admin/teaching-assignments/index.blade.php`.
+- Menambahkan menu sidebar "Plotting Beban Mengajar".
+- Permission `.create` dan `.update` sudah didaftarkan di seeder tapi **belum dipasang ke route manapun** — akan dipakai pada Tahap 12.34F-2 (form tambah) dan 12.34F-3 (form edit + toggle aktif/nonaktif).
+- Field `status` pada tabel `teaching_assignments` tetap diisi otomatis `'active'` oleh sistem (tidak ada input manual di form); aktif/nonaktif dikelola lewat `is_active` saja, mengikuti pola modul lain (Mata Pelajaran, Template Jadwal).
+- Pilihan "guru" pada tahap CRUD berikutnya direncanakan mencakup role `guru_mata_pelajaran`, `wali_kelas`, dan `guru_bk` (belum diimplementasikan di tahap ini karena tahap ini baru index, belum ada form).
 
 File berubah:
 
-- `app/Models/TeachingAssignment.php`
-- `app/Models/AcademicYear.php`
-- `app/Models/Semester.php`
-- `app/Models/ClassGroup.php`
-- `app/Models/Subject.php`
-- `app/Models/User.php`
-- `database/migrations/2026_08_19_021005_create_teaching_assignments_table.php`
-- `tests/Feature/Admin/TeachingAssignmentFoundationTest.php`
+- `database/seeders/RbacSeeder.php`
+- `routes/web.php`
+- `app/Http/Controllers/Admin/TeachingAssignmentController.php` (baru)
+- `resources/views/admin/teaching-assignments/index.blade.php` (baru)
+- `resources/views/layouts/sidebar.blade.php`
+- `tests/Feature/Admin/TeachingAssignmentTest.php` (baru)
 - `docs/AI-HANDOFF.md`
 - `docs/PROGRESS.md`
 - `docs/NEXT-STEPS.md`
-- `docs/CHANGELOG.md`
-- `docs/DATABASE.md`
+- `docs/RBAC.md`
 - `docs/DECISIONS.md`
 
-Validasi:
+Validasi (dilaporkan developer, dijalankan di macOS/Herd):
 
-- `php artisan migrate` berhasil.
-- `php artisan test --filter=TeachingAssignmentFoundationTest` berhasil.
-- `./vendor/bin/pint` berhasil.
-- `./vendor/bin/pint --test` berhasil.
-- `php artisan test` berhasil: 181 passed.
+- `php artisan test`: 184 passed (626 assertions).
 - `npm run build` berhasil.
+- `git status` menunjukkan perubahan sesuai daftar file di atas.
 
 Catatan:
 
-- Tahap ini belum membuat CRUD Plotting Beban Mengajar.
-- Tahap ini belum membuat validasi form UI.
+- Tahap ini belum membuat form tambah (create) plotting.
+- Tahap ini belum membuat form edit dan toggle aktif/nonaktif.
+- Tahap ini belum membatasi pilihan guru berdasarkan role (karena belum ada form).
 - Tahap ini belum membuat rekap beban guru.
 - Tahap ini belum membuat ketersediaan guru.
 - Tahap ini belum membuat jadwal aktual pelajaran.
-- Tahap ini belum membuat auto-generate.
-- Tahap ini belum membuat drag-and-drop.
-- Tahap ini tidak menambah permission baru.
+- `docs/CHANGELOG.md` dirujuk oleh `AI-INSTRUCTIONS.md`/`README.md` tapi **tidak ditemukan di repo saat tahap ini dikerjakan** — belum dibuat ulang, perlu diperiksa apakah pernah ada dan hilang saat export/zip, atau memang belum pernah dibuat. Lihat catatan di `docs/DECISIONS.md`.
 
 Tahap berikutnya:
 
-- Tahap 12.34F — CRUD Plotting Beban Mengajar.
+- Tahap 12.34F-2 — Form Tambah (Create) Plotting Beban Mengajar.
 ---
 
 ## 2. Teknologi
@@ -179,6 +143,7 @@ Lihat ADR-008 di `docs/DECISIONS.md` untuk latar belakang lengkap.
 29. CRUD Slot Template Jadwal.
 30. Assignment Rombel ke Template Jadwal.
 31. Fondasi database Plotting Beban Mengajar.
+32. Halaman daftar Plotting Beban Mengajar (permission + route + index, belum ada form tambah/edit).
 
 ---
 

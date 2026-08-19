@@ -6,33 +6,28 @@ Dokumen ini berisi urutan kerja kecil yang direkomendasikan.
 
 ## Prioritas Terdekat
 
-### Tahap 12.34E — Fondasi Database Plotting Beban Mengajar
+### Tahap 12.34F-1 — Permission, Route, dan Halaman Daftar Plotting Beban Mengajar
 
 Status: selesai.
 
 Tujuan yang tercapai:
 
-- Menambahkan tabel `teaching_assignments`. ✓
-- Menambahkan model `TeachingAssignment`. ✓
-- Menambahkan relasi ke `AcademicYear`. ✓
-- Menambahkan relasi ke `Semester`. ✓
-- Menambahkan relasi ke `ClassGroup`. ✓
-- Menambahkan relasi ke `Subject`. ✓
-- Menambahkan relasi ke `User` sebagai guru. ✓
-- Menambahkan relasi ke `User` sebagai pembuat data. ✓
-- Menambahkan unique constraint agar plotting yang sama tidak dobel. ✓
-- Menambahkan test fondasi database Plotting Beban Mengajar. ✓
+- Menambahkan permission `teaching_assignments.view`, `.create`, `.update`. ✓
+- Menambahkan route dan halaman daftar (`index`) plotting beban mengajar. ✓
+- Menambahkan filter tahun ajaran dan semester di halaman daftar. ✓
+- Menambahkan menu sidebar Plotting Beban Mengajar. ✓
+- Menambahkan test halaman daftar (izin, tanpa izin, filter). ✓
 
 Catatan:
 
-- Plotting beban mengajar belum menjadi jadwal aktual.
-- Plotting hanya menyimpan guru, mapel, rombel, semester, dan jumlah jam per minggu.
-- Data ini akan menjadi sumber untuk jadwal manual dan auto-generate.
+- Permission `.create` dan `.update` sudah ada tapi belum dipasang ke route manapun — akan dipakai di tahap berikutnya.
+- Field `status` diisi otomatis `'active'`; aktif/nonaktif dikelola lewat `is_active`.
 
 Belum dikerjakan:
 
-- CRUD Plotting Beban Mengajar.
-- Validasi UI Plotting Beban Mengajar.
+- Form tambah (create) plotting.
+- Form edit dan toggle aktif/nonaktif.
+- Pembatasan pilihan guru berdasarkan role (guru mapel, wali kelas, guru BK).
 - Rekap beban guru.
 - Ketersediaan Guru.
 - Jadwal Aktual Pelajaran.
@@ -43,7 +38,7 @@ Belum dikerjakan:
 
 Tahap berikutnya:
 
-- Tahap 12.34F — CRUD Plotting Beban Mengajar.
+- Tahap 12.34F-2 — Form Tambah (Create) Plotting Beban Mengajar.
 
 ---
 

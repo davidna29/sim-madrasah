@@ -1,6 +1,6 @@
 # Progress Pengembangan — SIM Madrasah
 
-Terakhir diperbarui: 13 Agustus 2026.
+Terakhir diperbarui: 19 Agustus 2026.
 
 ---
 
@@ -24,7 +24,7 @@ Terakhir diperbarui: 13 Agustus 2026.
 | Akun pegawai | Selesai awal | Create akun dari data pegawai |
 | Siswa | Stabil tahap 12.25 | CRUD, filter rombel, pencarian, filter status, filter tahun masuk, export CSV, review akhir |
 | Riwayat kelas siswa | Selesai tahap 12.32 | Tambah histori, edit histori, bulk rombel, default semester aktif, auto tanggal |
-| Jadwal Pelajaran | Selesai tahap 12.34E | Fondasi jadwal, template, slot, assignment rombel, dan database plotting beban mengajar sudah tersedia |
+| Jadwal Pelajaran | Selesai tahap 12.34F-1 | Fondasi jadwal, template, slot, assignment rombel, database plotting beban mengajar, dan halaman daftar plotting sudah tersedia |
 | Akun siswa | Selesai awal | Create akun dari data siswa |
 | Wali siswa | Selesai awal | CRUD wali per siswa |
 | Akun wali siswa | Selesai awal | Create akun wali |
@@ -67,6 +67,34 @@ addfd94 feat: add madrasah identity module
 ---
 
 ## Fitur Terakhir yang Sudah Tampak di Kode
+
+### Halaman Daftar Plotting Beban Mengajar (Tahap 12.34F-1)
+
+Status: selesai tahap 12.34F-1.
+
+Fitur:
+
+- permission baru `teaching_assignments.view`, `teaching_assignments.create`, `teaching_assignments.update` (hanya `.view` yang sudah dipasang ke route);
+- halaman daftar plotting beban mengajar (`/admin/teaching-assignments`);
+- filter tahun ajaran dan filter semester pada halaman daftar;
+- menampilkan guru, mata pelajaran, rombel, jam per minggu, dan status aktif/nonaktif;
+- menu sidebar "Plotting Beban Mengajar".
+
+Cakupan yang belum dibuat:
+
+- form tambah (create) plotting;
+- form edit dan toggle aktif/nonaktif;
+- pembatasan pilihan guru berdasarkan role (guru mapel, wali kelas, guru BK);
+- rekap beban mengajar guru;
+- validasi beban maksimal guru;
+- ketersediaan guru;
+- jadwal aktual pelajaran.
+
+Validasi teknis:
+
+- `TeachingAssignmentTest` berhasil;
+- `php artisan test` berhasil: 184 passed (626 assertions);
+- `npm run build` berhasil.
 
 ### Fondasi Database Plotting Beban Mengajar
 

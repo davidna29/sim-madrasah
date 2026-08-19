@@ -614,4 +614,43 @@ Konsekuensi:
 - Tahap berikutnya perlu membuat CRUD Plotting Beban Mengajar.
 - Jadwal manual dan auto-generate harus mengambil data dari `teaching_assignments`.
 - Ketersediaan guru tetap perlu dibuat sebagai modul terpisah sebelum auto-generate penuh.
+- Validasi konflik guru juga membutuhkan daftar beban mengajar sebagai sumber.
+- Pemisahan plotting dan jadwal aktual membuat sistem lebih fleksibel untuk kebijakan madrasah.
+- Satu mapel pada rombel yang sama tetap dapat dibagi ke lebih dari satu guru jika guru berbeda.
+
+Konsekuensi:
+
+- Tahap berikutnya perlu membuat CRUD Plotting Beban Mengajar.
+- Jadwal manual dan auto-generate harus mengambil data dari `teaching_assignments`.
+- Ketersediaan guru tetap perlu dibuat sebagai modul terpisah sebelum auto-generate penuh.
 - Rekap beban guru dapat dibuat dari tabel ini pada tahap lanjutan.
+
+---
+## ADR-015 — CRUD Plotting Beban Mengajar Dipecah per Sub-Tahap, Status Dikelola Lewat is_active
+
+Status: diterima.
+
+Keputusan:
+
+- Tahap 12.34F (CRUD Plotting Beban Mengajar) dipecah menjadi sub-tahap kecil: 12.34F-1 (permission + route + halaman daftar), 12.34F-2 (form tambah), 12.34F-3 (form edit + toggle aktif/nonaktif).
+- Permission `teaching_assignments.view`, `.create`, dan `.update` didaftarkan sekaligus di Tahap 12.34F-1, meskipun `.create` dan `.update` baru dipasang ke route pada sub-tahap berikutnya — mengikuti pola yang sama seperti modul `schedule_templates`.
+- Kolom `status` pada `teaching_assignments` tidak diberi input manual di form; nilainya otomatis `'active'` saat data dibuat. Aktif/nonaktif dikelola lewat kolom `is_active`, konsisten dengan pola modul lain (Mata Pelajaran, Template Jadwal).
+- Guru yang bisa dipilih pada form plotting (direncanakan untuk 12.34F-2) mencakup role `guru_mata_pelajaran`, `wali_kelas`, dan `guru_bk` — bukan hanya `guru_mata_pelajaran` — karena di praktik banyak madrasah, wali kelas dan guru BK juga mengajar mapel tertentu.
+
+Alasan:
+
+- Modul ini pemula-friendly jika dipecah kecil, sesuai prinsip project (lihat `AI-INSTRUCTIONS.md`).
+- Mendaftarkan permission sekaligus menghindari perlu mengubah seeder berkali-kali untuk modul yang sama.
+- Field `status` bertipe teks bebas berisiko ambigu kalau diisi manual tanpa pilihan yang jelas; menunda ini ke tahap lanjutan (kalau memang dibutuhkan) lebih aman daripada menebak nilai yang valid sekarang.
+- Membatasi guru hanya ke `guru_mata_pelajaran` akan membuat wali kelas dan guru BK yang juga mengajar tidak bisa diplot, padahal secara riil banyak yang merangkap.
+
+Konsekuensi:
+
+- Tahap 12.34F-2 harus mengimplementasikan filter role saat mengambil daftar user untuk dropdown guru.
+- Jika suatu saat dibutuhkan status selain `active`/nonaktif (misal `draft`, `dibatalkan`), perlu ADR baru untuk mendesain form dan migrasi datanya.
+- `.create` dan `.update` yang belum dipasang ke route tidak boleh dianggap permission menganggur yang perlu dihapus — lihat catatan di `docs/RBAC.md`.
+
+---
+## Catatan Dokumentasi — docs/CHANGELOG.md Tidak Ditemukan
+
+Saat Tahap 12.34F-1 dikerjakan, `docs/CHANGELOG.md` dirujuk oleh `README.md` dan riwayat `docs/AI-HANDOFF.md` (tercatat sebagai salah satu "file berubah" pada tahap-tahap sebelumnya), tetapi file ini **tidak ada** di repo hasil unggahan. Belum diketahui apakah file ini sempat ada lalu terlewat saat commit/export, atau memang belum pernah benar-benar dibuat. Developer/AI berikutnya sebaiknya memeriksa histori git (`git log --all --full-history -- docs/CHANGELOG.md`) sebelum memutuskan untuk membuat file baru dari nol, supaya tidak kehilangan riwayat perubahan yang mungkin sudah pernah dicatat di sana.
