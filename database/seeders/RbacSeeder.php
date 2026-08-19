@@ -435,6 +435,16 @@ class RbacSeeder extends Seeder
                     'display_name' => 'Mengubah Plotting Beban Mengajar',
                     'description' => 'Mengubah data plotting beban mengajar, termasuk aktif/nonaktifkan.',
                 ],
+
+                // Tambahkan permission untuk modul teacher_availabilities ketersediaan guru
+                [
+                    'name' => 'teacher_availabilities.view',
+                    'module' => 'teacher_availabilities',
+                    'action' => 'view',
+                    'display_name' => 'Melihat Ketersediaan Guru',
+                    'description' => 'Melihat daftar aturan ketersediaan guru.',
+                ],
+
                 // Tambahkan permission untuk modul employees guru dan pegawai
                 [
                     'name' => 'employees.view',

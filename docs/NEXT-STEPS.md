@@ -5,41 +5,51 @@ Dokumen ini berisi urutan kerja kecil yang direkomendasikan.
 ---
 ## Prioritas Terdekat
 
-Tahap terakhir selesai: **Tahap 12.34G-1 — Fondasi Database Ketersediaan Guru**.
+Tahap terakhir selesai: **Tahap 12.34G-2 — Halaman Daftar Ketersediaan Guru**.
 
 Tahap berikutnya yang direkomendasikan:
 
-### Tahap 12.34G-2 — CRUD Ketersediaan Guru: Permission, Route, dan Halaman Daftar
+### Tahap 12.34G-3 — Form Tambah Ketersediaan Guru
 
 Tujuan kecil:
 
-1. Menambahkan permission ketersediaan guru di `RbacSeeder`.
-2. Menambahkan route admin untuk daftar ketersediaan guru.
-3. Menambahkan controller `TeacherAvailabilityController`.
-4. Menambahkan halaman daftar ketersediaan guru.
-5. Menambahkan menu sidebar jika permission tersedia.
-6. Menambahkan test akses halaman daftar.
+1. Menambahkan permission `teacher_availabilities.create`.
+2. Menambahkan route `GET /admin/teacher-availabilities/create`.
+3. Menambahkan route `POST /admin/teacher-availabilities`.
+4. Menambahkan method `create()` dan `store()` di `TeacherAvailabilityController`.
+5. Menambahkan tombol "+ Tambah Ketersediaan".
+6. Menambahkan form tambah ketersediaan guru.
+7. Menambahkan validasi dasar:
+   - tahun ajaran wajib;
+   - semester wajib;
+   - guru wajib;
+   - hari wajib antara 1 sampai 7;
+   - jam mulai wajib;
+   - jam selesai wajib dan harus lebih besar dari jam mulai;
+   - tipe ketersediaan wajib.
+8. Menambahkan test form tambah dan simpan data.
 
 Catatan batasan:
 
-- Jangan langsung membuat form tambah/edit dalam tahap yang sama kalau terlalu besar.
-- Jangan langsung membuat auto-generate jadwal.
+- Jangan langsung membuat edit/toggle di tahap yang sama jika terlalu besar.
+- Validasi bentrok jam ketersediaan bisa dibuat setelah form tambah dasar stabil.
+- Jangan langsung menghubungkan ketersediaan guru ke jadwal aktual.
+- Jangan membuat auto-generate jadwal.
 - Jangan membuat fitur unlock semester/tahun ajaran.
-- Validasi bentrok jam ketersediaan bisa dikerjakan setelah form tambah tersedia.
 
-### Tahap 12.34G-1 — Fondasi Database Ketersediaan Guru
+### Tahap 12.34G-2 — Halaman Daftar Ketersediaan Guru
 
 Status: selesai.
 
 Tujuan yang tercapai:
 
-- Model `TeacherAvailability`. ✓
-- Tabel `teacher_availabilities`. ✓
-- Relasi ke `AcademicYear`. ✓
-- Relasi ke `Semester`. ✓
-- Relasi ke `User` sebagai guru. ✓
-- Relasi ke `User` sebagai pembuat data. ✓
-- Test fondasi database. ✓
+- Permission `teacher_availabilities.view`. ✓
+- Route daftar Ketersediaan Guru. ✓
+- Controller index Ketersediaan Guru. ✓
+- Halaman daftar Ketersediaan Guru. ✓
+- Filter Tahun Ajaran, Semester, dan Guru. ✓
+- Sidebar Ketersediaan Guru. ✓
+- Test halaman daftar. ✓
 
 ---
 

@@ -3,6 +3,45 @@
 Format mengikuti gaya sederhana: tanggal, tahap/commit, perubahan.
 
 ---
+## 19 Agustus 2026 — Tahap 12.34G-2
+
+### Added
+
+- Menambahkan permission `teacher_availabilities.view`.
+- Menambahkan controller `TeacherAvailabilityController`.
+- Menambahkan route `GET /admin/teacher-availabilities`.
+- Menambahkan halaman daftar Ketersediaan Guru.
+- Menambahkan filter Tahun Ajaran, Semester, dan Guru.
+- Menambahkan menu sidebar "Ketersediaan Guru".
+- Menambahkan test `TeacherAvailabilityIndexTest`.
+
+### Changed
+
+- `RbacSeeder` sekarang mendaftarkan permission view untuk modul Ketersediaan Guru.
+- Sidebar sekarang menampilkan menu Ketersediaan Guru jika user memiliki permission `teacher_availabilities.view`.
+
+### Validation
+
+- Halaman daftar hanya bisa dibuka oleh user dengan permission `teacher_availabilities.view`.
+- User tanpa permission mendapat 403.
+- Filter berdasarkan Tahun Ajaran dan Semester berhasil.
+- Filter berdasarkan Guru berhasil.
+- Permission baru terdaftar lewat `RbacSeeder`.
+
+### Notes
+
+- Tidak ada perubahan struktur database pada tahap ini.
+- Belum ada form tambah ketersediaan guru.
+- Belum ada form edit ketersediaan guru.
+- Belum ada toggle aktif/nonaktif.
+- Belum ada validasi bentrok jam di level aplikasi.
+- Belum ada integrasi dengan jadwal aktual.
+- Test khusus berhasil: 5 passed (19 assertions).
+- Test penuh berhasil: isi sesuai hasil test penuh terakhir.
+- Build frontend berhasil.
+
+---
+
 ## 19 Agustus 2026 — Tahap 12.34G-1
 
 ### Added

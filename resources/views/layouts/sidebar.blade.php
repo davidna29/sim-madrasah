@@ -124,6 +124,16 @@
                         </x-ui.sidebar-link>
                     @endcan
 
+                    <!-- Ketersediaan Guru -->
+                    @can('permission', 'teacher_availabilities.view')
+                        <x-ui.sidebar-link
+                            :href="route('admin.teacher-availabilities.index')"
+                            :active="request()->routeIs('admin.teacher-availabilities.*')"
+                        >
+                            Ketersediaan Guru
+                        </x-ui.sidebar-link>
+                    @endcan
+
                     <!-- Guru dan Pegawai -->
                     @can('permission', 'employees.view')
                         <x-ui.sidebar-link

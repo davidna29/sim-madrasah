@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\StudentGuardianAccountController;
 use App\Http\Controllers\Admin\StudentGuardianController;
 use App\Http\Controllers\Admin\StudentPortfolioController;
 use App\Http\Controllers\Admin\SubjectController;
+use App\Http\Controllers\Admin\TeacherAvailabilityController;
 use App\Http\Controllers\Admin\TeachingAssignmentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
@@ -318,6 +319,11 @@ Route::middleware([
     Route::put('/teaching-assignments/{teachingAssignment}', [TeachingAssignmentController::class, 'update'])
         ->middleware('permission:teaching_assignments.update')
         ->name('teaching-assignments.update');
+
+    // Tambahkan route untuk ketersediaan guru
+    Route::get('/teacher-availabilities', [TeacherAvailabilityController::class, 'index'])
+        ->middleware('permission:teacher_availabilities.view')
+        ->name('teacher-availabilities.index');
 
     // Tambahkan route untuk manajemen pegawai (employees)
     Route::get('/employees', [EmployeeController::class, 'index'])

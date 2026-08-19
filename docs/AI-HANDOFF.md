@@ -10,57 +10,56 @@ Developer berpindah-pindah device (Windows dan macOS), memakai Laravel Herd di k
 
 ## Tahap Terakhir Selesai
 
-### Tahap 12.34G-1 — Fondasi Database Ketersediaan Guru
+### Tahap 12.34G-2 — Halaman Daftar Ketersediaan Guru
 
 Status: selesai.
 
 Ringkasan:
 
-- Menambahkan fondasi database Ketersediaan Guru.
-- Menambahkan model `TeacherAvailability`.
-- Menambahkan tabel `teacher_availabilities`.
-- Menambahkan relasi ketersediaan guru pada model `AcademicYear`.
-- Menambahkan relasi ketersediaan guru pada model `Semester`.
-- Menambahkan relasi ketersediaan guru pada model `User`.
-- Menambahkan test `TeacherAvailabilityFoundationTest`.
+- Menambahkan permission `teacher_availabilities.view` di `RbacSeeder`.
+- Menambahkan controller `Admin\TeacherAvailabilityController`.
+- Menambahkan route `GET /admin/teacher-availabilities`, dilindungi permission `teacher_availabilities.view`.
+- Menambahkan halaman daftar Ketersediaan Guru.
+- Menambahkan filter Tahun Ajaran, Semester, dan Guru.
+- Menampilkan tabel Tahun Ajaran, Semester, Guru, Hari, Jam, Tipe, Alasan, dan Status.
+- Menambahkan menu sidebar "Ketersediaan Guru" yang hanya tampil jika user punya permission `teacher_availabilities.view`.
+- Menambahkan test `TeacherAvailabilityIndexTest`.
+- Tidak menambahkan permission `.create` atau `.update` dulu supaya tidak ada permission baru yang menganggur.
 
 File berubah:
 
-- `app/Models/TeacherAvailability.php` (baru)
-- `database/migrations/xxxx_xx_xx_xxxxxx_create_teacher_availabilities_table.php` (baru)
-- `app/Models/AcademicYear.php`
-- `app/Models/Semester.php`
-- `app/Models/User.php`
-- `tests/Feature/Admin/TeacherAvailabilityFoundationTest.php` (baru)
+- `database/seeders/RbacSeeder.php`
+- `app/Http/Controllers/Admin/TeacherAvailabilityController.php` (baru)
+- `routes/web.php`
+- `resources/views/layouts/sidebar.blade.php`
+- `resources/views/admin/teacher-availabilities/index.blade.php` (baru)
+- `tests/Feature/Admin/TeacherAvailabilityIndexTest.php` (baru)
 - `docs/AI-HANDOFF.md`
 - `docs/PROGRESS.md`
 - `docs/NEXT-STEPS.md`
 - `docs/CHANGELOG.md`
-- `docs/DATABASE.md`
+- `docs/RBAC.md`
 - `docs/DECISIONS.md`
 
 Validasi:
 
-- `php artisan test --filter=TeacherAvailabilityFoundationTest`: 3 passed (14 assertions).
+- `php artisan test --filter=TeacherAvailabilityIndexTest`: 5 passed (19 assertions).
 - `php artisan test`: isi sesuai hasil test penuh terakhir.
 - `npm run build`: isi sesuai hasil build terakhir.
 
 Catatan:
 
-- Tahap ini hanya fondasi database.
-- Belum ada UI.
-- Belum ada route.
-- Belum ada controller.
-- Belum ada sidebar.
-- Belum ada permission baru.
-- Belum ada validasi bentrok jam ketersediaan di level aplikasi.
-- Belum ada integrasi ke jadwal aktual pelajaran.
-- Nilai `day_of_week`: 1 = Senin, 2 = Selasa, 3 = Rabu, 4 = Kamis, 5 = Jumat, 6 = Sabtu, 7 = Minggu.
-- `availability_type` default saat ini adalah `unavailable`.
+- Tahap ini belum membuat form tambah.
+- Tahap ini belum membuat form edit.
+- Tahap ini belum membuat toggle aktif/nonaktif.
+- Tahap ini belum membuat validasi bentrok jam ketersediaan di level aplikasi.
+- Tahap ini belum menghubungkan ketersediaan guru ke jadwal aktual.
+- Dropdown guru di filter menampilkan semua guru aktif dengan role `guru_mata_pelajaran`, `wali_kelas`, atau `guru_bk`.
+- Saat test filter, nama guru lain tetap bisa muncul di dropdown, sehingga assertion negatif cukup mengecek konten baris tabel seperti alasan, bukan nama guru.
 
 Tahap berikutnya:
 
-- Tahap 12.34G-2 — CRUD Ketersediaan Guru, dimulai dari permission + route + halaman daftar.
+- Tahap 12.34G-3 — Form Tambah Ketersediaan Guru.
 
 ---
 
@@ -150,6 +149,7 @@ Lihat ADR-008 di `docs/DECISIONS.md` untuk latar belakang lengkap.
 32. CRUD Plotting Beban Mengajar (daftar, tambah, edit, toggle aktif/nonaktif).
 33. Rekap Beban Guru dari Plotting Beban Mengajar.
 34. Fondasi Database Ketersediaan Guru.
+35. Halaman Daftar Ketersediaan Guru.
 
 ---
 

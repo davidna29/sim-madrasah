@@ -745,3 +745,28 @@ Konsekuensi:
 - Kalau nanti dibutuhkan tipe lain seperti `preferred` atau `available`, nilai `availability_type` sudah bisa menampungnya tanpa perubahan struktur awal.
 - Validasi bentrok jam perlu dibuat di level aplikasi pada tahap CRUD.
 - Integrasi ke jadwal aktual perlu tahap tersendiri.
+---
+---
+
+## ADR-019 — Permission Ketersediaan Guru Ditambahkan Bertahap
+
+Status: diterima.
+
+Keputusan:
+
+- Pada Tahap 12.34G-2 hanya permission `teacher_availabilities.view` yang ditambahkan.
+- Permission `teacher_availabilities.create`, `teacher_availabilities.update`, dan permission lain belum ditambahkan.
+- Halaman daftar Ketersediaan Guru memakai permission `teacher_availabilities.view`.
+- Menu sidebar Ketersediaan Guru juga memakai permission `teacher_availabilities.view`.
+
+Alasan:
+
+- Tahap 12.34G-2 hanya membuat halaman daftar, belum membuat form tambah/edit.
+- Menambahkan permission yang belum dipakai pernah menyebabkan kebingungan di tahap sebelumnya.
+- Permission baru sebaiknya ditambahkan ketika route/fitur yang memakainya juga dibuat.
+
+Konsekuensi:
+
+- Tahap form tambah nanti perlu menambahkan permission `teacher_availabilities.create`.
+- Tahap edit/toggle nanti perlu menambahkan permission `teacher_availabilities.update`.
+- Developer/AI berikutnya wajib cek dulu permission yang sudah ada sebelum menambah permission baru.

@@ -24,7 +24,7 @@ Terakhir diperbarui: 19 Agustus 2026.
 | Akun pegawai | Selesai awal | Create akun dari data pegawai |
 | Siswa | Stabil tahap 12.25 | CRUD, filter rombel, pencarian, filter status, filter tahun masuk, export CSV, review akhir |
 | Riwayat kelas siswa | Selesai tahap 12.32 | Tambah histori, edit histori, bulk rombel, default semester aktif, auto tanggal |
-| Jadwal Pelajaran | Selesai tahap 12.34G-1 | Fondasi jadwal, template, slot, assignment rombel; CRUD Plotting Beban Mengajar lengkap; Rekap Beban Guru tersedia; fondasi database Ketersediaan Guru tersedia |
+| Jadwal Pelajaran | Selesai tahap 12.34G-2 | Fondasi jadwal, template, slot, assignment rombel; CRUD Plotting Beban Mengajar lengkap; Rekap Beban Guru tersedia; fondasi database dan halaman daftar Ketersediaan Guru tersedia |
 | Akun siswa | Selesai awal | Create akun dari data siswa |
 | Wali siswa | Selesai awal | CRUD wali per siswa |
 | Akun wali siswa | Selesai awal | Create akun wali |
@@ -67,6 +67,38 @@ addfd94 feat: add madrasah identity module
 ---
 
 ## Fitur Terakhir yang Sudah Tampak di Kode
+
+### Halaman Daftar Ketersediaan Guru (Tahap 12.34G-2)
+
+Status: selesai tahap 12.34G-2.
+
+Fitur:
+
+- permission `teacher_availabilities.view`;
+- route `GET /admin/teacher-availabilities`;
+- controller `TeacherAvailabilityController`;
+- halaman daftar Ketersediaan Guru;
+- filter Tahun Ajaran, Semester, dan Guru;
+- tabel Tahun Ajaran, Semester, Guru, Hari, Jam, Tipe, Alasan, dan Status;
+- menu sidebar "Ketersediaan Guru";
+- test `TeacherAvailabilityIndexTest`.
+
+Validasi teknis:
+
+- `php artisan test --filter=TeacherAvailabilityIndexTest` berhasil: 5 passed (19 assertions).
+- `php artisan test` berhasil: isi sesuai hasil test penuh terakhir.
+- `npm run build` berhasil.
+
+Cakupan yang belum dibuat:
+
+- form tambah ketersediaan guru;
+- form edit ketersediaan guru;
+- toggle aktif/nonaktif;
+- validasi bentrok jam di level aplikasi;
+- integrasi dengan jadwal aktual pelajaran;
+- auto-generate jadwal.
+
+---
 
 ### Fondasi Database Ketersediaan Guru (Tahap 12.34G-1)
 
