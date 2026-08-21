@@ -10,30 +10,41 @@ Developer berpindah-pindah device (Windows dan macOS), memakai Laravel Herd di k
 
 ## Tahap Terakhir Selesai
 
-### Tahap 12.34G-2 — Halaman Daftar Ketersediaan Guru
+### Tahap 12.34G-3 — Form Tambah Ketersediaan Guru
 
 Status: selesai.
 
 Ringkasan:
 
-- Menambahkan permission `teacher_availabilities.view` di `RbacSeeder`.
-- Menambahkan controller `Admin\TeacherAvailabilityController`.
-- Menambahkan route `GET /admin/teacher-availabilities`, dilindungi permission `teacher_availabilities.view`.
-- Menambahkan halaman daftar Ketersediaan Guru.
-- Menambahkan filter Tahun Ajaran, Semester, dan Guru.
-- Menampilkan tabel Tahun Ajaran, Semester, Guru, Hari, Jam, Tipe, Alasan, dan Status.
-- Menambahkan menu sidebar "Ketersediaan Guru" yang hanya tampil jika user punya permission `teacher_availabilities.view`.
-- Menambahkan test `TeacherAvailabilityIndexTest`.
-- Tidak menambahkan permission `.create` atau `.update` dulu supaya tidak ada permission baru yang menganggur.
+- Menambahkan permission `teacher_availabilities.create` di `RbacSeeder`.
+- Menambahkan route `GET /admin/teacher-availabilities/create`, dilindungi permission `teacher_availabilities.create`.
+- Menambahkan route `POST /admin/teacher-availabilities`, dilindungi permission `teacher_availabilities.create`.
+- Menambahkan method `create()` dan `store()` di `TeacherAvailabilityController`.
+- Menambahkan tombol "+ Tambah Ketersediaan" di halaman daftar Ketersediaan Guru.
+- Menambahkan halaman form tambah Ketersediaan Guru.
+- Form tambah mendukung input Tahun Ajaran, Semester, Guru, Hari, Jam Mulai, Jam Selesai, Tipe Ketersediaan, Alasan Singkat, dan Catatan Tambahan.
+- Validasi dasar:
+  - tahun ajaran wajib;
+  - semester wajib;
+  - guru wajib;
+  - hari wajib antara 1 sampai 7;
+  - jam mulai wajib dengan format `H:i`;
+  - jam selesai wajib dengan format `H:i` dan harus setelah jam mulai;
+  - tipe ketersediaan wajib dan untuk tahap ini hanya `unavailable`;
+  - alasan maksimal 150 karakter;
+  - catatan maksimal 1000 karakter.
+- Menambahkan validasi duplikasi aktif untuk kombinasi tahun ajaran, semester, guru, hari, jam mulai, jam selesai, tipe ketersediaan, dan `is_active = true`.
+- Data baru otomatis disimpan dengan `status = active`, `is_active = true`, dan `created_by = Auth::id()`.
+- Menambahkan test `TeacherAvailabilityCreateTest`.
 
 File berubah:
 
 - `database/seeders/RbacSeeder.php`
-- `app/Http/Controllers/Admin/TeacherAvailabilityController.php` (baru)
+- `app/Http/Controllers/Admin/TeacherAvailabilityController.php`
 - `routes/web.php`
-- `resources/views/layouts/sidebar.blade.php`
-- `resources/views/admin/teacher-availabilities/index.blade.php` (baru)
-- `tests/Feature/Admin/TeacherAvailabilityIndexTest.php` (baru)
+- `resources/views/admin/teacher-availabilities/index.blade.php`
+- `resources/views/admin/teacher-availabilities/create.blade.php` (baru)
+- `tests/Feature/Admin/TeacherAvailabilityCreateTest.php` (baru)
 - `docs/AI-HANDOFF.md`
 - `docs/PROGRESS.md`
 - `docs/NEXT-STEPS.md`
@@ -43,23 +54,23 @@ File berubah:
 
 Validasi:
 
+- `php artisan test --filter=TeacherAvailabilityCreateTest`: 7 passed (26 assertions).
 - `php artisan test --filter=TeacherAvailabilityIndexTest`: 5 passed (19 assertions).
 - `php artisan test`: isi sesuai hasil test penuh terakhir.
 - `npm run build`: isi sesuai hasil build terakhir.
 
 Catatan:
 
-- Tahap ini belum membuat form tambah.
 - Tahap ini belum membuat form edit.
 - Tahap ini belum membuat toggle aktif/nonaktif.
-- Tahap ini belum membuat validasi bentrok jam ketersediaan di level aplikasi.
+- Tahap ini belum membuat validasi bentrok jam yang overlap, misalnya 07:00-09:00 bentrok dengan 08:00-10:00.
+- Tahap ini baru menolak duplikasi yang sama persis.
 - Tahap ini belum menghubungkan ketersediaan guru ke jadwal aktual.
-- Dropdown guru di filter menampilkan semua guru aktif dengan role `guru_mata_pelajaran`, `wali_kelas`, atau `guru_bk`.
-- Saat test filter, nama guru lain tetap bisa muncul di dropdown, sehingga assertion negatif cukup mengecek konten baris tabel seperti alasan, bukan nama guru.
+- Tipe ketersediaan yang tersedia baru `unavailable`.
 
 Tahap berikutnya:
 
-- Tahap 12.34G-3 — Form Tambah Ketersediaan Guru.
+- Tahap 12.34G-4 — Form Edit dan Toggle Aktif/Nonaktif Ketersediaan Guru.
 
 ---
 
@@ -150,6 +161,7 @@ Lihat ADR-008 di `docs/DECISIONS.md` untuk latar belakang lengkap.
 33. Rekap Beban Guru dari Plotting Beban Mengajar.
 34. Fondasi Database Ketersediaan Guru.
 35. Halaman Daftar Ketersediaan Guru.
+36. Form Tambah Ketersediaan Guru.
 
 ---
 

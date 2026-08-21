@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center justify-between">
+        <div class="flex items-center justify-between gap-4">
             <div>
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                     Ketersediaan Guru
@@ -10,6 +10,13 @@
                     Daftar waktu ketika guru tidak tersedia atau memiliki aturan ketersediaan tertentu.
                 </p>
             </div>
+
+            @can('permission', 'teacher_availabilities.create')
+                <a href="{{ route('admin.teacher-availabilities.create') }}"
+                   class="rounded-md bg-green-700 px-4 py-2 text-sm font-medium text-white hover:bg-green-800">
+                    + Tambah Ketersediaan
+                </a>
+            @endcan
         </div>
     </x-slot>
 
@@ -22,7 +29,7 @@
             @endif
 
             <div class="mb-6 rounded-lg border border-blue-100 bg-blue-50 p-4 text-sm text-blue-800">
-                Tahap ini baru menampilkan daftar ketersediaan guru. Form tambah/edit akan dibuat pada tahap berikutnya.
+                Gunakan halaman ini untuk memantau aturan ketersediaan guru. Form edit dan toggle aktif/nonaktif akan dibuat pada tahap berikutnya.
             </div>
 
             <div class="bg-white shadow-sm sm:rounded-lg border border-gray-100">

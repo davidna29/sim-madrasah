@@ -770,3 +770,29 @@ Konsekuensi:
 - Tahap form tambah nanti perlu menambahkan permission `teacher_availabilities.create`.
 - Tahap edit/toggle nanti perlu menambahkan permission `teacher_availabilities.update`.
 - Developer/AI berikutnya wajib cek dulu permission yang sudah ada sebelum menambah permission baru.
+---
+---
+
+## ADR-020 — Form Tambah Ketersediaan Guru Dibuat Sebelum Edit dan Toggle
+
+Status: diterima.
+
+Keputusan:
+
+- Tahap 12.34G-3 hanya membuat form tambah dan proses simpan Ketersediaan Guru.
+- Permission yang ditambahkan hanya `teacher_availabilities.create`.
+- Permission `teacher_availabilities.update` belum ditambahkan.
+- Validasi duplikasi pada tahap ini hanya menolak data aktif yang sama persis.
+- Validasi bentrok jam overlap belum dibuat pada tahap ini.
+
+Alasan:
+
+- Cakupan dibuat kecil agar mudah diuji dan dipahami.
+- Permission baru hanya ditambahkan ketika route yang memakainya sudah dibuat.
+- Validasi overlap membutuhkan aturan tambahan dan sebaiknya dikerjakan setelah CRUD dasar stabil.
+
+Konsekuensi:
+
+- Tahap berikutnya perlu membuat edit dan toggle aktif/nonaktif.
+- Validasi overlap seperti 07:00-09:00 bentrok dengan 08:00-10:00 perlu tahap terpisah.
+- Integrasi ketersediaan guru ke jadwal aktual belum dilakukan.

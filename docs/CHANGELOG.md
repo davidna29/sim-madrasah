@@ -3,6 +3,46 @@
 Format mengikuti gaya sederhana: tanggal, tahap/commit, perubahan.
 
 ---
+## 21 Agustus 2026 — Tahap 12.34G-3
+
+### Added
+
+- Menambahkan permission `teacher_availabilities.create`.
+- Menambahkan route `GET /admin/teacher-availabilities/create`.
+- Menambahkan route `POST /admin/teacher-availabilities`.
+- Menambahkan method `create()` dan `store()` di `TeacherAvailabilityController`.
+- Menambahkan tombol "+ Tambah Ketersediaan" di halaman daftar Ketersediaan Guru.
+- Menambahkan halaman form tambah Ketersediaan Guru.
+- Menambahkan test `TeacherAvailabilityCreateTest`.
+
+### Changed
+
+- Halaman daftar Ketersediaan Guru sekarang menyediakan akses ke form tambah jika user memiliki permission `teacher_availabilities.create`.
+- Info banner halaman daftar diperbarui karena form tambah sudah tersedia.
+
+### Validation
+
+- Form tambah hanya bisa dibuka oleh user dengan permission `teacher_availabilities.create`.
+- Store hanya bisa dijalankan oleh user dengan permission `teacher_availabilities.create`.
+- User tanpa permission mendapat 403.
+- Validasi dasar menolak data kosong/tidak valid.
+- Jam selesai wajib setelah jam mulai.
+- Tipe ketersediaan untuk tahap ini hanya `unavailable`.
+- Store menolak duplikasi aktif dengan konteks, hari, jam, dan tipe yang sama persis.
+
+### Notes
+
+- Tidak ada perubahan struktur database pada tahap ini.
+- Belum ada form edit ketersediaan guru.
+- Belum ada toggle aktif/nonaktif.
+- Belum ada validasi bentrok jam overlap.
+- Belum ada integrasi dengan jadwal aktual.
+- Test khusus berhasil: 7 passed (26 assertions).
+- Test index tetap berhasil: 5 passed (19 assertions).
+- Test penuh berhasil: isi sesuai hasil test penuh terakhir.
+- Build frontend berhasil.
+
+---
 ## 19 Agustus 2026 — Tahap 12.34G-2
 
 ### Added

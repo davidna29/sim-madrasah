@@ -5,51 +5,46 @@ Dokumen ini berisi urutan kerja kecil yang direkomendasikan.
 ---
 ## Prioritas Terdekat
 
-Tahap terakhir selesai: **Tahap 12.34G-2 — Halaman Daftar Ketersediaan Guru**.
+Tahap terakhir selesai: **Tahap 12.34G-3 — Form Tambah Ketersediaan Guru**.
 
 Tahap berikutnya yang direkomendasikan:
 
-### Tahap 12.34G-3 — Form Tambah Ketersediaan Guru
+### Tahap 12.34G-4 — Form Edit dan Toggle Aktif/Nonaktif Ketersediaan Guru
 
 Tujuan kecil:
 
-1. Menambahkan permission `teacher_availabilities.create`.
-2. Menambahkan route `GET /admin/teacher-availabilities/create`.
-3. Menambahkan route `POST /admin/teacher-availabilities`.
-4. Menambahkan method `create()` dan `store()` di `TeacherAvailabilityController`.
-5. Menambahkan tombol "+ Tambah Ketersediaan".
-6. Menambahkan form tambah ketersediaan guru.
-7. Menambahkan validasi dasar:
-   - tahun ajaran wajib;
-   - semester wajib;
-   - guru wajib;
-   - hari wajib antara 1 sampai 7;
-   - jam mulai wajib;
-   - jam selesai wajib dan harus lebih besar dari jam mulai;
-   - tipe ketersediaan wajib.
-8. Menambahkan test form tambah dan simpan data.
+1. Menambahkan permission `teacher_availabilities.update`.
+2. Menambahkan route `GET /admin/teacher-availabilities/{teacherAvailability}/edit`.
+3. Menambahkan route `PUT /admin/teacher-availabilities/{teacherAvailability}`.
+4. Menambahkan route `PUT /admin/teacher-availabilities/{teacherAvailability}/toggle-active`.
+5. Menambahkan method `edit()`, `update()`, dan `toggleActive()` di `TeacherAvailabilityController`.
+6. Menambahkan tombol Edit dan Aktifkan/Nonaktifkan di halaman daftar.
+7. Menambahkan form edit Ketersediaan Guru.
+8. Menambahkan validasi update yang mengecualikan record yang sedang diedit sendiri.
+9. Menambahkan test edit, update, dan toggle.
 
 Catatan batasan:
 
-- Jangan langsung membuat edit/toggle di tahap yang sama jika terlalu besar.
-- Validasi bentrok jam ketersediaan bisa dibuat setelah form tambah dasar stabil.
+- Jangan langsung membuat validasi bentrok jam overlap jika tahap edit/toggle sudah terlalu besar.
+- Validasi overlap bisa menjadi Tahap 12.34G-5.
 - Jangan langsung menghubungkan ketersediaan guru ke jadwal aktual.
 - Jangan membuat auto-generate jadwal.
 - Jangan membuat fitur unlock semester/tahun ajaran.
 
-### Tahap 12.34G-2 — Halaman Daftar Ketersediaan Guru
+### Tahap 12.34G-3 — Form Tambah Ketersediaan Guru
 
 Status: selesai.
 
 Tujuan yang tercapai:
 
-- Permission `teacher_availabilities.view`. ✓
-- Route daftar Ketersediaan Guru. ✓
-- Controller index Ketersediaan Guru. ✓
-- Halaman daftar Ketersediaan Guru. ✓
-- Filter Tahun Ajaran, Semester, dan Guru. ✓
-- Sidebar Ketersediaan Guru. ✓
-- Test halaman daftar. ✓
+- Permission `teacher_availabilities.create`. ✓
+- Route form tambah dan store. ✓
+- Method `create()` dan `store()`. ✓
+- Tombol "+ Tambah Ketersediaan". ✓
+- Form tambah Ketersediaan Guru. ✓
+- Validasi dasar. ✓
+- Validasi duplikasi aktif yang sama persis. ✓
+- Test form tambah dan store. ✓
 
 ---
 

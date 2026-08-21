@@ -325,6 +325,14 @@ Route::middleware([
         ->middleware('permission:teacher_availabilities.view')
         ->name('teacher-availabilities.index');
 
+    Route::get('/teacher-availabilities/create', [TeacherAvailabilityController::class, 'create'])
+        ->middleware('permission:teacher_availabilities.create')
+        ->name('teacher-availabilities.create');
+
+    Route::post('/teacher-availabilities', [TeacherAvailabilityController::class, 'store'])
+        ->middleware('permission:teacher_availabilities.create')
+        ->name('teacher-availabilities.store');
+
     // Tambahkan route untuk manajemen pegawai (employees)
     Route::get('/employees', [EmployeeController::class, 'index'])
         ->middleware('permission:employees.view')

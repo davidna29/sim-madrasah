@@ -444,6 +444,13 @@ class RbacSeeder extends Seeder
                     'display_name' => 'Melihat Ketersediaan Guru',
                     'description' => 'Melihat daftar aturan ketersediaan guru.',
                 ],
+                [
+                    'name' => 'teacher_availabilities.create',
+                    'module' => 'teacher_availabilities',
+                    'action' => 'create',
+                    'display_name' => 'Membuat Ketersediaan Guru',
+                    'description' => 'Menambahkan aturan ketersediaan guru.',
+                ],
 
                 // Tambahkan permission untuk modul employees guru dan pegawai
                 [

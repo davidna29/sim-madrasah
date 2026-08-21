@@ -24,7 +24,7 @@ Terakhir diperbarui: 19 Agustus 2026.
 | Akun pegawai | Selesai awal | Create akun dari data pegawai |
 | Siswa | Stabil tahap 12.25 | CRUD, filter rombel, pencarian, filter status, filter tahun masuk, export CSV, review akhir |
 | Riwayat kelas siswa | Selesai tahap 12.32 | Tambah histori, edit histori, bulk rombel, default semester aktif, auto tanggal |
-| Jadwal Pelajaran | Selesai tahap 12.34G-2 | Fondasi jadwal, template, slot, assignment rombel; CRUD Plotting Beban Mengajar lengkap; Rekap Beban Guru tersedia; fondasi database dan halaman daftar Ketersediaan Guru tersedia |
+| Jadwal Pelajaran | Selesai tahap 12.34G-3 | Fondasi jadwal, template, slot, assignment rombel; CRUD Plotting Beban Mengajar lengkap; Rekap Beban Guru tersedia; fondasi database, halaman daftar, dan form tambah Ketersediaan Guru tersedia |
 | Akun siswa | Selesai awal | Create akun dari data siswa |
 | Wali siswa | Selesai awal | CRUD wali per siswa |
 | Akun wali siswa | Selesai awal | Create akun wali |
@@ -95,6 +95,40 @@ Cakupan yang belum dibuat:
 - form edit ketersediaan guru;
 - toggle aktif/nonaktif;
 - validasi bentrok jam di level aplikasi;
+- integrasi dengan jadwal aktual pelajaran;
+- auto-generate jadwal.
+
+---
+
+### Form Tambah Ketersediaan Guru (Tahap 12.34G-3)
+
+Status: selesai tahap 12.34G-3.
+
+Fitur:
+
+- permission `teacher_availabilities.create`;
+- route `GET /admin/teacher-availabilities/create`;
+- route `POST /admin/teacher-availabilities`;
+- method `create()` dan `store()` di `TeacherAvailabilityController`;
+- tombol "+ Tambah Ketersediaan" di halaman daftar;
+- halaman form tambah Ketersediaan Guru;
+- input Tahun Ajaran, Semester, Guru, Hari, Jam Mulai, Jam Selesai, Tipe Ketersediaan, Alasan Singkat, dan Catatan Tambahan;
+- validasi dasar form tambah;
+- validasi duplikasi aktif untuk data yang sama persis;
+- test `TeacherAvailabilityCreateTest`.
+
+Validasi teknis:
+
+- `php artisan test --filter=TeacherAvailabilityCreateTest` berhasil: 7 passed (26 assertions).
+- `php artisan test --filter=TeacherAvailabilityIndexTest` berhasil: 5 passed (19 assertions).
+- `php artisan test` berhasil: isi sesuai hasil test penuh terakhir.
+- `npm run build` berhasil.
+
+Cakupan yang belum dibuat:
+
+- form edit ketersediaan guru;
+- toggle aktif/nonaktif;
+- validasi bentrok jam overlap;
 - integrasi dengan jadwal aktual pelajaran;
 - auto-generate jadwal.
 

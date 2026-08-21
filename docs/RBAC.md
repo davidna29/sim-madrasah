@@ -111,7 +111,7 @@ Role sistem yang terdaftar pada `RbacSeeder`:
 > Catatan: permission `academic_years.update`, `rooms.update`, `subjects.update`, dan `grade_levels.update` sebelumnya sudah terdaftar tapi belum dipakai di route manapun. Sejak Tahap 12.33, permission ini dipakai untuk fitur toggle Nonaktifkan/Aktifkan dan Edit Tahun Ajaran/Semester.
 > Catatan Tahap 12.34B: permission `schedule_templates.view`, `schedule_templates.create`, `schedule_templates.update`, dan `schedule_templates.delete` ditambahkan untuk CRUD Template Jadwal. Route admin Template Jadwal wajib memakai permission ini.
 > Catatan Tahap 12.34F-4: permission `teaching_assignments.view`, `teaching_assignments.create`, dan `teaching_assignments.update` sudah dipakai di route. `teaching_assignments.view` dipakai untuk halaman daftar dan Rekap Beban Guru; `.create` dipakai untuk form tambah/store; `.update` dipakai untuk edit/update dan toggle aktif/nonaktif. Tidak ada permission baru pada Tahap 12.34F-4.
-> Catatan Tahap 12.34G-2: modul Ketersediaan Guru mulai memakai permission `teacher_availabilities.view` untuk halaman daftar dan sidebar. Permission lain seperti `teacher_availabilities.create` dan `teacher_availabilities.update` belum dibuat karena form tambah/edit belum dikerjakan.
+> Catatan Tahap 12.34G-3: modul Ketersediaan Guru sekarang memakai `teacher_availabilities.view` untuk halaman daftar/sidebar dan `teacher_availabilities.create` untuk form tambah/store. Permission `teacher_availabilities.update` belum dibuat karena form edit dan toggle aktif/nonaktif belum dikerjakan.
 
 ---
 
@@ -184,7 +184,13 @@ php artisan db:seed --class=RbacSeeder
 - Dipasang ke route: `GET /admin/teacher-availabilities`.
 - Dipakai untuk: halaman daftar Ketersediaan Guru dan menu sidebar Ketersediaan Guru.
 - Ditambahkan pada: Tahap 12.34G-2.
-- Catatan: hanya permission `.view` yang ditambahkan pada tahap ini. Permission `.create`, `.update`, dan `.delete` belum ditambahkan supaya tidak ada permission baru yang menganggur.
+
+### teacher_availabilities.create
+
+- Dipasang ke route: `GET /admin/teacher-availabilities/create`, `POST /admin/teacher-availabilities`.
+- Dipakai untuk: form tambah dan proses simpan Ketersediaan Guru.
+- Ditambahkan pada: Tahap 12.34G-3.
+- Catatan: permission ini baru ditambahkan ketika route form tambah/store juga dibuat, supaya tidak ada permission baru yang menganggur.
 
 ---
 
